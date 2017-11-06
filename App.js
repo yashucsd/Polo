@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    fontSize: 21,
+    fontSize: 22,
     color: 'black',
     fontWeight: 'bold',
   }
