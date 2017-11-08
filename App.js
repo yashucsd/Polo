@@ -1,15 +1,43 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
 
+//-1 represents empty values
+name = -1;
+phoneNum = -1;
+email = -1;
+password = -1;
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
         <Text style={styles.header}>Polo by MARCO</Text>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-	<Text>THIS IS A CHANGE MADE AT 6:38 PM.</Text>
+	
+	<TextInput placeholder = "Enter Name"
+	   returnKeyType = 'send'
+	   onEndEditing ={(event) => name = event.nativeEvent.text}
+	/>
+
+	<TextInput placeholder = "Enter Phone #"
+	   returnKeyType = 'send'
+	   onEndEditing ={(event) => phoneNum = event.nativeEvent.text}
+	/>
+
+	<TextInput placeholder = "Enter Email"
+	   returnKeyType = 'send'
+	   onEndEditing ={(event) => email = event.nativeEvent.text}
+	/>
+	
+	<TextInput placeholder = "Enter Password"
+	   returnKeyType = 'send'
+	   onEndEditing ={(event) => password = event.nativeEvent.text}
+	/>
+	<Button
+  	  onPress={printInfo}
+  	  title="Sign Up"
+  	  color="#841584"
+  	  accessibilityLabel="Learn more about this purple button"
+	/>
+
       </View>
     );
   }
@@ -28,3 +56,10 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   }
 });
+
+printInfo = () =>{
+  info = [name, phoneNum, email, password];
+  for(i=0; i<info.length; i++){
+    console.log(info[i]);
+  }
+}
