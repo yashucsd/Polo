@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
+var MapView = require('react-native-maps');
+
 export default class App extends React.Component {
   render() {
     return (
