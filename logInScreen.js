@@ -38,7 +38,7 @@ export default class LogIn extends React.Component {
 
 	<View style = {{flex: 2}}>
 	  <Button
-  	    onPress={checkInfo}
+  	    onPress={print}
   	    title="Sign Up"
   	    color="#841584"
 	  />
@@ -67,7 +67,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   }
 });
-
+print = () =>{
+ console.log("testing")
+}
 checkInfo = () =>{
   x = undefined;
   //x = check for email and password in database
