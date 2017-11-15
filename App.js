@@ -1,30 +1,41 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-
-export default class App extends React.Component {
+import { Button, StyleSheet, Text, View, TextInput } from 'react-native';
+ 
+//-1 represents empty values
+name = -1;
+phoneNum = -1;
+email = -1;
+password = -1;
+export default class ActivityDetails extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Polo by MARCO</Text>
-        <Text>Open up App.js to start working on your app!</Text>
-        <Text>Changes you make will automatically reload.</Text>
-        <Text>Shake your phone to open the developer menu.</Text>
-	<Text>THIS IS A CHANGE MADE AT 6:38 PM.</Text>
+        <Text style={styles.header}>Activity Title</Text>
+   	<Text style={styles.header}>Activity Category</Text>
+	<Text style={styles.header}>Activity Time</Text>
+	<Text style={styles.header}>Activity Details</Text>
       </View>
     );
   }
 }
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000',
+    backgroundColor: '#fff',
     alignItems: 'center',
     justifyContent: 'center',
   },
   header: {
-    fontSize: 100,
-    color: 'honeydew',
+    fontSize: 20,
+    color: 'black',
     fontWeight: 'bold',
   }
 });
+ 
+printInfo = () =>{
+  info = [name, phoneNum, email, password];
+  for(i=0; i<info.length; i++){
+    console.log(info[i]);
+  }
+}
