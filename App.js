@@ -1,13 +1,17 @@
 import React from 'react';
-import {StyleSheet, Text, Button, Alert, TextInput, View} from 'react-native';
-import ToggleButton from 'react-toggle-button';
+import {StyleSheet, Text, Button, Alert, TextInput, View, Switch} from 'react-native';
 
 
 export default class App extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {text: 'Useless Placeholder'};
+        this.state = {text: 'Useless Placeholder', switchValue: false};
+
+        handleToggleSwitch = () => this.setState(state => {
+            switchValue = !switchValue
+        });
+
     }
 
   render() {
@@ -20,12 +24,17 @@ export default class App extends React.Component {
               onChangeText={(text) => this.setState({text})}
               value={this.state.text}
           />
-          <ToggleButton 
-          <Button
+          <Switch
+                style = {{width: 100,
+                        height: 100}}
+                onValueChange = {this.handleToggleSwitch}
+                value = {this.state.switchValue}
+          />
+          {/* <Button
               style ={{}}
               onPress={() => { Alert.alert('You tapped the button!')}}
               title="Press Me"
-          />
+          /> */}
         <Text>Changes you make will automatically reload.</Text>
         <Text>Shake your phone to open the developer menu.</Text>
 	      <Text>Another change at 11:39 PM </Text>
