@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import {LogIn} from './logInScreen.js';
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Polo by MARCO</Text>
+        <LogIn/>
       </View>
     );
   }
