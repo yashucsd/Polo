@@ -1,4 +1,4 @@
-var sub = "http://localhost:3001/users/";
+var sub = "http://128.54.97.9:3001/users/";
 
 //pass in email to check if user exists
 //return true if it exists

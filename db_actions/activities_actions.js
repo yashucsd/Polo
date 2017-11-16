@@ -8,7 +8,7 @@
  * message @garrett on slack!
  */
 function createActivity(activity) {
-    fetch('http://localhost:3001/activities', {
+    fetch('http://128.54.97.9:3001/activities', {
         method: 'POST', 
         headers: {
         'Accept': 'application/json',
@@ -22,7 +22,7 @@ function createActivity(activity) {
  * This function will get an activity given a user's email 
  */
 function getActivity(hostEmail, callback) {
-    return fetch('http://localhost:3001/activities/' + hostEmail)
+    return fetch('http://128.54.97.9:3001/activities/' + hostEmail)
     .then((response) => { 
         return response.json().then((data) => {
             return data;
@@ -37,7 +37,7 @@ function getActivity(hostEmail, callback) {
  * This function will get all activities
  */
 function getActivities() {
-    return fetch('http://localhost:3001/activities/')
+    return fetch('http://128.54.97.9:3001/activities/')
     .then((response) => { 
         return response.json().then((data) => {
             return data;
@@ -78,9 +78,9 @@ function isUserHosting(hostEmail) {
  * can be up for (that is, if we implement that just yet)
  */
 function deleteActivity(hostEmail) {
-    uri = "http://localhost:3001/activities/" + hostEmail;
+    uri = "http://128.54.97.9/activities/" + hostEmail;
     console.log(uri);
-    fetch('http://localhost:3001/activities/' + hostEmail, {
+    fetch('http://128.54.97.9/activities/' + hostEmail, {
         method: 'DELETE'
     }).then(response => response.json());
 }

@@ -13,7 +13,7 @@ const app = express();
 
 // use port 3001 for localhost dev until db is 
 // deployed to heroku
-const port = 3001;
+const port = "3001";
 
 // express can't process URL encoded forms, so we use
 // body-parser to take care of that for us

@@ -1,4 +1,4 @@
-var sub = 'http://localhost:3001/preferences/';
+var sub = 'http://128.54.97.9:3001/preferences/';
 
 // create new user preferences 
 function createPreferences(email, categories) {
