@@ -38,7 +38,7 @@ export default class App extends React.Component {
                 color="black"
                />
             </View>
-            <Text>Activity Details</Text>
+            <Text style={styles.titleText}>Activity Details</Text>
             <Button
               title="Close"
               color="black"
@@ -62,20 +62,25 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    width: Dimensions.get('window').width - 50,
+    justifyContent: 'space-between'
   },
   titleText:{
     fontSize: 24,
+    padding: 0,
+    margin: 0,
   },
   bottomModal:{
     justifyContent: 'flex-end',
+    padding: 0,
+    margin: 0,
   },
   modalContentContainer: {
     alignSelf: 'center',
-    alignItems: 'flex-start',
+    alignItems: 'center',
     height: 200,
-    width: Dimensions.get('window').width - 100,
+    width: Dimensions.get('window').width,
     backgroundColor: 'white',
+    margin: 0,
   },
 
 });
