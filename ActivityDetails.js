@@ -35,7 +35,7 @@ export default class App extends React.Component {
               />
               <Button
                 title="Join Activity"
-                color="black"
+                color="red"
                />
             </View>
             <Text style={styles.titleText}>Activity Details</Text>

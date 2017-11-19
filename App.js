@@ -1,6 +1,11 @@
 import React, { Component } from 'react';
 import { Button, StyleSheet, Text, View, Dimensions } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
+import { Icon } from 'react-native-elements'; //Need to npm install react-native-elements --save
+
+var MOCKED_EVENT_DATA = [
+    {title: 'Soccer', startTime: '12:00', description: 'Kick some balls'},
+];
 
 export default class App extends React.Component {
   constructor(props){
@@ -14,6 +19,7 @@ export default class App extends React.Component {
   _hideModal = () => this.setState({ isModalVisible: false})
 
   render() {
+    var event = MOCKED_EVENT_DATA[0];
     return (
       <View style={styles.container}>
         <Button
@@ -26,7 +32,10 @@ export default class App extends React.Component {
             <View style={styles.row}>
               <Text style={styles.titleText}>Emoji</Text>
               <Text>     </Text>
-              <Text style={styles.titleText}>Activity Title</Text>
+              <Text style={styles.titleText}>{event.title}</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.miniText}>Start time:{event.startTime}</Text>
             </View>
             <View style={styles.row}>
               <Button
@@ -35,10 +44,17 @@ export default class App extends React.Component {
               />
               <Button
                 title="Join Activity"
-                color="black"
+                color="purple"
                />
             </View>
-            <Text style={styles.titleText}>Activity Details</Text>
+            <Text style={styles.titleText}>{event.description}</Text>
+            <View style={styles.row}>
+              <Icon
+                raised
+                name='flag'
+                color='#517fa4'
+              />
+            </View>
             <Button
               title="Close"
               color="black"
@@ -66,6 +82,11 @@ const styles = StyleSheet.create({
   },
   titleText:{
     fontSize: 24,
+    padding: 0,
+    margin: 0,
+  },
+  miniText:{
+    fontSize: 12,
     padding: 0,
     margin: 0,
   },
