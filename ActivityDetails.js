@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, StyleSheet, Text, View, Dimensions } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
 
-export default class App extends React.Component {
+export default class ActivityDetails extends React.Component {
   constructor(props){
     super(props);
     this.state = {
