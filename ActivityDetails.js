@@ -8,7 +8,7 @@ var MOCKED_EVENT_DATA = [
     {title: 'Soccer', startTime: '12:00', description: 'Kick some balls'},
 ];
 
-class HomeScreen extends React.Component {
+export default class ActivityDetails extends React.Component {
   constructor(props){
     super(props);
     this.state = {
