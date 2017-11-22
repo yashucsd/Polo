@@ -1,8 +1,14 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { AppRegistry, Button, StyleSheet, Text, View, Dimensions } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
+import Icon from 'react-native-vector-icons/FontAwesome'; //Need to npm install react-native-elements --save
+import { StackNavigator } from 'react-navigation';
 
-export default class App extends React.Component {
+var MOCKED_EVENT_DATA = [
+    {title: 'Soccer', startTime: '12:00', description: 'Kick some balls'},
+];
+
+class HomeScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -14,6 +20,8 @@ export default class App extends React.Component {
   _hideModal = () => this.setState({ isModalVisible: false})
 
   render() {
+    var event = MOCKED_EVENT_DATA[0];
+    const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
         <Button
@@ -26,7 +34,10 @@ export default class App extends React.Component {
             <View style={styles.row}>
               <Text style={styles.titleText}>Emoji</Text>
               <Text>     </Text>
-              <Text style={styles.titleText}>Activity Title</Text>
+              <Text style={styles.titleText}>{event.title}</Text>
+            </View>
+            <View style={styles.row}>
+              <Text style={styles.miniText}>Start time:{event.startTime}</Text>
             </View>
             <View style={styles.row}>
               <Button
@@ -35,19 +46,73 @@ export default class App extends React.Component {
               />
               <Button
                 title="Join Activity"
-                color="red"
-               />
+                color="purple"
+              />
             </View>
-            <Text style={styles.titleText}>Activity Details</Text>
-            <Button
-              title="Close"
-              color="black"
-              onPress={this._hideModal}
-            />
+            <Text style={styles.titleText}>{event.description}</Text>
+            <View style={styles.row}>
+              <Icon
+                name='share'
+                size={30}
+                color='skyblue'
+                onPress={() => navigate('Share')}
+              />
+              <Text style={{flex: 1}}>    </Text>
+              <Button
+                title="Close"
+                color="black"
+                onPress={this._hideModal}
+              />
+              <Text style={{flex: 1}}>    </Text>
+              <Icon
+                name='flag'
+                size={30}
+                color='skyblue'
+                onPress={() => navigate('Flag')}
+              />
+            </View>
           </View>
         </Modal>
       </View>
     );
+  }
+}
+
+class FlagScreen extends React.Component {
+  render() {
+    return (
+      <View style={styles.extras}>
+        <Button
+          title="Report Event"
+          color="red"
+        />
+      </View>
+    );
+  }
+}
+
+class ShareScreen extends React.Component {
+  render() {
+    return (
+      <View style={styles.extras}>
+        <Button
+          title="Share Event"
+          color="pink"
+        />
+      </View>
+    );
+  }
+}
+
+const ReportApp = StackNavigator({
+  Home: { screen: HomeScreen },
+  Flag: { screen: FlagScreen },
+  Share: { screen: ShareScreen },
+});
+
+export default class App extends React.Component {
+  render() {
+    return <ReportApp />;
   }
 }
 
@@ -62,10 +127,26 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+  },
+  extras:{
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'stretch',
+  },
+  bottomButtons:{
+    flex: 1,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
   titleText:{
     fontSize: 24,
+    padding: 0,
+    margin: 0,
+  },
+  miniText:{
+    fontSize: 12,
     padding: 0,
     margin: 0,
   },
@@ -84,4 +165,4 @@ const styles = StyleSheet.create({
   },
 
 });
-
+ 
