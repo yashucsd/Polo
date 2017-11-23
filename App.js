@@ -5,7 +5,6 @@ import ActivityDetails from './ActivityDetails.js';
 
 export default class App extends React.Component {
   render() {
-    var event = MOCKED_EVENT_DATA[0];
     return (
       <ActivityDetails/>
     );
