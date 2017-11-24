@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import { AppRegistry, Button, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { AppRegistry, Button, Image, StyleSheet, Text, View, Dimensions } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
 import Icon from 'react-native-vector-icons/FontAwesome'; //Need to npm install react-native-elements --save
 import { StackNavigator } from 'react-navigation';
 
 var MOCKED_EVENT_DATA = [
-    {title: 'Soccer', startTime: '12:00', description: 'Kick some balls'},
+    {title: 'Soccer', startTime: '12:00', description: 'The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Get ready... Start!'},
 ];
 
-export default class ActivityDetails extends React.Component {
+class HomeScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -35,6 +35,24 @@ export default class ActivityDetails extends React.Component {
               <Text style={styles.titleText}>Emoji</Text>
               <Text>     </Text>
               <Text style={styles.titleText}>{event.title}</Text>
+              <Text>     </Text>
+              <Image
+                source={{uri: 'https://cdn1.thr.com/sites/default/files/imagecache/scale_crop_768_433/2017/08/110129_0773b2_-_h_2017.jpg'}}
+                style={{width:30, height:30, borderRadius:30/2}}
+              />
+              <Image
+                source={{uri: 'http://cdn.skim.gs/image/upload/c_fill,dpr_1.0,f_auto,fl_lossy,q_auto,w_940/c_scale,w_640/v1463693334/Cydney-Gillon-cast-survivor-kaoh-rong-season-32-cbs_hn1y3n.jpg'}}
+                style={{width:30, height:30, borderRadius:30/2}}
+              />
+              <Image
+                source={{uri: 'http://wwwimage1.cbsstatic.com/base/files/cast/surv33_cast_hannahshapiro.jpg'}}
+                style={{width:30, height:30, borderRadius:30/2}}
+              />
+              <Image
+                source={{uri: 'http://wwwimage2.cbsstatic.com/base/files/cast/surv28_cast_sarah.jpg'}}
+                style={{width:30, height:30, borderRadius:30/2}}
+              />
+
             </View>
             <View style={styles.row}>
               <Text style={styles.miniText}>Start time:{event.startTime}</Text>
@@ -49,7 +67,7 @@ export default class ActivityDetails extends React.Component {
                 color="purple"
               />
             </View>
-            <Text style={styles.titleText}>{event.description}</Text>
+            <Text style={styles.descriptionText}>{event.description}</Text>
             <View style={styles.row}>
               <Icon
                 name='share'
@@ -110,7 +128,7 @@ const ReportApp = StackNavigator({
   Share: { screen: ShareScreen },
 });
 
-export default class App extends React.Component {
+export default class ActivityDetails extends React.Component {
   render() {
     return <ReportApp />;
   }
@@ -142,6 +160,11 @@ const styles = StyleSheet.create({
   },
   titleText:{
     fontSize: 24,
+    padding: 0,
+    margin: 0,
+  },
+  descriptionText:{
+    fontSize: 14,
     padding: 0,
     margin: 0,
   },
