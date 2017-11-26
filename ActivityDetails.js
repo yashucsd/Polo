@@ -3,6 +3,7 @@ import { AppRegistry, Button, Image, StyleSheet, Text, View, Dimensions } from '
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
 import Icon from 'react-native-vector-icons/FontAwesome'; //Need to npm install react-native-elements --save
 import { StackNavigator } from 'react-navigation';
+import Directions from './Directions.js';
 
 var MOCKED_EVENT_DATA = [
     {title: 'Soccer', startTime: '12:00', description: 'The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Get ready... Start!'},
@@ -58,10 +59,7 @@ class HomeScreen extends React.Component {
               <Text style={styles.miniText}>Start time:{event.startTime}</Text>
             </View>
             <View style={styles.row}>
-              <Button
-                title="Get Directions"
-                color="blue"
-              />
+              <Directions/>
               <Button
                 title="Join Activity"
                 color="purple"
