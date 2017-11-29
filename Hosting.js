@@ -1,9 +1,10 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import {TouchableHighlight,ScrollView, Button, Picker, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
 import { StackNavigator } from 'react-navigation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-//import {ModalPicker} from 'react-native-modal-picker';
+import ModalSelector from 'react-native-modal-selector'
 
 
 export default class Hosting extends React.Component {
@@ -45,21 +46,11 @@ export default class Hosting extends React.Component {
     render() {
         let index = 0;
         const data = [
-            { key: index++, section: true, label: 'Fruits' },
+            { key: index++, section: true, label: 'Categories' },
             { key: index++, label: 'Red Apples' },
             { key: index++, label: 'Cherries' },
             { key: index++, label: 'Cranberries' },
             { key: index++, label: 'Pink Grapefruit' },
-            { key: index++, label: 'Raspberries' },
-            { key: index++, section: true, label: 'Vegetables' },
-            { key: index++, label: 'Beets' },
-            { key: index++, label: 'Red Peppers' },
-            { key: index++, label: 'Radishes' },
-            { key: index++, label: 'Radicchio' },
-            { key: index++, label: 'Red Onions' },
-            { key: index++, label: 'Red Potatoes' },
-            { key: index++, label: 'Rhubarb' },
-            { key: index++, label: 'Tomatoes' }
         ];
 
         return (
@@ -180,26 +171,33 @@ export default class Hosting extends React.Component {
                             </View>
 
                             <View style={styles.secondRow}>
-                                {/*
-                                <ModalPicker
+
+
+                                <ModalSelector
+                                    overlayStyle={{flex: 1, padding: '5%', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.7)' }}
+                                    style={styles.categories}
                                     data={data}
                                     initValue="Select something yummy!"
+                                    supportedOrientations={['portrait']}
                                     onChange={(option)=>{ this.setState({textInputValue:option.label})}}>
 
                                     <TextInput
-                                        style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
+                                        style={{textAlign: "center"}}
                                         editable={false}
                                         placeholder="Select something yummy!"
                                         value={this.state.textInputValue} />
 
-                                </ModalPicker>
+                                </ModalSelector>
+
+                                {/*
+                                    <TextInput style={styles.categories}
+                                               placeholder = "Category"
+                                               returnKeyType = 'send'
+                                               onChangeText ={(text) => this.setState({text})}
+                                    />
+
                                 */}
 
-                                <TextInput style={styles.categories}
-                                           placeholder = "Category"
-                                           returnKeyType = 'send'
-                                           onChangeText ={(text) => this.setState({text})}
-                                />
 
 
                             </View>
@@ -342,17 +340,16 @@ const styles = StyleSheet.create({
     },
     create:{
         backgroundColor: "#9effcb",
-        padding: 5,
+        padding: 6,
         borderColor: "#9effcb",
     },
     categories:{
         flex:1,
-        textAlign: 'center',
         padding:7,
         margin: 5
     },
     name: {
-        flex: 3,
+        flex: 4,
         textAlign: 'center',
         padding: 7,
         margin: 5
@@ -381,7 +378,7 @@ const styles = StyleSheet.create({
     modalContentContainer: {
         alignSelf: 'center',
         alignItems: 'center',
-        height: 345,
+        height: 575,
         backgroundColor: "white",
         width: Dimensions.get('window').width,
         margin: 0,
