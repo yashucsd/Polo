@@ -1,9 +1,9 @@
 import React from 'react';
-import {ScrollView, Button, Picker, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
+import {TouchableHighlight,ScrollView, Button, Picker, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
 import { StackNavigator } from 'react-navigation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import Icon from 'react-native-vector-icons/dist/FontAwesome';
+//import {ModalPicker} from 'react-native-modal-picker';
 
 
 export default class Hosting extends React.Component {
@@ -13,10 +13,13 @@ export default class Hosting extends React.Component {
         {
             isACVisible: true,
             isInputVisible: false,
+            textInputValue: "",
+            emoji: "",
             eventName: "",
             category: "",
             description:"",
             time:""
+
         };
     }
     _showModal = () => this.setState({ isACVisible: true});
@@ -29,19 +32,45 @@ export default class Hosting extends React.Component {
         }
     };
 
+    /*
+    _emojiSelected = (emoji) => {
+        this.setState({showPicker: false})
+        console.log(emoji)
+    }
+    */
+
+
 
 
     render() {
+        let index = 0;
+        const data = [
+            { key: index++, section: true, label: 'Fruits' },
+            { key: index++, label: 'Red Apples' },
+            { key: index++, label: 'Cherries' },
+            { key: index++, label: 'Cranberries' },
+            { key: index++, label: 'Pink Grapefruit' },
+            { key: index++, label: 'Raspberries' },
+            { key: index++, section: true, label: 'Vegetables' },
+            { key: index++, label: 'Beets' },
+            { key: index++, label: 'Red Peppers' },
+            { key: index++, label: 'Radishes' },
+            { key: index++, label: 'Radicchio' },
+            { key: index++, label: 'Red Onions' },
+            { key: index++, label: 'Red Potatoes' },
+            { key: index++, label: 'Rhubarb' },
+            { key: index++, label: 'Tomatoes' }
+        ];
 
         return (
             <View style={styles.container}>
 
-                {/*<Button
+                <Button
                     style={{height: 50}}
                     onPress={this._showModal}
                     title="Host"
                     color = "black"
-                />*/}
+                />
                 <Modal isVisible={this.state.isACVisible} backdropOpacity={0} style={styles.bottomModal}
                        animationIn ="slideInUp">
                     <View style={styles.modalContentContainer}>
@@ -143,14 +172,36 @@ export default class Hosting extends React.Component {
                                            returnKeyType = 'send'
                                            onEndEditing ={(text) => this.setState({eventName: text})}
                                 />
+                                <TextInput style= {{flex: 1, backgroundColor: "#9effcb", textAlign: "center"}}
+                                           placeholder = "emoji"
+                                           returnKeyType = 'send'
+                                           onEndEditing = {(text) => this.setState({emoji : text})}
+                                />
                             </View>
 
                             <View style={styles.secondRow}>
+                                {/*
+                                <ModalPicker
+                                    data={data}
+                                    initValue="Select something yummy!"
+                                    onChange={(option)=>{ this.setState({textInputValue:option.label})}}>
+
+                                    <TextInput
+                                        style={{borderWidth:1, borderColor:'#ccc', padding:10, height:30}}
+                                        editable={false}
+                                        placeholder="Select something yummy!"
+                                        value={this.state.textInputValue} />
+
+                                </ModalPicker>
+                                */}
+
                                 <TextInput style={styles.categories}
                                            placeholder = "Category"
                                            returnKeyType = 'send'
                                            onChangeText ={(text) => this.setState({text})}
                                 />
+
+
                             </View>
 
                             <View style={styles.thirdRow}>
@@ -176,6 +227,20 @@ export default class Hosting extends React.Component {
                                 </Picker>
                             </View>
                             <View style={{flexDirection:"row", justifyContent:"flex-end"}}>
+                                {/*
+                                <TouchableHighlight
+                                    onPress={() => this.setState({showPicker: true})}>
+                                    <Text> Show picker </Text>
+                                </TouchableHighlight>
+
+                                <EmojiOverlay
+                                    style={styles.emojiPicker}
+                                    visible={this.state.showPicker}
+                                    onTapOutside={() => this.setState({showPicker: false})}
+                                    horizontal={true}
+                                    onEmojiSelected={this._emojiSelected}/>
+*                                   */}
+
                                 <Button onPress= {this._onCreate()} title="Create" style={styles.create}/>
                             </View>
                         </View>
@@ -189,116 +254,42 @@ export default class Hosting extends React.Component {
     }
 }
 
-/*
+
 export class Autocomplete extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            address: "",
-            isModalVisible: false
+            showPicker: false
         }
+
+    }
+
+
+    _emojiSelected = (emoji) => {
+        this.setState({showPicker: false})
+        console.log(emoji)
     }
 
     render(){
         return(
             <View style={styles.container}>
+                <TouchableHighlight
+                    onPress={() => this.setState({showPicker: true})}>
+                    <Text> Show picker </Text>
+                </TouchableHighlight>
 
-                    <Button
-                        style={{padding:20}}
-                        onPress={() => this.setState({ isModalVisible: true})}
-                        title="Host"
-                        color = "black"
-                    />
-
-                <Modal isVisible={this.state.isModalVisible} backdropOpacity={0} style={styles.bottomModal}
-                       animationIn ="slideInUp">
-                    <View style={styles.modalContentContainer}>
-
-                        <GooglePlacesAutocomplete
-                            placeholder='Where?'
-                            minLength={2} // minimum length of text to search
-                            autoFocus={false}
-                            returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
-                            listViewDisplayed='auto'    // true/false/undefined
-                            fetchDetails={true}
-                            renderDescription={row => row.description} // custom description render
-                            onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                                console.log(data, details);
-                                this.props.navigation.navigate('Hosting')
-                            }}
-
-                            getDefaultValue={() => ''}
-
-                            query={{
-                                // available options: https://developers.google.com/places/web-service/autocomplete
-                                key: 'AIzaSyAvWx1p36lAqWnIBsOMHJeW1MKF_98uYE8',
-                                language: 'en', // language of the results
-                                types: 'establishment' // default: 'geocode'
-                            }}
-
-                            styles={{
-                                textInputContainer: {
-                                    flexDirection: "row",
-                                    width: '100%',
-                                    alignItems:"center",
-                                    backgroundColor: "#f9f7f7"
-                                },
-                                container:{
-
-                                    backgroundColor: "#f9f7f7"
-
-                                },
-                                powered:{
-                                    backgroundColor: "#f9f7f7",
-                                    width: 0,
-                                    height: 0
-
-                                },
-                                description: {
-                                    fontWeight: 'bold'
-                                },
-                                predefinedPlacesDescription: {
-                                    color: '#1faadb'
-                                }
-                            }}
-
-                            currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
-                            currentLocationLabel="Current location"
-                            nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
-                            GoogleReverseGeocodingQuery={{
-                                // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
-                            }}
-                            GooglePlacesSearchQuery={{
-                                // available options for GooglePlacesSearch API : https://developers.google.com/places/web-service/search
-                                rankby: 'distance',
-                                types: 'food'
-                            }}
-
-                            filterReverseGeocodingByTypes={['locality', 'administrative_area_level_3']} // filter the reverse geocoding results by types - ['locality', 'administrative_area_level_3'] if you want to display only cities
-
-                            debounce={200} // debounce the requests in ms. Set to 0 to remove debounce. By default 0ms.
-
-
-                            /!*renderLeftButton={()  => <Icon class="fa fa-search" aria-hidden="true"></Icon>}*!/
-                            renderRightButton={() =>
-                                    <Button
-                                    style={{marginTop: 200}}
-                                    onPress={() => this.setState({isModalVisible: false})}
-                                    title="Cancel"
-                                    color = "black"/>
-
-                            }
-
-                        />
-                    </View>
-
-                 </Modal>
+                <EmojiOverlay
+                    style={styles.emojiPicker}
+                    visible={this.state.showPicker}
+                    onTapOutside={() => this.setState({showPicker: false})}
+                    horizontal={true}
+                    onEmojiSelected={this._emojiSelected}/>
             </View>
         );
     }
 
 }
-*/
+
 
 
 /*const ModalStack = StackNavigator({
@@ -361,7 +352,7 @@ const styles = StyleSheet.create({
         margin: 5
     },
     name: {
-        flex: 1,
+        flex: 3,
         textAlign: 'center',
         padding: 7,
         margin: 5
