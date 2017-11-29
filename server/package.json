@@ -4,7 +4,7 @@
   "description": "polo db",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.js" 
+    "dev": "nodemon server.js"
   },
   "author": "",
   "license": "ISC",
