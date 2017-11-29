@@ -1,0 +1,3 @@
+./server/config/db.js
+node_modules/
+ios/build/
