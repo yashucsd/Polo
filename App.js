@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import Hosting from './Hosting.js';
+import {Autocomplete} from "./Hosting";
 
 export default class App extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.header}>Polo by MARCO</Text>
+        <Hosting/>
       </View>
     );
   }
