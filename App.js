@@ -1,23 +1,32 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
-import { Map } from './Map.js';
+import { StyleSheet, Text, View} from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import LogIn from './logInScreen.js';
+import SignUp from './signUpScreen.js';
+import SignUpComplete from './signUpCompleteScreen.js';
+import Map from './Map.js';
+import UserPreference from './userPreferenceScreen.js';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Map/>
-      </View>
-    );
-  }
-}
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+const RootNavigator = StackNavigator({
+  
+  MapScreen:{
+    screen: Map,
+  },
+  LogInScreen: {
+    screen: LogIn,
   },
 
+  SignUpScreen: {
+    screen: SignUp,
+  },
+
+  SignUpCompleteScreen: {
+    screen: SignUpComplete,
+  },
+
+  UserPreferenceScreen: {
+    screen: UserPreference,
+  },
 });
+
+export default RootNavigator;

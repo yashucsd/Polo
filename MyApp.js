@@ -4,11 +4,14 @@ import { StackNavigator } from 'react-navigation';
 import LogIn from './logInScreen.js';
 import SignUp from './signUpScreen.js';
 import SignUpComplete from './signUpCompleteScreen.js';
-import Home from './tempHomeScreen.js';
+import Map from './map.js';
 
 
 const RootNavigator = StackNavigator({
   
+  MapScreen: {
+    screen: Map,
+  },
   LogInScreen: {
     screen: LogIn,
     navigationOptions: {

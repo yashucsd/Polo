@@ -30,7 +30,7 @@ export default class SignUpComplete extends React.Component {
     //store arry of bools emojis in db
     //complete profile creation
     
-    this.props.navigation.navigate('HomeScreen')
+    this.props.navigation.navigate('MapScreen')
   }
   flipEmoji(num){
     switch(num){
