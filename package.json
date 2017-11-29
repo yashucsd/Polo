@@ -1,5 +1,5 @@
 {
-  "name": "AwesomeProject",
+  "name": "Polo",
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
@@ -16,11 +16,17 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "node-emoji": "^1.8.1",
     "react": "16.0.0-beta.5",
     "react-native": "^0.49.5",
+    "react-native-app-link": "^0.4.0",
+    "react-native-elements": "^0.18.4",
+    "react-native-google-maps-directions": "^1.1.2",
     "react-native-google-places-autocomplete": "^1.3.6",
     "react-native-maps": "^0.17.1",
     "react-native-modal": "^4.1.1",
-    "react-native-modal-selector": "0.0.23"
+    "react-native-modal-selector": "0.0.23",
+    "react-native-vector-icons": "^4.4.2",
+    "react-navigation": "^1.0.0-beta.21"
   }
 }

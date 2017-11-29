@@ -160,12 +160,12 @@ export default class Hosting extends React.Component {
                             <View style = {styles.firstRow}>
                                 <TextInput style={styles.name}
                                            placeholder = "Name of Event"
-                                           returnKeyType = 'send'
+                                           returnKeyType = 'done'
                                            onEndEditing ={(text) => this.setState({eventName: text})}
                                 />
                                 <TextInput style= {{flex: 1, backgroundColor: "#9effcb", textAlign: "center"}}
                                            placeholder = "emoji"
-                                           returnKeyType = 'send'
+                                           returnKeyType = 'done'
                                            onEndEditing = {(text) => this.setState({emoji : text})}
                                 />
                             </View>
@@ -250,42 +250,6 @@ export default class Hosting extends React.Component {
             </View>
         );
     }
-}
-
-
-export class Autocomplete extends React.Component{
-    constructor(props){
-        super(props);
-        this.state = {
-            showPicker: false
-        }
-
-    }
-
-
-    _emojiSelected = (emoji) => {
-        this.setState({showPicker: false})
-        console.log(emoji)
-    }
-
-    render(){
-        return(
-            <View style={styles.container}>
-                <TouchableHighlight
-                    onPress={() => this.setState({showPicker: true})}>
-                    <Text> Show picker </Text>
-                </TouchableHighlight>
-
-                <EmojiOverlay
-                    style={styles.emojiPicker}
-                    visible={this.state.showPicker}
-                    onTapOutside={() => this.setState({showPicker: false})}
-                    horizontal={true}
-                    onEmojiSelected={this._emojiSelected}/>
-            </View>
-        );
-    }
-
 }
 
 
