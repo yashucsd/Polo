@@ -1,28 +1,25 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
+import { StackNavigator } from 'react-navigation';
+import Map from './Map.js';
+import profileScreen from './profileScreen.js';
 
-export default class App extends React.Component {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.header}>Polo by MARCO</Text>
-      </View>
-    );
-  }
-}
+const navigationContainer = StackNavigator({
 
-
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#d3d3d3',
-    alignItems: 'center',
-    justifyContent: 'center',
+  Map: {
+  	screen: Map,
+  	navigationOptions:{
+  		title: 'Map',
+  	},
   },
-  header: {
-    fontSize: 22,
-    color: 'black',
-    fontWeight: 'bold',
-  }
+
+  profileScreen: {
+  	screen: profileScreen,
+  	navigationOptions:{
+  		title: 'Profile Screen',
+  	},
+  },
+
 });
+
+export default navigationContainer;

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        is-multidex="false"
+        jar="C:\Users\Brian\Desktop\CSE110\Polo\Polo\node_modules\react-native-maps\lib\android\build\intermediates\bundles\default\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.0"
+        sha1="1cecb4d2f0030c6a3b51b3f53da8187e790051b4">
+        <dex dex="C:\Users\Brian\Desktop\CSE110\Polo\Polo\android\app\build\intermediates\pre-dexed\debug\classes_5fae9870c9f7dde35548087c7947bbfbd9829433.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Brian\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp-urlconnection\3.6.0\3f9b16b774f2c36cfd86dd2053d0b3059531dacc\okhttp-urlconnection-3.6.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="3f9b16b774f2c36cfd86dd2053d0b3059531dacc">
+        <dex dex="C:\Users\Brian\Desktop\CSE110\Polo\Polo\android\app\build\intermediates\pre-dexed\debug\okhttp-urlconnection-3.6.0_01e92da487b4fe48992268466aed43b098ee80b6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Brian\.gradle\caches\modules-2\files-2.1\com.facebook.fbui.textlayoutbuilder\staticlayout-proxy\1.0\f162442a19fff13995fbd51ba414d9ee05579080\staticlayout-proxy-1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="f162442a19fff13995fbd51ba414d9ee05579080">
+        <dex dex="C:\Users\Brian\Desktop\CSE110\Polo\Polo\android\app\build\intermediates\pre-dexed\debug\staticlayout-proxy-1.0_63699bcfabb41430f93c1414eaea8b1908cc4c3c.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Brian\.gradle\caches\modules-2\files-2.1\com.parse.bolts\bolts-tasks\1.4.0\d85884acf6810a3bbbecb587f239005cbc846dc4\bolts-tasks-1.4.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="d85884acf6810a3bbbecb587f239005cbc846dc4">
+        <dex dex="C:\Users\Brian\Desktop\CSE110\Polo\Polo\android\app\build\intermediates\pre-dexed\debug\bolts-tasks-1.4.0_c52412704bd54595dc3b76428941d76e1df3afd6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Brian\.gradle\caches\modules-2\files-2.1\com.squareup.okhttp3\okhttp\3.6.0\69edde9fc4b01c9fd51d25b83428837478c27254\okhttp-3.6.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="69edde9fc4b01c9fd51d25b83428837478c27254">
+        <dex dex="C:\Users\Brian\Desktop\CSE110\Polo\Polo\android\app\build\intermediates\pre-dexed\debug\okhttp-3.6.0_9cde9da974319d494f0698ab6d76776a7d7ce4ef.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Brian\.gradle\caches\modules-2\files-2.1\com.google.code.findbugs\jsr305\3.0.0\5871fb60dc68d67da54a663c3fd636a10a532948\jsr305-3.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="5871fb60dc68d67da54a663c3fd636a10a532948">
+        <dex dex="C:\Users\Brian\Desktop\CSE110\Polo\Polo\android\app\build\intermediates\pre-dexed\debug\jsr305-3.0.0_92b6fe0d977c87eb823eacc2b40598b19e4382cb.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Brian\.gradle\caches\modules-2\files-2.1\com.squareup.okio\okio\1.13.0\a9283170b7305c8d92d25aff02a6ab7e45d06cbe\okio-1.13.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="a9283170b7305c8d92d25aff02a6ab7e45d06cbe">
+        <dex dex="C:\Users\Brian\Desktop\CSE110\Polo\Polo\android\app\build\intermediates\pre-dexed\debug\okio-1.13.0_c6a5db0996612bf8710991b1844882f9f2e7e9e6.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Brian\.gradle\caches\modules-2\files-2.1\javax.inject\javax.inject\1\6975da39a7040257bd51d21a231b76c915872d38\javax.inject-1.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="6975da39a7040257bd51d21a231b76c915872d38">
+        <dex dex="C:\Users\Brian\Desktop\CSE110\Polo\Polo\android\app\build\intermediates\pre-dexed\debug\javax.inject-1_e79dffacde40465eacd153c2beb2ddc5b2ebf58e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Brian\AppData\Local\Android\sdk\extras\android\m2repository\com\android\support\support-annotations\24.0.0\support-annotations-24.0.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="23.0.1"
+        sha1="2943c74db6d4346ab8c6531adac91fa05c137c40">
+        <dex dex="C:\Users\Brian\Desktop\CSE110\Polo\Polo\android\app\build\intermediates\pre-dexed\debug\support-annotations-24.0.0_406176475f7cb73caddffa6296c951e3ca8304f4.jar" />
+    </item>
+
+</items>
