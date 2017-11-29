@@ -3,7 +3,9 @@ import { StyleSheet, Text, View, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
 import emoji from 'node-emoji';
 
-//import markers from './markers.json';
+import markersData from './markers.js';
+var markers2 = JSON.parse(markersData.test);
+console.log(markers2);
 
 export class Map extends React.Component {
   constructor(props) {
