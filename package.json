@@ -16,6 +16,7 @@
     "preset": "jest-expo"
   },
   "dependencies": {
+    "node-emoji": "^1.8.1",
     "react": "16.0.0-beta.5",
     "react-native": "^0.49.5",
     "react-native-maps": "^0.17.1"
