@@ -1,14 +1,23 @@
 import React, { Component } from 'react';
-import { Button, StyleSheet, Text, View, Dimensions } from 'react-native';
-import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
-import ActivityDetails from './ActivityDetails.js';
-//import ShareActivity from './ShareActivity.js';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { Map } from './Map.js';
 
 export default class App extends React.Component {
   render() {
     return (
-      <ActivityDetails/>
+      <View style={styles.container}>
+        <Map/>
+      </View>
     );
   }
 }
 
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+
+});
