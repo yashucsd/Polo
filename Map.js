@@ -3,7 +3,8 @@ import { Image, TouchableOpacity, TouchableHighlight, Button, StyleSheet, Text, 
 import MapView from 'react-native-maps';
 import emoji from 'node-emoji';
 import markersData from './markers.js';
-
+import Hosting from './Hosting.js';
+import renderIf from './renderIf';
 
 
 const {width, height} = Dimensions.get('window');
@@ -16,6 +17,7 @@ export default class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      status: false,
       region: {
         latitude: 32.8804,
         longitude: -117.2375,
@@ -50,13 +52,18 @@ export default class Map extends React.Component {
   }
 
   activityCreation(){
-  //start flow for creating an activity
-
+    /* after first activity creation, will need to tap twice
+     * to create more activities, b/c when activityModule closes itself
+     * the map doesn't if that happens or not
+     */
+    //start flow for creating an activity
+    this.setState({status: !this.state.status});
   }
 
   render() {
     return (
       <View style={styles.container}>
+        {renderIf(this.state.status)(<Hosting/>)}
         {/* Setting attributes for the MapView */}
 	<MapView style={styles.map}
           mapType="standard"
