@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
+import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import renderIf from './renderIf';
 
 //-1 represents empty values
@@ -52,7 +52,7 @@ export default class LogIn extends React.Component {
 	  <Text style = {{flex: 1}}></Text>
    	</View>
           
-	<View style = {{flex: 2, width: Math.round(width*.66)}}>	
+	<KeyboardAvoidingView style = {{flex: 2, width: Math.round(width*.66)}} behavior="height">	
 	  <TextInput style = {{flex:1, fontSize: 25}}
 	     placeholder = "Email"
 	     onEndEditing ={(event) => email = event.nativeEvent.text}
@@ -63,7 +63,7 @@ export default class LogIn extends React.Component {
 	     onEndEditing ={(event) => password = event.nativeEvent.text}
 	  />
 	  <Text style = {{flex: 1, height: Math.round(height*.05)}}></Text>
-	</View>
+	</KeyboardAvoidingView>
 
 	<View style = {styles.buttons}>
 	  <Button
