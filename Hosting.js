@@ -1,6 +1,5 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {Keyboard, TouchableHighlight,ScrollView, Button, KeyboardAvoidingView,Picker, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
+import {Keyboard, TouchableHighlight,ScrollView, Button, Picker, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import ModalSelector from 'react-native-modal-selector'
@@ -25,23 +24,6 @@ export class Hosting extends React.Component {
     }
     _showModal = () => this.setState({ isACVisible: true});
     _hideModal = () => this.setState({ isModalVisible: false});
-
-    _onCreate = () =>{
-        info = [this.state.eventName, this.state.description, this.state.time];
-        for(i=0; i<info.length; i++){
-            console.log(info[i]);
-        }
-    };
-
-    /*
-    _emojiSelected = (emoji) => {
-        this.setState({showPicker: false})
-        console.log(emoji)
-    }
-    */
-
-
-
 
     render() {
         let index = 0;
@@ -191,15 +173,6 @@ export class Hosting extends React.Component {
 
                                 </ModalSelector>
 
-                                {/*
-                                        <TextInput style={styles.categories}
-                                                   placeholder = "Category"
-                                                   returnKeyType = 'send'
-                                                   onChangeText ={(text) => this.setState({text})}
-                                        />
-
-                                    */}
-
 
 
                             </View>
@@ -219,6 +192,7 @@ export class Hosting extends React.Component {
                                     selectedValue={this.state.time}
                                     onValueChange={(itemValue, itemIndex) => this.setState({time: itemValue})}
                                     mode = 'dropdown'>
+                                    <Picker.Item label="Now" value = "0"/>
                                     <Picker.Item label="In 1 Hour" value="1" />
                                     <Picker.Item label="In 2 Hours" value="2" />
                                     <Picker.Item label="In 3 Hours" value="3" />
@@ -227,21 +201,8 @@ export class Hosting extends React.Component {
                                 </Picker>
                             </View>
                             <View style={{flexDirection:"row", justifyContent:"flex-end"}}>
-                                {/*
-                                    <TouchableHighlight
-                                        onPress={() => this.setState({showPicker: true})}>
-                                        <Text> Show picker </Text>
-                                    </TouchableHighlight>
 
-                                    <EmojiOverlay
-                                        style={styles.emojiPicker}
-                                        visible={this.state.showPicker}
-                                        onTapOutside={() => this.setState({showPicker: false})}
-                                        horizontal={true}
-                                        onEmojiSelected={this._emojiSelected}/>
-    *                                   */}
-
-                                <Button onPress= {this._onCreate()} title="Create" style={styles.create}/>
+                                <Button onPress = {()=>{}} title="Create" style={styles.create}/>
                             </View>
                         </View>
                     </Modal>
@@ -338,7 +299,7 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         padding: 0,
         margin: 0,
-        height: Dimensions.get('window').height * .3,
+        height: Dimensions.get('window').height * .5,
         width: Dimensions.get('window').width
     },
 
@@ -351,7 +312,8 @@ const styles = StyleSheet.create({
         width: Dimensions.get('window').width,
         margin: 0,
         */
-        height: Dimensions.get('window').height * .4,
+
+        height: Dimensions.get('window').height * .50,
         width: Dimensions.get('window').width,
         backgroundColor: 'white'
     }
