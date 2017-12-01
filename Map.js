@@ -13,8 +13,6 @@ const {width, height} = Dimensions.get('window');
 circleSize = Math.round(width/7)
 var markers2 = JSON.parse(markersData.test);
 
-//console.log(markers2);
-
 export default class Map extends React.Component {
   constructor(props) {
     super(props);
@@ -92,7 +90,7 @@ export default class Map extends React.Component {
       <View style={styles.container}>
         {renderIf(this.state.status)(<Hosting/>)}
         {/* Setting attributes for the MapView */}
-	<MapView style={styles.map}
+	      <MapView style={styles.map}
           mapType="standard"
           showsUserLocation={true}
           showsCompass={true}
@@ -131,14 +129,7 @@ export default class Map extends React.Component {
         </View>
 
         <Modal isVisible={this.state.visibleModal === 1}>{this._renderModalContent()}</Modal>
-        {/* <View style={styles.container}>
-          <Text style={styles.header}>
-            Latitude: {this.state.region.latitude}{'\n'}
-            Longitude: {this.state.region.longitude}{'\n'}
-            LatitudeDelta: {this.state.region.latitudeDelta}{'\n'}
-            LongitudeDelta: {this.state.region.longitudeDelta}
-          </Text>
-        </View> */}
+        
 	  <View style = {{flex: 1, position: 'absolute'}}></View>
 
 	  <View style = {{flexDirection: 'row', position: 'absolute'}}>
