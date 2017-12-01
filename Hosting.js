@@ -5,8 +5,9 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import ModalSelector from 'react-native-modal-selector'
 
 
+const {width, height} = Dimensions.get('window');
 
-export class Hosting extends React.Component {
+export default class Hosting extends React.Component {
     constructor(props){
         super(props);
         this.state =
@@ -38,12 +39,12 @@ export class Hosting extends React.Component {
         return (
             <View style={styles.container}>
 
-                <Button
+	    {/*don't need anymore<Button
                     style={{height: 50}}
                     onPress={this._showModal}
                     title="Host"
                     color = "black"
-                />
+                />*/}
                 <Modal isVisible={this.state.isACVisible} backdropOpacity={0} style={styles.bottomModal}
                        animationIn ="slideInUp" animationOut = "slideOutLeft" avoidKeyboard={true}>
                     <View style={styles.modalContentContainer}>
@@ -201,7 +202,6 @@ export class Hosting extends React.Component {
                                 </Picker>
                             </View>
                             <View style={{flexDirection:"row", justifyContent:"flex-end"}}>
-
                                 <Button onPress = {()=>{}} title="Create" style={styles.create}/>
                             </View>
                         </View>
@@ -213,18 +213,9 @@ export class Hosting extends React.Component {
 }
 
 
-
-
-
-export default class App extends React.Component {
-    render() {
-        return <Hosting/>
-    }
-}
-
-
 const styles = StyleSheet.create({
     container: {
+	flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
         backgroundColor: "white",
@@ -307,9 +298,9 @@ const styles = StyleSheet.create({
         /*
         alignSelf: 'center',
         alignItems: 'center',
-        height: 575,
+        height: height*.65,
         backgroundColor: "white",
-        width: Dimensions.get('window').width,
+        width: width,
         margin: 0,
         */
 
