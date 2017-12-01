@@ -1,8 +1,6 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import {TouchableHighlight,ScrollView, Button, Picker, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
+import {Keyboard, TouchableHighlight,ScrollView, Button, Picker, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
-import { StackNavigator } from 'react-navigation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import ModalSelector from 'react-native-modal-selector'
 
@@ -28,23 +26,6 @@ export default class Hosting extends React.Component {
     _showModal = () => this.setState({ isACVisible: true});
     _hideModal = () => this.setState({ isModalVisible: false});
 
-    _onCreate = () =>{
-        info = [this.state.eventName, this.state.description, this.state.time];
-        for(i=0; i<info.length; i++){
-            console.log(info[i]);
-        }
-    };
-
-    /*
-    _emojiSelected = (emoji) => {
-        this.setState({showPicker: false})
-        console.log(emoji)
-    }
-    */
-
-
-
-
     render() {
         let index = 0;
         const data = [
@@ -65,7 +46,7 @@ export default class Hosting extends React.Component {
                     color = "black"
                 />*/}
                 <Modal isVisible={this.state.isACVisible} backdropOpacity={0} style={styles.bottomModal}
-                       animationIn ="slideInUp">
+                       animationIn ="slideInUp" animationOut = "slideOutLeft" avoidKeyboard={true}>
                     <View style={styles.modalContentContainer}>
 
                         <GooglePlacesAutocomplete
@@ -79,6 +60,8 @@ export default class Hosting extends React.Component {
                             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
                                 console.log(data, details);
                                 this.setState({isInputVisible: true});
+                                //Keyboard.dismiss();
+
                             }}
 
                             getDefaultValue={() => ''}
@@ -147,8 +130,8 @@ export default class Hosting extends React.Component {
                     </View>
 
 
-                    <Modal isVisible={this.state.isInputVisible} backdropOpacity={0} style={styles.bottomModal}
-                           animationIn ="slideInUp">
+                    <Modal isVisible={this.state.isInputVisible} avoidKeyboard={true} backdropOpacity={0} style={styles.bottomModal}
+                           animationIn ="slideInRight" animationOut = "slideOutLeft">
                         <View style={styles.modalContentContainer}>
                             <View style={{flexDirection:"row", alignItems:"center"}}>
                                 <Text style={styles.header}>Create your event</Text>
@@ -191,15 +174,6 @@ export default class Hosting extends React.Component {
 
                                 </ModalSelector>
 
-                                {/*
-                                    <TextInput style={styles.categories}
-                                               placeholder = "Category"
-                                               returnKeyType = 'send'
-                                               onChangeText ={(text) => this.setState({text})}
-                                    />
-
-                                */}
-
 
 
                             </View>
@@ -219,6 +193,7 @@ export default class Hosting extends React.Component {
                                     selectedValue={this.state.time}
                                     onValueChange={(itemValue, itemIndex) => this.setState({time: itemValue})}
                                     mode = 'dropdown'>
+                                    <Picker.Item label="Now" value = "0"/>
                                     <Picker.Item label="In 1 Hour" value="1" />
                                     <Picker.Item label="In 2 Hours" value="2" />
                                     <Picker.Item label="In 3 Hours" value="3" />
@@ -227,30 +202,15 @@ export default class Hosting extends React.Component {
                                 </Picker>
                             </View>
                             <View style={{flexDirection:"row", justifyContent:"flex-end"}}>
-                                {/*
-                                <TouchableHighlight
-                                    onPress={() => this.setState({showPicker: true})}>
-                                    <Text> Show picker </Text>
-                                </TouchableHighlight>
-
-                                <EmojiOverlay
-                                    style={styles.emojiPicker}
-                                    visible={this.state.showPicker}
-                                    onTapOutside={() => this.setState({showPicker: false})}
-                                    horizontal={true}
-                                    onEmojiSelected={this._emojiSelected}/>
-                                   */}
-
-                                <Button onPress= {() => this._onCreate()} title="Create" style={styles.create}/>
+                                <Button onPress = {()=>{}} title="Create" style={styles.create}/>
                             </View>
                         </View>
                     </Modal>
-
                 </Modal>
-       </View>);
+            </View>
+        );
     }
 }
-
 
 
 const styles = StyleSheet.create({
@@ -258,10 +218,19 @@ const styles = StyleSheet.create({
 	flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
-        backgroundColor: "#fff",
+        backgroundColor: "white",
         alignItems: "center"
 
     },
+    keyboardView:{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        flex: 1,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+
     header: {
         fontSize: 30,
         color: "black",
@@ -321,15 +290,23 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         padding: 0,
         margin: 0,
+        height: Dimensions.get('window').height * .5,
+        width: Dimensions.get('window').width
     },
 
     modalContentContainer: {
+        /*
         alignSelf: 'center',
         alignItems: 'center',
         height: height*.65,
         backgroundColor: "white",
         width: width,
         margin: 0,
+        */
+
+        height: Dimensions.get('window').height * .50,
+        width: Dimensions.get('window').width,
+        backgroundColor: 'white'
     }
 
 
