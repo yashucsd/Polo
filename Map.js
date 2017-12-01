@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import { Button, Image, TouchableOpacity, StyleSheet, Text, View, Dimensions } from 'react-native';
 import MapView from 'react-native-maps';
+import Modal from 'react-native-modal';
+import {StackNavigator} from "react-navigation"
 import emoji from 'node-emoji';
 
 import markersData from './markers.js';
@@ -44,6 +46,32 @@ export class Map extends React.Component {
     this.setState({ region });
   }
 
+  _renderButton = (text, onPress) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.button}>
+        <Text>{text}</Text>
+      </View>
+    </TouchableOpacity>
+  );
+
+  _renderImage = (image, onPress) => (
+    <TouchableOpacity onPress={onPress}>
+      <View style={styles.button}>
+        <Image 
+          source = {image}
+          style = {styles.image}
+        />
+      </View>
+    </TouchableOpacity>
+  );
+
+  _renderModalContent = () => (
+    <View style={styles.modalContent}>
+      <Text>Insert Activity Creation</Text>
+      {this._renderButton('Close', () => this.setState({ visibleModal: null }))}
+    </View>
+  )
+
   render() {
     return (
       <View style={styles.container}>
@@ -58,6 +86,7 @@ export class Map extends React.Component {
           region={this.state.region}
           onRegionChange={this.onRegionChange}
         >
+
         {/* Information for each marker is used to create them 
             (Child of MapView) */}
         {this.state.markers.map((marker, i) => (
@@ -76,6 +105,14 @@ export class Map extends React.Component {
           </MapView.Marker>
         ))}
         </MapView>
+
+        
+       <View style ={{position: 'absolute', flexDirection: 'row', top: -75}}>
+          {this._renderImage(image = require('./pictures/realplus.png'), () => this.setState({ visibleModal: 1 }))}
+          {this._renderImage(image = require('./pictures/realprofile.png'), () => this.props.navigation.navigate('profileScreen'))}
+        </View>
+
+        <Modal isVisible={this.state.visibleModal === 1}>{this._renderModalContent()}</Modal>
         {/* <View style={styles.container}>
           <Text style={styles.header}>
             Latitude: {this.state.region.latitude}{'\n'}
@@ -88,10 +125,6 @@ export class Map extends React.Component {
     );
   }
 }
-
-
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -108,6 +141,7 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
+    zIndex: -1,
   },
   markerBG: {
     backgroundColor: 'rgba(52, 52, 52, 0.75)',
@@ -122,5 +156,29 @@ const styles = StyleSheet.create({
   markerEmoji: {
     fontSize: 30,
     color: 'black'
+  },
+  button: {
+    padding: 12,
+    margin: 85,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  image:{
+    height: 50,
+    width: 50,
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    padding: 22,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderRadius: 4,
+    borderColor: 'rgba(0, 0, 0, 0.1)',
+  },
+  bottomModal: {
+    justifyContent: 'flex-end',
+    margin: 0,
   },
 });
