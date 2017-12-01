@@ -1,13 +1,13 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {TouchableHighlight,ScrollView, Button, Picker, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
+import {Keyboard, TouchableHighlight,ScrollView, Button, KeyboardAvoidingView,Picker, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
-import { StackNavigator } from 'react-navigation';
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import ModalSelector from 'react-native-modal-selector'
 
 
-export default class Hosting extends React.Component {
+
+export class Hosting extends React.Component {
     constructor(props){
         super(props);
         this.state =
@@ -63,7 +63,7 @@ export default class Hosting extends React.Component {
                     color = "black"
                 />
                 <Modal isVisible={this.state.isACVisible} backdropOpacity={0} style={styles.bottomModal}
-                       animationIn ="slideInUp">
+                       animationIn ="slideInUp" animationOut = "slideOutLeft" avoidKeyboard={true}>
                     <View style={styles.modalContentContainer}>
 
                         <GooglePlacesAutocomplete
@@ -77,6 +77,8 @@ export default class Hosting extends React.Component {
                             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
                                 console.log(data, details);
                                 this.setState({isInputVisible: true});
+                                //Keyboard.dismiss();
+
                             }}
 
                             getDefaultValue={() => ''}
@@ -145,8 +147,8 @@ export default class Hosting extends React.Component {
                     </View>
 
 
-                    <Modal isVisible={this.state.isInputVisible} backdropOpacity={0} style={styles.bottomModal}
-                           animationIn ="slideInUp">
+                    <Modal isVisible={this.state.isInputVisible} avoidKeyboard={true} backdropOpacity={0} style={styles.bottomModal}
+                           animationIn ="slideInRight" animationOut = "slideOutLeft">
                         <View style={styles.modalContentContainer}>
                             <View style={{flexDirection:"row", alignItems:"center"}}>
                                 <Text style={styles.header}>Create your event</Text>
@@ -190,13 +192,13 @@ export default class Hosting extends React.Component {
                                 </ModalSelector>
 
                                 {/*
-                                    <TextInput style={styles.categories}
-                                               placeholder = "Category"
-                                               returnKeyType = 'send'
-                                               onChangeText ={(text) => this.setState({text})}
-                                    />
+                                        <TextInput style={styles.categories}
+                                                   placeholder = "Category"
+                                                   returnKeyType = 'send'
+                                                   onChangeText ={(text) => this.setState({text})}
+                                        />
 
-                                */}
+                                    */}
 
 
 
@@ -226,27 +228,24 @@ export default class Hosting extends React.Component {
                             </View>
                             <View style={{flexDirection:"row", justifyContent:"flex-end"}}>
                                 {/*
-                                <TouchableHighlight
-                                    onPress={() => this.setState({showPicker: true})}>
-                                    <Text> Show picker </Text>
-                                </TouchableHighlight>
+                                    <TouchableHighlight
+                                        onPress={() => this.setState({showPicker: true})}>
+                                        <Text> Show picker </Text>
+                                    </TouchableHighlight>
 
-                                <EmojiOverlay
-                                    style={styles.emojiPicker}
-                                    visible={this.state.showPicker}
-                                    onTapOutside={() => this.setState({showPicker: false})}
-                                    horizontal={true}
-                                    onEmojiSelected={this._emojiSelected}/>
-*                                   */}
+                                    <EmojiOverlay
+                                        style={styles.emojiPicker}
+                                        visible={this.state.showPicker}
+                                        onTapOutside={() => this.setState({showPicker: false})}
+                                        horizontal={true}
+                                        onEmojiSelected={this._emojiSelected}/>
+    *                                   */}
 
                                 <Button onPress= {this._onCreate()} title="Create" style={styles.create}/>
                             </View>
                         </View>
                     </Modal>
-
                 </Modal>
-
-
             </View>
         );
     }
@@ -254,30 +253,32 @@ export default class Hosting extends React.Component {
 
 
 
-/*const ModalStack = StackNavigator({
-    Home: {
-        screen: Hosting
-    },
-    Hosting: {
-        screen: Autocomplete
-    },
-});
+
 
 export default class App extends React.Component {
     render() {
-        return <ModalStack/>;
+        return <Hosting/>
     }
-}*/
+}
 
 
 const styles = StyleSheet.create({
     container: {
         flexDirection: "column",
         justifyContent: "flex-start",
-        backgroundColor: "#fff",
+        backgroundColor: "white",
         alignItems: "center"
 
     },
+    keyboardView:{
+        position: 'absolute',
+        bottom: 0,
+        left: 0,
+        flex: 1,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+
     header: {
         fontSize: 30,
         color: "black",
@@ -337,15 +338,22 @@ const styles = StyleSheet.create({
         justifyContent: 'flex-end',
         padding: 0,
         margin: 0,
+        height: Dimensions.get('window').height * .3,
+        width: Dimensions.get('window').width
     },
 
     modalContentContainer: {
+        /*
         alignSelf: 'center',
         alignItems: 'center',
         height: 575,
         backgroundColor: "white",
         width: Dimensions.get('window').width,
         margin: 0,
+        */
+        height: Dimensions.get('window').height * .4,
+        width: Dimensions.get('window').width,
+        backgroundColor: 'white'
     }
 
 
