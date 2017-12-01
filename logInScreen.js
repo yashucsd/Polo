@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
+import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import renderIf from './renderIf';
 
 //-1 represents empty values
@@ -9,7 +9,7 @@ email = -1;
 password = -1;
 
 //for testing
-dbphoneNum = 123;
+dbemail = 123;
 dbpassword = 123;
 
 //for sizing
@@ -24,15 +24,15 @@ export default class LogIn extends React.Component {
   }
 
   checkInfo(){
-    //check if phoneNum, password pair exists in db
-    x = (phoneNum==dbphoneNum && password==dbpassword);
+    //db function to check if <email, pw> pair exists in db
+    x = (email==dbemail && password==dbpassword);
 
     //prompt incorrect email or password accordingly
     this.setState({status: !x});
 
     //log in successful, open the map
     if(x){
-      this.props.navigation.navigate('HomeScreen')
+      this.props.navigation.navigate('MapScreen')
     }
   }
 
@@ -52,10 +52,10 @@ export default class LogIn extends React.Component {
 	  <Text style = {{flex: 1}}></Text>
    	</View>
           
-	<View style = {{flex: 2, width: Math.round(width*.66)}}>	
+	<KeyboardAvoidingView style = {{flex: 2, width: Math.round(width*.66)}} behavior="height">	
 	  <TextInput style = {{flex:1, fontSize: 25}}
-	     placeholder = "Phone #"
-	     onEndEditing ={(event) => phoneNum = event.nativeEvent.text}
+	     placeholder = "Email"
+	     onEndEditing ={(event) => email = event.nativeEvent.text}
 	  />
 
 	  <TextInput style = {{flex: 1, fontSize: 25}}
@@ -63,7 +63,7 @@ export default class LogIn extends React.Component {
 	     onEndEditing ={(event) => password = event.nativeEvent.text}
 	  />
 	  <Text style = {{flex: 1, height: Math.round(height*.05)}}></Text>
-	</View>
+	</KeyboardAvoidingView>
 
 	<View style = {styles.buttons}>
 	  <Button
@@ -117,9 +117,10 @@ const styles = StyleSheet.create({
 });
 
 contFb = () =>{
-  //look for fb acc
-  //check for matching fb acc in database
+  //search device for fb account
+  //db function to check if acc exists for fb info
+ 
   //if there's a matching account log in the user
-  //else make an acc for the user then log in the user
+  //else send user to sign up screen w/ inputed values from fb info
 }
 

@@ -7,6 +7,8 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import ModalSelector from 'react-native-modal-selector'
 
 
+const {width, height} = Dimensions.get('window');
+
 export default class Hosting extends React.Component {
     constructor(props){
         super(props);
@@ -56,12 +58,12 @@ export default class Hosting extends React.Component {
         return (
             <View style={styles.container}>
 
-                <Button
+	    {/*don't need anymore<Button
                     style={{height: 50}}
                     onPress={this._showModal}
                     title="Host"
                     color = "black"
-                />
+                />*/}
                 <Modal isVisible={this.state.isACVisible} backdropOpacity={0} style={styles.bottomModal}
                        animationIn ="slideInUp">
                     <View style={styles.modalContentContainer}>
@@ -237,41 +239,23 @@ export default class Hosting extends React.Component {
                                     onTapOutside={() => this.setState({showPicker: false})}
                                     horizontal={true}
                                     onEmojiSelected={this._emojiSelected}/>
-*                                   */}
+                                   */}
 
-                                <Button onPress= {this._onCreate()} title="Create" style={styles.create}/>
+                                <Button onPress= {() => this._onCreate()} title="Create" style={styles.create}/>
                             </View>
                         </View>
                     </Modal>
 
                 </Modal>
-
-
-            </View>
-        );
+       </View>);
     }
 }
 
 
 
-/*const ModalStack = StackNavigator({
-    Home: {
-        screen: Hosting
-    },
-    Hosting: {
-        screen: Autocomplete
-    },
-});
-
-export default class App extends React.Component {
-    render() {
-        return <ModalStack/>;
-    }
-}*/
-
-
 const styles = StyleSheet.create({
     container: {
+	flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
         backgroundColor: "#fff",
@@ -342,9 +326,9 @@ const styles = StyleSheet.create({
     modalContentContainer: {
         alignSelf: 'center',
         alignItems: 'center',
-        height: 575,
+        height: height*.65,
         backgroundColor: "white",
-        width: Dimensions.get('window').width,
+        width: width,
         margin: 0,
     }
 
