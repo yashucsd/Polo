@@ -158,7 +158,8 @@ export default class Map extends React.Component {
 
 	      <Image 
 	        style = {styles.circleImage} 
-	        source = {require('./resources/polo_logo.png')}
+	        source = {require('./pictures/realprofile.png')}
+	
 	      />
 	    </TouchableOpacity>
 
