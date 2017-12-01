@@ -86,7 +86,8 @@ export default class UserPreference extends React.Component {
 	    <Text style = {{flex: 1}}></Text>
 	    <Text style = {styles.textFontB}>Popular Activities</Text>
 	    <Text style = {{flex: 1}}></Text>
-	    <Switch onValueChange={(value) => this.setState({popularActivities: value})} value={this.state.popularActivities}/>
+	    <Switch onValueChange={(value) => this.setState({popularActivities: value})} value={this.state.popularActivities}
+								disabled = {!this.state.allNotifications}/>
 	    <Text style = {{flex: 1}}></Text>
 	  </View>
 
