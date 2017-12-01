@@ -123,14 +123,12 @@ export default class Map extends React.Component {
 
         </MapView>
 	
-
-        
-       <View style ={{position: 'absolute', flexDirection: 'row', top: -75}}>
+       {/*<View style ={{position: 'absolute', flexDirection: 'row', top: -75}}>
           {this._renderImage(image = require('./pictures/realplus.png'), () => this.setState({ visibleModal: 1 }))}
-          {this._renderImage(image = require('./pictures/realprofile.png'), () => this.props.navigation.navigate('profileScreen'))}
+          {this._renderImage(image = require('./pictures/realprofile.png'), () => this.props.navigation.navigate('UserPreferenceScreen'))}
         </View>
 
-        <Modal isVisible={this.state.visibleModal === 1}>{this._renderModalContent()}</Modal>
+        <Modal isVisible={this.state.visibleModal === 1}>{this._renderModalContent()}</Modal>*/}
         {/* <View style={styles.container}>
           <Text style={styles.header}>
             Latitude: {this.state.region.latitude}{'\n'}
@@ -153,7 +151,7 @@ export default class Map extends React.Component {
 
 	      <Image 
 	        style = {styles.circleImage} 
-	        source = {require('./resources/polo_logo.png')}
+	        source = {require('./pictures/realprofile.png')}
 	      />
 	    </TouchableOpacity>
 
