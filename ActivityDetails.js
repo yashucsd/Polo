@@ -13,23 +13,31 @@ class HomeScreen extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      isModalVisible: false
+      isModalVisible: true
     }
+  }
+  joinActivity(){
+  //starts flow for joining activity
   }
 
   _showModal = () => this.setState({ isModalVisible: true})
   _hideModal = () => this.setState({ isModalVisible: false})
+  
+  switchView(){
+    
+    this.setState({isModalVisible: !this.state.isModalVisible})
+  }
 
   render() {
     var event = MOCKED_EVENT_DATA[0];
     const { navigate } = this.props.navigation;
     return (
       <View style={styles.container}>
-        <Button
+      {/*<Button
             onPress={this._showModal}
             title="Activity Details"
             color = "black"
-        />
+        />*/}
         <Modal isVisible={this.state.isModalVisible} backdropOpacity={0} style={styles.bottomModal}>
           <View style={styles.modalContentContainer}>
             <View style={styles.row}>
@@ -61,6 +69,7 @@ class HomeScreen extends React.Component {
             <View style={styles.row}>
               <Directions/>
               <Button
+	      	onPress = {() => this.joinActivity()}
                 title="Join Activity"
                 color="purple"
               />
