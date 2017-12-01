@@ -7,7 +7,7 @@ import emoji from 'node-emoji';
 import markersData from './markers.js';
 import Hosting from './Hosting.js';
 import renderIf from './renderIf';
-
+import ActivityDetails from './ActivityDetails.js';
 
 const {width, height} = Dimensions.get('window');
 circleSize = Math.round(width/7)
@@ -20,6 +20,8 @@ export default class Map extends React.Component {
     super(props);
     this.state = {
       status: false,
+      activity: false,
+
       region: {
         latitude: 32.8804,
         longitude: -117.2375,
@@ -91,6 +93,9 @@ export default class Map extends React.Component {
     return (
       <View style={styles.container}>
         {renderIf(this.state.status)(<Hosting/>)}
+	{renderIf(this.state.activity)(<ActivityDetails/>)}
+	
+
         {/* Setting attributes for the MapView */}
 	<MapView style={styles.map}
           mapType="standard"
@@ -110,8 +115,8 @@ export default class Map extends React.Component {
             key={i}
             coordinate={marker.latlng}
             title={marker.title}
-            description={marker.description}>
-
+            description={marker.description}
+	    onPress = {() => this.setState({activity: !this.state.activity})}>
             {/* This is a custom view to show an emoji and its BG 
                 (Child of MapView.Marker) */}
             <View style={styles.markerBG}>
@@ -125,7 +130,7 @@ export default class Map extends React.Component {
 	
 
         
-       <View style ={{position: 'absolute', flexDirection: 'row', top: -75}}>
+	<View style ={{position: 'absolute', flexDirection: 'row', top: -75}}>
           {this._renderImage(image = require('./pictures/realplus.png'), () => this.setState({ visibleModal: 1 }))}
           {this._renderImage(image = require('./pictures/realprofile.png'), () => this.props.navigation.navigate('profileScreen'))}
         </View>
