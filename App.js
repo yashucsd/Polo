@@ -11,6 +11,7 @@ const RootNavigator = StackNavigator({
   
   MapScreen:{
     screen: Map,
+    navigationOptions: { header: null },
   },
   LogInScreen: {
     screen: LogIn,
