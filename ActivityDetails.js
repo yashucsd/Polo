@@ -195,4 +195,3 @@ const styles = StyleSheet.create({
   },
 
 });
- 

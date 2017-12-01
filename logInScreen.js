@@ -83,19 +83,6 @@ export default class LogIn extends React.Component {
 
 	<View style = {{flex: 3}}>
 	  <Text style = {{height: Math.round(height*.085)}}></Text>
-	  
-	  <View style = {{flexDirection: 'row'}}>
-	    <Image
-	       style = {{width: 40, height: 40}}
-	       source = {require('./resources/fb.png')}
-	    />
-	    <Button
-	      style = {{height: 40}}
-  	      onPress={contFb}
-  	      title="Continue with Facebook"
-  	      color="#3b5998"
-	    />
-	  </View>
 	</View>
 
       </View>
