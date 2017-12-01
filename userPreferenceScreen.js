@@ -105,6 +105,7 @@ export default class UserPreference extends React.Component {
             minimumValue={0}
             maximumValue={50}
             value={this.state.radius}
+			disabled = {!this.state.allNotifications}
             onValueChange={val => this.setState({ radius: val })}
           />
         
