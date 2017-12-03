@@ -16,8 +16,10 @@ import { StackNavigator } from "react-navigation";
 import emoji from "node-emoji";
 import markersData from "./markers.js";
 import Hosting from "./Hosting.js";
+import ActivityDetails from "./ActivityDetails.js";
 import renderIf from "./renderIf";
 import moment from "moment";
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
@@ -50,18 +52,24 @@ const { width, height } = Dimensions.get("window");
 circleSize = Math.round(width / 7);
 var markers2 = JSON.parse(markersData.test);
 
-//console.log(markers2);
+const LATITUDE = 32.8804;
+const LONGITUDE = -117.2375;
+const LATITUDE_DELTA = 0.006;
+const LONGITUDE_DELTA = 0.006;
+
+console.disableYellowBox = true;
 
 export default class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       status: false,
+      activity: false,
       region: {
-        latitude: 32.8804,
-        longitude: -117.2375,
-        latitudeDelta: 0.008,
-        longitudeDelta: 0.008
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
       },
 
       markers: [
@@ -106,6 +114,39 @@ export default class Map extends React.Component {
     this.onRegionChange = this.onRegionChange.bind(this);
   }
 
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }
+        });
+      },
+    (error) => console.log(error.message),
+    { timeout: 20000, maximumAge: 1000 },
+    );
+    this.watchID = navigator.geolocation.watchPosition(
+      position => {
+        this.setState({
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }
+        });
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
+  }
+
   onRegionChange(region) {
     this.setState({
       region
@@ -122,6 +163,7 @@ export default class Map extends React.Component {
       status: !this.state.status
     });
   }
+
   _renderButton = (text, onPress) => (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.button}>
@@ -149,18 +191,32 @@ export default class Map extends React.Component {
     </View>
   );
 
+  componentWillMount = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.setState({position: {longitude: position.longitude, latitude: position.latitude}});
+    }, (error) => {
+      alert(JSON.stringify(error))
+    }, {
+      enableHighAccuracy: false,
+      timeout: 20000,
+      maximumAge: 1000
+    });
+  }
+
   render() {
     return (
       <View style={styles.container}>
         {renderIf(this.state.status)(<Hosting />)}
+        {renderIf(this.state.activity)(<ActivityDetails />)}
+      
         {/* Setting attributes for the MapView */}
-        
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => this.activityCreation()}
           >
-            <Text> + </Text>
+            <Text style ={{fontWeight: "bold", fontSize: 24}}> + </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -175,6 +231,8 @@ export default class Map extends React.Component {
             />
           </TouchableOpacity>
         </View>
+
+        <View style = {{flex: 500}}></View>
 
         <View style={styles.listContainer}>
           <FlatList
@@ -201,7 +259,9 @@ export default class Map extends React.Component {
           toolbarEnabled={true}
           region={this.state.region}
           onRegionChange={this.onRegionChange}
+          followsUserLocation={true}
         >
+
           {/* Information for each marker is used to create them (Child of MapView) */}
           {this.state.markers.map((marker, i) => (
             <MapView.Marker
@@ -209,6 +269,9 @@ export default class Map extends React.Component {
               coordinate={marker.latlng}
               title={marker.title}
               description={marker.description}
+              onPress = { () =>     
+                this.setState({ activity: !this.state.activity }) 
+              }
             >
               {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
               <View style={styles.markerBG}>
@@ -237,21 +300,30 @@ const styles = StyleSheet.create({
     flexDirection: "row",
 
     justifyContent: "space-between",
-    paddingTop: 20,
+    
     paddingLeft: 10,
     paddingRight: 10,
+
+    ...ifIphoneX({
+      paddingTop: 40
+    }, {
+      paddingTop: 20,
+    })
   },
 
   map: {
-    position: "absolute",
-    height: deviceHeight,
-    width: deviceWidth,
+    ...StyleSheet.absoluteFillObject,
     zIndex: -1,
   },
 
   listContainer: {
     padding: 10,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
+    ...ifIphoneX({
+      paddingBottom: 30
+    }, {
+      paddingBottom: 10,
+    })
   },
 
   activityListElement: {
