@@ -11,13 +11,14 @@ import {
   View
 } from "react-native";
 import Modal from "react-native-modal"; //Need to npm install react-native-modal --save
-import Icon from "react-native-vector-icons/FontAwesome"; //Need to npm install react-native-elements --save
+import Icon from "react-native-vector-icons/Feather"; //Need to npm install react-native-elements --save
 import Share, { ShareSheet } from "react-native-share"; //Need to npm install react-native-share --save
 import Directions from "./Directions.js";
 
 var MOCKED_EVENT_DATA = [
   {
     title: "Soccer",
+    emoji: "Emoji",
     startTime: "12:00",
     description:
       "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Get ready... Start!"
@@ -38,8 +39,8 @@ export default class ActivityDetails extends React.Component {
   render() {
     var event = MOCKED_EVENT_DATA[0];
     let shareOptions = {
-      title: "Lil Pump",
-      message: "Gucci Gang",
+      title: "Lil Pump-Gucci Gang",
+      message: "Look at what I'm doing on Polo!",
       url: "https://www.youtube.com/watch?v=4LfJnj66HVQ",
       subject: "Share Link"
     };
@@ -59,7 +60,7 @@ export default class ActivityDetails extends React.Component {
         >
           <View style={styles.modalContentContainer}>
             <View style={styles.row}>
-              <Text style={styles.titleText}>Emoji</Text>
+              <Text style={styles.titleText}>{event.emoji}</Text>
               <Text> </Text>
               <Text style={styles.titleText}>{event.title}</Text>
               <Text> </Text>
@@ -102,9 +103,9 @@ export default class ActivityDetails extends React.Component {
             <Text style={styles.descriptionText}>{event.description}</Text>
             <View style={styles.row}>
               <Icon
-                name="share"
+                name="upload"
                 size={30}
-                color="skyblue"
+                color="#5ac8fa"
                 onPress={() => {
                   Share.open(shareOptions);
                 }}
@@ -115,7 +116,7 @@ export default class ActivityDetails extends React.Component {
               <Icon
                 name="flag"
                 size={30}
-                color="skyblue"
+                color="black"
                 onPress={() => {
                   if (!reportFlag) {
                     Alert.alert(
@@ -123,7 +124,7 @@ export default class ActivityDetails extends React.Component {
                       "Are you sure you would like to report this event?",
                       [
                         {
-                          text: "OK",
+                          text: "Flag this Activity",
                           onPress: () => {
                             reportFlag = true;
                             Alert.alert(
@@ -187,7 +188,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: 14,
-    padding: 0,
+    padding: 6,
     margin: 0
   },
   miniText: {
