@@ -294,9 +294,6 @@ const styles = StyleSheet.create({
 
   map: {
     ...StyleSheet.absoluteFillObject,
-    //position: "absolute",
-    //height: deviceHeight,
-    //width: deviceWidth,
     zIndex: -1,
   },
 
