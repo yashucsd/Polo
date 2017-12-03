@@ -15,6 +15,7 @@ import Icon from "react-native-vector-icons/Feather"; //Need to npm install reac
 import Share, { ShareSheet } from "react-native-share"; //Need to npm install react-native-share --save
 import Directions from "./Directions.js";
 
+var activityDetails = require('./db_actions/activities_actions');
 var MOCKED_EVENT_DATA = [
   {
     title: "Soccer",
