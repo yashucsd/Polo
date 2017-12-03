@@ -16,7 +16,6 @@ import { StackNavigator } from "react-navigation";
 import emoji from "node-emoji";
 import markersData from "./markers.js";
 import Hosting from "./Hosting.js";
-import ActivityDetails from "./ActivityDetails.js";
 import renderIf from "./renderIf";
 import moment from "moment";
 import { ifIphoneX } from 'react-native-iphone-x-helper';
@@ -64,7 +63,6 @@ export default class Map extends React.Component {
     super(props);
     this.state = {
       status: false,
-      activity: false,
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -163,7 +161,6 @@ export default class Map extends React.Component {
       status: !this.state.status
     });
   }
-
   _renderButton = (text, onPress) => (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.button}>
@@ -207,16 +204,14 @@ export default class Map extends React.Component {
     return (
       <View style={styles.container}>
         {renderIf(this.state.status)(<Hosting />)}
-        {renderIf(this.state.activity)(<ActivityDetails />)}
-      
         {/* Setting attributes for the MapView */}
-
+        
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => this.activityCreation()}
           >
-            <Text style ={{fontWeight: "bold", fontSize: 24}}> + </Text>
+            <Text> + </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -231,8 +226,6 @@ export default class Map extends React.Component {
             />
           </TouchableOpacity>
         </View>
-
-        <View style = {{flex: 500}}></View>
 
         <View style={styles.listContainer}>
           <FlatList
@@ -261,7 +254,6 @@ export default class Map extends React.Component {
           onRegionChange={this.onRegionChange}
           followsUserLocation={true}
         >
-
           {/* Information for each marker is used to create them (Child of MapView) */}
           {this.state.markers.map((marker, i) => (
             <MapView.Marker
@@ -269,9 +261,6 @@ export default class Map extends React.Component {
               coordinate={marker.latlng}
               title={marker.title}
               description={marker.description}
-              onPress = { () =>     
-                this.setState({ activity: !this.state.activity }) 
-              }
             >
               {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
               <View style={styles.markerBG}>
