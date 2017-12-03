@@ -52,7 +52,10 @@ const { width, height } = Dimensions.get("window");
 circleSize = Math.round(width / 7);
 var markers2 = JSON.parse(markersData.test);
 
-//console.log(markers2);
+const LATITUDE = 32.8804;
+const LONGITUDE = -117.2375;
+const LATITUDE_DELTA = 0.006;
+const LONGITUDE_DELTA = 0.006;
 
 console.disableYellowBox = true;
 
@@ -63,10 +66,10 @@ export default class Map extends React.Component {
       status: false,
       activity: false,
       region: {
-        latitude: 32.8804,
-        longitude: -117.2375,
-        latitudeDelta: 0.008,
-        longitudeDelta: 0.008
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
       },
 
       markers: [
@@ -109,6 +112,39 @@ export default class Map extends React.Component {
       ] // end of markers
     }; // end of this.state
     this.onRegionChange = this.onRegionChange.bind(this);
+  }
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }
+        });
+      },
+    (error) => console.log(error.message),
+    { timeout: 20000, maximumAge: 1000 },
+    );
+    this.watchID = navigator.geolocation.watchPosition(
+      position => {
+        this.setState({
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }
+        });
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   onRegionChange(region) {
@@ -154,6 +190,18 @@ export default class Map extends React.Component {
       )}
     </View>
   );
+
+  componentWillMount = () => {
+    navigator.geolocation.getCurrentPosition((position) => {
+      this.setState({position: {longitude: position.longitude, latitude: position.latitude}});
+    }, (error) => {
+      alert(JSON.stringify(error))
+    }, {
+      enableHighAccuracy: false,
+      timeout: 20000,
+      maximumAge: 1000
+    });
+  }
 
   render() {
     return (
@@ -211,6 +259,7 @@ export default class Map extends React.Component {
           toolbarEnabled={true}
           region={this.state.region}
           onRegionChange={this.onRegionChange}
+          followsUserLocation={true}
         >
 
           {/* Information for each marker is used to create them (Child of MapView) */}
@@ -263,9 +312,7 @@ const styles = StyleSheet.create({
   },
 
   map: {
-    position: "absolute",
-    height: deviceHeight,
-    width: deviceWidth,
+    ...StyleSheet.absoluteFillObject,
     zIndex: -1,
   },
 
