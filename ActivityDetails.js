@@ -8,7 +8,8 @@ import {
   Image,
   StyleSheet,
   Text,
-  View
+  View,
+  TouchableOpacity
 } from "react-native";
 import Modal from "react-native-modal"; //Need to npm install react-native-modal --save
 import Icon from "react-native-vector-icons/FontAwesome"; //Need to npm install react-native-elements --save
@@ -28,7 +29,7 @@ export default class ActivityDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalVisible: false
+      isModalVisible: true
     }
   }
 
@@ -97,7 +98,13 @@ export default class ActivityDetails extends React.Component {
             </View>
             <View style={styles.row}>
               <Directions />
-              <Button title="Join Activity" color="purple" />
+              <TouchableOpacity
+                style={styles.roundButton}
+                onPress={() => this.handleGetDirections(this.activity_location.latitude,
+                                                        this.activity_location.longitude)}
+                >
+                  <Text style={styles.joinText}>Join Activity</Text>
+              </TouchableOpacity>
             </View>
             <Text style={styles.descriptionText}>{event.description}</Text>
             <View style={styles.row}>
@@ -167,7 +174,9 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
+    width: Dimensions.get("window").width,
+    padding: 10,
   },
   extras: {
     flex: 1,
@@ -207,5 +216,18 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     backgroundColor: "white",
     margin: 0
-  }
+  },
+  roundButton: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    height: 40,
+    width: 165,
+    alignItems: 'center',
+    borderColor: '#058EFA',
+    borderWidth: 0.5,
+  },
+  joinText: {
+    color: '#058EFA',
+    paddingTop: 10,
+  },
 });
