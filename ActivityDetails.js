@@ -30,8 +30,8 @@ export default class ActivityDetails extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      isModalVisible: false
-    };
+      isModalVisible: true
+    }
   }
 
   _showModal = () => this.setState({ isModalVisible: true });
