@@ -2,7 +2,8 @@ import React from 'react';
 import {Keyboard, TouchableHighlight,ScrollView, Button, Picker, StyleSheet, Text, View, TextInput, Dimensions, TouchableOpacity, Image } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
-import ModalSelector from 'react-native-modal-selector'
+import ModalSelector from 'react-native-modal-selector';
+import emoji from 'node-emoji';
 
 
 const {width, height} = Dimensions.get('window');
@@ -14,37 +15,37 @@ export default class Hosting extends React.Component {
         {
             isACVisible: true,
             isInputVisible: false,
-            textInputValue: "",
+            address: "",
+            longitude: -1,
+            latitude: -1,
             emoji: "",
             eventName: "",
             category: "",
+            categoryDescription: "",
             description:"",
             time:""
 
         };
     }
-    _showModal = () => this.setState({ isACVisible: true});
-    _hideModal = () => this.setState({ isModalVisible: false});
 
     render() {
         let index = 0;
         const data = [
-            { key: index++, section: true, label: 'Categories' },
-            { key: index++, label: 'Red Apples' },
-            { key: index++, label: 'Cherries' },
-            { key: index++, label: 'Cranberries' },
-            { key: index++, label: 'Pink Grapefruit' },
+            { key: index++, section: true, label: "Categories" },
+            { key: index++, label: "Sports " + emoji.get("basketball"), value: "basketball"},
+            { key: index++, label: "Study " + emoji.get("books"),  value: "books"},
+            { key: index++, label: "Food " + emoji.get("hamburger"), value: "hamburger" },
+            { key: index++, label: "Hiking " + emoji.get("snow_capped_mountain"), value: "snow_capped_mountain" },
+            { key: index++, label: "Shopping " + emoji.get("shopping_bags"), value: "shopping_bags" },
+            { key: index++, label: "Chill " + emoji.get("snowflake"), value: "snowflake" },
+            { key: index++, label: "Gaming " + emoji.get("video_game"), value: "video_game" },
+            { key: index++, label: "Party " + emoji.get("tada"), value: "tada"},
+            { key: index++, label: "Gym " + emoji.get("weight_lifter"), value: "weight_lifter"},
         ];
 
         return (
             <View style={styles.container}>
 
-	    {/*don't need anymore<Button
-                    style={{height: 50}}
-                    onPress={this._showModal}
-                    title="Host"
-                    color = "black"
-                />*/}
                 <Modal isVisible={this.state.isACVisible} backdropOpacity={0} style={styles.bottomModal}
                        animationIn ="slideInUp" animationOut = "slideOutLeft" avoidKeyboard={true}>
                     <View style={styles.modalContentContainer}>
@@ -56,12 +57,12 @@ export default class Hosting extends React.Component {
                             returnKeyType={'search'} // Can be left out for default return key https://facebook.github.io/react-native/docs/textinput.html#returnkeytype
                             listViewDisplayed='auto'    // true/false/undefined
                             fetchDetails={true}
-                            renderDescription={row => row.description} // custom description render
+                            renderDescription={(row) => row.description || row.vicinity} // custom description render
                             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                                console.log(data, details);
-                                this.setState({isInputVisible: true});
-                                //Keyboard.dismiss();
-
+                                this.setState({latitude: details.geometry.location.lat,
+                                               longtitude: details.geometry.location.lng,
+                                               address: data.description,
+                                               isInputVisible: true});
                             }}
 
                             getDefaultValue={() => ''}
@@ -70,7 +71,8 @@ export default class Hosting extends React.Component {
                                 // available options: https://developers.google.com/places/web-service/autocomplete
                                 key: 'AIzaSyAvWx1p36lAqWnIBsOMHJeW1MKF_98uYE8',
                                 language: 'en', // language of the results
-                                types: 'establishment' // default: 'geocode'
+                                types: 'establishment', // default: 'geocode'
+                                radius: 200000
                             }}
 
                             styles={{
@@ -101,7 +103,7 @@ export default class Hosting extends React.Component {
 
                             currentLocation={true} // Will add a 'Current location' button at the top of the predefined places list
                             currentLocationLabel="Current location"
-                            nearbyPlacesAPI='GooglePlacesSearch' // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
+                            nearbyPlacesAPI={'None'} // Which API to use: GoogleReverseGeocoding or GooglePlacesSearch
                             GoogleReverseGeocodingQuery={{
                                 // available options for GoogleReverseGeocoding API : https://developers.google.com/maps/documentation/geocoding/intro
                             }}
@@ -120,7 +122,7 @@ export default class Hosting extends React.Component {
                             renderRightButton={() =>
                                 <Button
                                     style={{marginTop: 200}}
-                                    onPress={() => this.setState({isACVisible: false, isInputVisible:false})}
+                                    onPress={() => this.setState({isACVisible: false})}
                                     title="Cancel"
                                     color = "black"/>
 
@@ -133,14 +135,40 @@ export default class Hosting extends React.Component {
                     <Modal isVisible={this.state.isInputVisible} avoidKeyboard={true} backdropOpacity={0} style={styles.bottomModal}
                            animationIn ="slideInRight" animationOut = "slideOutLeft">
                         <View style={styles.modalContentContainer}>
-                            <View style={{flexDirection:"row", alignItems:"center"}}>
+                            <View style={{flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
                                 <Text style={styles.header}>Create your event</Text>
                                 <Button
-                                    onPress={() => this.setState({isInputVisible: false, isACVisible: false})}
+                                    style={{paddingLeft: 40}}
+
+                                    onPress = {()=>{
+                                        this.setState({isInputVisible:false});
+                                        setTimeout(() => {
+                                            this.setState({isACVisible: false})},20)
+                                    }}
                                     title="Cancel"
                                     color = "black"
                                 />
                             </View>
+
+                            <TouchableHighlight
+                                onPress={() => this.setState({isInputVisible:false})}
+                                activeOpacity= {0.2}
+                                underlayColor= "#a5acb7"
+                                style={{
+                                    alignItems: 'center',
+                                    backgroundColor: '#DDDDDD',
+                                    paddingTop: 10,
+                                    paddingBottom: 10,
+                                    borderRadius: 1,
+                                    borderColor: "black"
+                            }}>
+                                <Text numberOfLines={1}>
+                                    {this.state.address}
+                                </Text>
+                            </TouchableHighlight>
+
+
+
 
                             <View style = {styles.firstRow}>
                                 <TextInput style={styles.name}
@@ -151,7 +179,7 @@ export default class Hosting extends React.Component {
                                 <TextInput style= {{flex: 1, backgroundColor: "#9effcb", textAlign: "center"}}
                                            placeholder = "emoji"
                                            returnKeyType = 'done'
-                                           onEndEditing = {(text) => this.setState({emoji : text})}
+                                           onEndEditing = {(text) => this.setState({emoji : emoji.which(text)})}
                                 />
                             </View>
 
@@ -162,19 +190,16 @@ export default class Hosting extends React.Component {
                                     overlayStyle={{flex: 1, padding: '5%', justifyContent: 'center', backgroundColor: 'rgba(0,0,0,0.7)' }}
                                     style={styles.categories}
                                     data={data}
-                                    initValue="Select something yummy!"
+                                    initValue="Categories!"
                                     supportedOrientations={['portrait']}
-                                    onChange={(option)=>{ this.setState({textInputValue:option.label})}}>
+                                    onChange={(option)=>{ this.setState({categories: option.value, categoryDescription: option.label})}}>
 
                                     <TextInput
                                         style={{textAlign: "center"}}
                                         editable={false}
-                                        placeholder="Select something yummy!"
-                                        value={this.state.textInputValue} />
-
+                                        placeholder="Which kind of event is this?"
+                                        value={this.state.categoryDescription} />
                                 </ModalSelector>
-
-
 
                             </View>
 
@@ -202,7 +227,12 @@ export default class Hosting extends React.Component {
                                 </Picker>
                             </View>
                             <View style={{flexDirection:"row", justifyContent:"flex-end"}}>
-                                <Button onPress = {()=>{}} title="Create" style={styles.create}/>
+
+                                <Button onPress = {()=>{
+                                    this.setState({isInputVisible:false});
+                                    setTimeout(() => {
+                                    this.setState({isACVisible: false})},20)
+                                }} title="Create" style={styles.create}/>
                             </View>
                         </View>
                     </Modal>
@@ -214,25 +244,9 @@ export default class Hosting extends React.Component {
 
 
 const styles = StyleSheet.create({
-    container: {
-	flex: 1,
-        flexDirection: "column",
-        justifyContent: "flex-start",
-        backgroundColor: "white",
-        alignItems: "center"
-
-    },
-    keyboardView:{
-        position: 'absolute',
-        bottom: 0,
-        left: 0,
-        flex: 1,
-        width: Dimensions.get('window').width,
-        height: Dimensions.get('window').height,
-    },
-
     header: {
-        fontSize: 30,
+        fontSize: 22,
+        flex: 1,
         color: "black",
         fontWeight: "bold",
         padding: 12
@@ -240,11 +254,11 @@ const styles = StyleSheet.create({
 
     firstRow:{
         flexDirection: "row",
-        backgroundColor: "#99baef"
+        backgroundColor: "#fbfffb"
     },
     secondRow:{
         flexDirection: "row",
-        backgroundColor: "#8defea"
+        backgroundColor: "#fbfffb"
     },
     thirdRow:{
         flexDirection: "row",
@@ -295,16 +309,7 @@ const styles = StyleSheet.create({
     },
 
     modalContentContainer: {
-        /*
-        alignSelf: 'center',
-        alignItems: 'center',
-        height: height*.65,
-        backgroundColor: "white",
-        width: width,
-        margin: 0,
-        */
-
-        height: Dimensions.get('window').height * .50,
+        height: Dimensions.get('window').height * .55,
         width: Dimensions.get('window').width,
         backgroundColor: 'white'
     }
