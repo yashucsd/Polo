@@ -18,6 +18,7 @@ import markersData from "./markers.js";
 import Hosting from "./Hosting.js";
 import renderIf from "./renderIf";
 import moment from "moment";
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
@@ -50,7 +51,12 @@ const { width, height } = Dimensions.get("window");
 circleSize = Math.round(width / 7);
 var markers2 = JSON.parse(markersData.test);
 
-//console.log(markers2);
+const LATITUDE = 32.8804;
+const LONGITUDE = -117.2375;
+const LATITUDE_DELTA = 0.006;
+const LONGITUDE_DELTA = 0.006;
+
+console.disableYellowBox = true;
 
 export default class Map extends React.Component {
   constructor(props) {
@@ -58,10 +64,10 @@ export default class Map extends React.Component {
     this.state = {
       status: false,
       region: {
-        latitude: 32.8804,
-        longitude: -117.2375,
-        latitudeDelta: 0.008,
-        longitudeDelta: 0.008
+        latitude: LATITUDE,
+        longitude: LONGITUDE,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
       },
 
       markers: [
@@ -104,6 +110,39 @@ export default class Map extends React.Component {
       ] // end of markers
     }; // end of this.state
     this.onRegionChange = this.onRegionChange.bind(this);
+  }
+
+  componentDidMount() {
+    navigator.geolocation.getCurrentPosition(
+      position => {
+        this.setState({
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }
+        });
+      },
+    (error) => console.log(error.message),
+    { timeout: 20000, maximumAge: 1000 },
+    );
+    this.watchID = navigator.geolocation.watchPosition(
+      position => {
+        this.setState({
+          region: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            latitudeDelta: LATITUDE_DELTA,
+            longitudeDelta: LONGITUDE_DELTA,
+          }
+        });
+      }
+    );
+  }
+
+  componentWillUnmount() {
+    navigator.geolocation.clearWatch(this.watchID);
   }
 
   onRegionChange(region) {
@@ -237,21 +276,30 @@ const styles = StyleSheet.create({
     flexDirection: "row",
 
     justifyContent: "space-between",
-    paddingTop: 20,
+    
     paddingLeft: 10,
     paddingRight: 10,
+
+    ...ifIphoneX({
+      paddingTop: 40
+    }, {
+      paddingTop: 20,
+    })
   },
 
   map: {
-    position: "absolute",
-    height: deviceHeight,
-    width: deviceWidth,
+    ...StyleSheet.absoluteFillObject,
     zIndex: -1,
   },
 
   listContainer: {
     padding: 10,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
+    ...ifIphoneX({
+      paddingBottom: 30
+    }, {
+      paddingBottom: 10,
+    })
   },
 
   activityListElement: {
