@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { AppRegistry, Button, Image, StyleSheet, Text, View, Dimensions } from 'react-native';
+import { Alert, AppRegistry, Button, Clipboard, Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
 import Icon from 'react-native-vector-icons/FontAwesome'; //Need to npm install react-native-elements --save
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator } from 'react-navigation'; //Need to npm install react-navigation --save
+import Share, {ShareSheet} from 'react-native-share'; //Need to npm install react-native-share --save
 import Directions from './Directions.js';
 
 var MOCKED_EVENT_DATA = [
@@ -19,16 +20,24 @@ class HomeScreen extends React.Component {
 
   _showModal = () => this.setState({ isModalVisible: true})
   _hideModal = () => this.setState({ isModalVisible: false})
-
+  
   render() {
     var event = MOCKED_EVENT_DATA[0];
+    let shareOptions = {
+      title: "Lil Pump",
+      message: "Gucci Gang",
+      url: "https://www.youtube.com/watch?v=4LfJnj66HVQ",
+      subject: "Share Link"
+    };
     const { navigate } = this.props.navigation;
+    var reportFlag = false;
+
     return (
       <View style={styles.container}>
         <Button
             onPress={this._showModal}
             title="Activity Details"
-            color = "black"
+            color="black"
         />
         <Modal isVisible={this.state.isModalVisible} backdropOpacity={0} style={styles.bottomModal}>
           <View style={styles.modalContentContainer}>
@@ -71,7 +80,7 @@ class HomeScreen extends React.Component {
                 name='share'
                 size={30}
                 color='skyblue'
-                onPress={() => navigate('Share')}
+                onPress={() => {Share.open(shareOptions);}}
               />
               <Text style={{flex: 1}}>    </Text>
               <Button
@@ -84,7 +93,16 @@ class HomeScreen extends React.Component {
                 name='flag'
                 size={30}
                 color='skyblue'
-                onPress={() => navigate('Flag')}
+                onPress={() => { if (!reportFlag) {
+                                    Alert.alert('Report Event', 'Are you sure you would like to report this event?',
+                                            [ {text: 'OK', onPress: () => {reportFlag = true;
+                                                    Alert.alert('Event Reported', 'Your report has been submitted.',
+                                                        [ {text: 'OK'} ], { cancelable: false })}}, {text: 'Cancel'}, ],
+                                            { cancelable: false });}
+                                else {
+                                    Alert.alert('Event Reported', 'Your report has been submitted.',
+                                            [ {text: 'OK'} ],
+                                            { cancelable: false })}}}
               />
             </View>
           </View>
@@ -109,14 +127,7 @@ class FlagScreen extends React.Component {
 
 class ShareScreen extends React.Component {
   render() {
-    return (
-      <View style={styles.extras}>
-        <Button
-          title="Share Event"
-          color="pink"
-        />
-      </View>
-    );
+    return <ShareActivity />
   }
 }
 
