@@ -5,8 +5,13 @@ import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplet
 import ModalSelector from 'react-native-modal-selector';
 import emoji from 'node-emoji';
 
-
 const {width, height} = Dimensions.get('window');
+
+var NON_SPACING_MARK = String.fromCharCode(65039); // 65039 - '️' - 0xFE0F;
+var nonSpacingRegex = new RegExp(NON_SPACING_MARK, 'g')
+
+
+const reactStringReplace = require('react-string-replace')
 
 export default class Hosting extends React.Component {
     constructor(props){
@@ -133,7 +138,7 @@ export default class Hosting extends React.Component {
 
 
                     <Modal isVisible={this.state.isInputVisible} avoidKeyboard={true} backdropOpacity={0} style={styles.bottomModal}
-                           animationIn ="slideInRight" animationOut = "slideOutLeft">
+                           animationIn ="slideInRight" animationOut = "slideOutDown">
                         <View style={styles.modalContentContainer}>
                             <View style={{flexDirection:"row", justifyContent:"center", alignItems:"center"}}>
                                 <Text style={styles.header}>Create your event</Text>
@@ -176,10 +181,15 @@ export default class Hosting extends React.Component {
                                            returnKeyType = 'done'
                                            onEndEditing ={(text) => this.setState({eventName: text})}
                                 />
-                                <TextInput style= {{flex: 1, backgroundColor: "#9effcb", textAlign: "center"}}
+                                <TextInput style= {{flex: 1, backgroundColor: "#f4f8f4", textAlign: "center"}}
                                            placeholder = "emoji"
                                            returnKeyType = 'done'
-                                           onEndEditing = {(text) => this.setState({emoji : emoji.which(text)})}
+                                           onEndEditing = {(text) => {
+                                               str = reactStringReplace(text, nonSpacingRegex, (match, i) => (
+                                                   <span key={i} style={{ color: 'red' }}>{match}</span>
+                                               ));
+                                               this.setState({emoji: str})
+                                           }}
                                 />
                             </View>
 
@@ -244,6 +254,7 @@ export default class Hosting extends React.Component {
 
 
 const styles = StyleSheet.create({
+
     header: {
         fontSize: 22,
         flex: 1,
@@ -262,17 +273,17 @@ const styles = StyleSheet.create({
     },
     thirdRow:{
         flexDirection: "row",
-        backgroundColor: "#9effcb"
+        backgroundColor: "#fbfffb"
     },
     fourthRow:{
         flexDirection: "row",
-        backgroundColor: "#d2f4d7"
+        backgroundColor: "#fbfffb"
 
     },
     create:{
-        backgroundColor: "#9effcb",
+        backgroundColor: "#fbfffb",
         padding: 6,
-        borderColor: "#9effcb",
+        borderColor: "#fbfffb",
     },
     categories:{
         flex:1,
