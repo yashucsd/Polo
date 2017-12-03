@@ -16,6 +16,7 @@ import { StackNavigator } from "react-navigation";
 import emoji from "node-emoji";
 import markersData from "./markers.js";
 import Hosting from "./Hosting.js";
+import ActivityDetails from './ActivityDetails.js';
 import renderIf from "./renderIf";
 import moment from "moment";
 import { ifIphoneX } from 'react-native-iphone-x-helper';
@@ -63,6 +64,7 @@ export default class Map extends React.Component {
     super(props);
     this.state = {
       status: false,
+      activity: false,
       region: {
         latitude: LATITUDE,
         longitude: LONGITUDE,
@@ -117,8 +119,8 @@ export default class Map extends React.Component {
       position => {
         this.setState({
           region: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+            latitude: 32.8803,//position.coords.latitude,
+            longitude: -117.241,//position.coords.longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }
@@ -204,6 +206,7 @@ export default class Map extends React.Component {
     return (
       <View style={styles.container}>
         {renderIf(this.state.status)(<Hosting />)}
+        {renderIf(this.state.activity)(<ActivityDetails />)}
         {/* Setting attributes for the MapView */}
         
         <View style={styles.buttonContainer}>
@@ -261,6 +264,7 @@ export default class Map extends React.Component {
               coordinate={marker.latlng}
               title={marker.title}
               description={marker.description}
+              onPress = {() => this.setState({ activity: true })}
             >
               {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
               <View style={styles.markerBG}>

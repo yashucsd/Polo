@@ -2,18 +2,18 @@ import React, { Component } from 'react';
 import { AppRegistry, Button, Image, StyleSheet, Text, View, Dimensions } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
 import Icon from 'react-native-vector-icons/FontAwesome'; //Need to npm install react-native-elements --save
-import { StackNavigator } from 'react-navigation';
 import Directions from './Directions.js';
+
 
 var MOCKED_EVENT_DATA = [
     {title: 'Soccer', startTime: '12:00', description: 'The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Get ready... Start!'},
 ];
 
-class HomeScreen extends React.Component {
+export default class ActivityDetails extends React.Component {
   constructor(props){
     super(props);
     this.state = {
-      isModalVisible: false
+      isModalVisible: true
     }
   }
 
@@ -22,14 +22,10 @@ class HomeScreen extends React.Component {
 
   render() {
     var event = MOCKED_EVENT_DATA[0];
-    const { navigate } = this.props.navigation;
+
     return (
       <View style={styles.container}>
-        <Button
-            onPress={this._showModal}
-            title="Activity Details"
-            color = "black"
-        />
+
         <Modal isVisible={this.state.isModalVisible} backdropOpacity={0} style={styles.bottomModal}>
           <View style={styles.modalContentContainer}>
             <View style={styles.row}>
@@ -91,44 +87,6 @@ class HomeScreen extends React.Component {
         </Modal>
       </View>
     );
-  }
-}
-
-class FlagScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.extras}>
-        <Button
-          title="Report Event"
-          color="red"
-        />
-      </View>
-    );
-  }
-}
-
-class ShareScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.extras}>
-        <Button
-          title="Share Event"
-          color="pink"
-        />
-      </View>
-    );
-  }
-}
-
-const ReportApp = StackNavigator({
-  Home: { screen: HomeScreen },
-  Flag: { screen: FlagScreen },
-  Share: { screen: ShareScreen },
-});
-
-export default class ActivityDetails extends React.Component {
-  render() {
-    return <ReportApp />;
   }
 }
 
