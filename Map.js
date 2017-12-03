@@ -244,7 +244,7 @@ const styles = StyleSheet.create({
   },
 
   map: {
-    position: 'absolute',
+    position: "absolute",
     height: deviceHeight,
     width: deviceWidth,
     zIndex: -1,
