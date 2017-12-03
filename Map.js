@@ -193,7 +193,7 @@ export default class Map extends React.Component {
       <View style={styles.container}>
         {renderIf(this.state.status)(<Hosting />)}
         {/* Setting attributes for the MapView */}
-        
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
