@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Alert, AppRegistry, Button, Clipboard, Dimensions, Image, StyleSheet, Text, View } from 'react-native';
 import Modal from 'react-native-modal'; //Need to npm install react-native-modal --save
 import Icon from 'react-native-vector-icons/FontAwesome'; //Need to npm install react-native-elements --save
-import { StackNavigator } from 'react-navigation'; //Need to npm install react-navigation --save
 import Share, {ShareSheet} from 'react-native-share'; //Need to npm install react-native-share --save
 import Directions from './Directions.js';
 
@@ -10,7 +9,7 @@ var MOCKED_EVENT_DATA = [
     {title: 'Soccer', startTime: '12:00', description: 'The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Get ready... Start!'},
 ];
 
-class HomeScreen extends React.Component {
+export default class ActivityDetails extends React.Component {
   constructor(props){
     super(props);
     this.state = {
@@ -29,7 +28,6 @@ class HomeScreen extends React.Component {
       url: "https://www.youtube.com/watch?v=4LfJnj66HVQ",
       subject: "Share Link"
     };
-    const { navigate } = this.props.navigation;
     var reportFlag = false;
 
     return (
@@ -109,37 +107,6 @@ class HomeScreen extends React.Component {
         </Modal>
       </View>
     );
-  }
-}
-
-class FlagScreen extends React.Component {
-  render() {
-    return (
-      <View style={styles.extras}>
-        <Button
-          title="Report Event"
-          color="red"
-        />
-      </View>
-    );
-  }
-}
-
-class ShareScreen extends React.Component {
-  render() {
-    return <ShareActivity />
-  }
-}
-
-const ReportApp = StackNavigator({
-  Home: { screen: HomeScreen },
-  Flag: { screen: FlagScreen },
-  Share: { screen: ShareScreen },
-});
-
-export default class ActivityDetails extends React.Component {
-  render() {
-    return <ReportApp />;
   }
 }
 
