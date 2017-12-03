@@ -1,7 +1,7 @@
 import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import renderIf from './renderIf';
-import {checkEmail, checkPhone, getUser} from './db_actions/users_actions.js';
+import useraction from './db_actions/users_actions.js';
 
 //-1 represents empty values
 name = -1;
@@ -23,30 +23,31 @@ export default class LogIn extends React.Component {
       status:false
     }
   }
-/*check email return t/f
- * useraction.getEmail(email)
- * check phone return t/f
- * useraction.checkPhone(phonenumber)
- * add user (name, email, phoene,pw)
- * actionuser.addUser(name,email,phone,pw)
- * getUser(email) void
- * useraction.getUser(email)
- */
+  /*
+	checkEmail: checkEmail,
+	checkPhone: checkPhone,
+	addUser: addUser,
+	getUser: getUser
+  */
   checkInfo(){
-    temp = checkEmail(email)
+    temp = useraction.checkEmail(email)
 
+    x = false
     //email exists
     if(!temp){
       console.log("email doesn't exist")
     }
-
-    user = getUser(email)
-    x = (user.password == password)
+    else{
+      user = useraction.getUser(email)
+      
+      console.log("user email " + user.email)
+      console.log("user pw " + user.password)
+      
+      x = (user.password == password)  
+    }
+      console.log("email entered " + email)
+      console.log("pw entered " + password) 
     
-    console.log("user email " + user.email)
-    console.log("user pw " + user.password)
-    console.log("email entered " + email)
-    console.log("pw entered " + password)    
     //prompt incorrect email or password accordingly
     this.setState({status: !x});
 

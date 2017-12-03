@@ -1,6 +1,7 @@
 import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import renderIf from './renderIf.js';
+import useraction from './useractions.js';
 
 //-1 represents empty values
 name = -1;
@@ -23,17 +24,29 @@ export default class SignUp extends React.Component {
       status:false
     }
   }
-
+  /*
+	checkEmail: checkEmail,
+	checkPhone: checkPhone,
+	addUser: addUser,
+	getUser: getUser
+  */
   checkInfo(){
-    //check if email or phone# exist in the db
-    x = (phoneNum==dbphoneNum || email == dbemail);
+    x = useraction.checkEmail(email)
+    y = useraction.checkPhone(phoneNum)
+
+    error = x || y
 
     //prompt incorrect email or password accordingly
-    this.setState({status: x});
+    this.setState({status: error});
+  
+    console.log("used email? " + x)
+    console.log("used phone? " + y)
+
 
     //log in successful, open the map
-    if(!x){
+    if(!error){
       //create new account for the user
+      useraction.addUser(name, email, phoneNum, password)
       this.props.navigation.navigate('SignUpCompleteScreen')
     }
   }
