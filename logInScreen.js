@@ -1,6 +1,7 @@
 import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import renderIf from './renderIf';
+import {checkEmail, checkPhone, getUser} from './db_actions/users_actions.js';
 
 //-1 represents empty values
 name = -1;
@@ -22,11 +23,30 @@ export default class LogIn extends React.Component {
       status:false
     }
   }
-
+/*check email return t/f
+ * useraction.getEmail(email)
+ * check phone return t/f
+ * useraction.checkPhone(phonenumber)
+ * add user (name, email, phoene,pw)
+ * actionuser.addUser(name,email,phone,pw)
+ * getUser(email) void
+ * useraction.getUser(email)
+ */
   checkInfo(){
-    //db function to check if <email, pw> pair exists in db
-    x = (email==dbemail && password==dbpassword);
+    temp = checkEmail(email)
 
+    //email exists
+    if(!temp){
+      console.log("email doesn't exist")
+    }
+
+    user = getUser(email)
+    x = (user.password == password)
+    
+    console.log("user email " + user.email)
+    console.log("user pw " + user.password)
+    console.log("email entered " + email)
+    console.log("pw entered " + password)    
     //prompt incorrect email or password accordingly
     this.setState({status: !x});
 
@@ -103,11 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
-contFb = () =>{
-  //search device for fb account
-  //db function to check if acc exists for fb info
- 
-  //if there's a matching account log in the user
-  //else send user to sign up screen w/ inputed values from fb info
-}
 
