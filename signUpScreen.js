@@ -1,7 +1,7 @@
 import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import renderIf from './renderIf.js';
-import useraction from './useractions.js';
+import useraction from './db_actions/users_actions.js';
 
 //-1 represents empty values
 name = -1;
@@ -46,6 +46,7 @@ export default class SignUp extends React.Component {
     //log in successful, open the map
     if(!error){
       //create new account for the user
+      console.log('add user was successful')
       useraction.addUser(name, email, phoneNum, password)
       this.props.navigation.navigate('SignUpCompleteScreen')
     }

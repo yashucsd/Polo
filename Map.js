@@ -16,9 +16,10 @@ import { StackNavigator } from "react-navigation";
 import emoji from "node-emoji";
 import markersData from "./markers.js";
 import Hosting from "./Hosting.js";
+import ActivityDetails from "./ActivityDetails.js";
 import renderIf from "./renderIf";
 import moment from "moment";
-import ActivityDetails from './ActivityDetails.js';
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
@@ -51,13 +52,15 @@ const activityList = [
   }
 ];
 
+
+console.disableYellowBox = true;
+
 export default class Map extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       status: false,
       activity: false,
-
       region: {
         latitude: 32.8804,
         longitude: -117.2375,
@@ -123,6 +126,7 @@ export default class Map extends React.Component {
       status: !this.state.status
     });
   }
+
   _renderButton = (text, onPress) => (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.button}>
@@ -153,16 +157,17 @@ export default class Map extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        {renderIf(this.state.status)(<Hosting/>)}
-	{renderIf(this.state.activity)(<ActivityDetails/>)}
+        {renderIf(this.state.status)(<Hosting />)}
+        {renderIf(this.state.activity)(<ActivityDetails />)}
+      
         {/* Setting attributes for the MapView */}
-        
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
             onPress={() => this.activityCreation()}
           >
-            <Text> + </Text>
+            <Text style ={{fontWeight: "bold", fontSize: 24}}> + </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -177,6 +182,8 @@ export default class Map extends React.Component {
             />
           </TouchableOpacity>
         </View>
+
+        <View style = {{flex: 500}}></View>
 
         <View style={styles.listContainer}>
           <FlatList
@@ -204,6 +211,7 @@ export default class Map extends React.Component {
           region={this.state.region}
           onRegionChange={this.onRegionChange}
         >
+
           {/* Information for each marker is used to create them (Child of MapView) */}
           {this.state.markers.map((marker, i) => (
             <MapView.Marker
@@ -211,6 +219,9 @@ export default class Map extends React.Component {
               coordinate={marker.latlng}
               title={marker.title}
               description={marker.description}
+              onPress = { () =>     
+                this.setState({ activity: !this.state.activity }) 
+              }
             >
               {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
               <View style={styles.markerBG}>
@@ -239,9 +250,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
 
     justifyContent: "space-between",
-    paddingTop: 20,
+    
     paddingLeft: 10,
     paddingRight: 10,
+
+    ...ifIphoneX({
+      paddingTop: 40
+    }, {
+      paddingTop: 20,
+    })
   },
 
   map: {
@@ -254,6 +271,11 @@ const styles = StyleSheet.create({
   listContainer: {
     padding: 10,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
+    ...ifIphoneX({
+      paddingBottom: 30
+    }, {
+      paddingBottom: 10,
+    })
   },
 
   activityListElement: {

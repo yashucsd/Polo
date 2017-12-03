@@ -2,7 +2,7 @@ import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import renderIf from './renderIf';
 import useraction from './db_actions/users_actions.js';
-
+import preferences from './db_actions/preferences_actions.js';
 //-1 represents empty values
 name = -1;
 phoneNum = -1;
@@ -17,8 +17,8 @@ dbpassword = 123;
 const {width, height} = Dimensions.get('window');
 
 export default class LogIn extends React.Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state ={
       status:false
     }
@@ -29,32 +29,19 @@ export default class LogIn extends React.Component {
 	addUser: addUser,
 	getUser: getUser
   */
+
   checkInfo(){
-    temp = useraction.checkEmail(email)
-
-    x = false
-    //email exists
-    if(!temp){
-      console.log("email doesn't exist")
-    }
-    else{
-      user = useraction.getUser(email)
-      
-      console.log("user email " + user.email)
-      console.log("user pw " + user.password)
-      
-      x = (user.password == password)  
-    }
-      console.log("email entered " + email)
-      console.log("pw entered " + password) 
+    useraction.checkEmail(email).then((value)=>{
+        if(value){
+           useraction.getUser(email).then((user)=>{
+	      if(user.password == password){
+      		this.props.navigation.navigate('MapScreen')
+	      }
+           })
+        }
+	this.setState({status: !value})
+    })
     
-    //prompt incorrect email or password accordingly
-    this.setState({status: !x});
-
-    //log in successful, open the map
-    if(x){
-      this.props.navigation.navigate('MapScreen')
-    }
   }
 
   render() {
@@ -100,8 +87,14 @@ export default class LogIn extends React.Component {
   	    title="Sign Up"
   	    color="#000"
 	  />
-	</View>
 
+	  {/*<Button
+	  onPress={()=>preferences.createPreferences("yes@gmail.com", [true, false])}
+	    title="Test"
+	    color="#000"
+	  />*/}
+
+	</View>
 	<View style = {{flex: 3}}>
 	  <Text style = {{height: Math.round(height*.085)}}></Text>
 	</View>
