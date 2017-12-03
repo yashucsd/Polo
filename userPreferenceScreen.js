@@ -1,20 +1,22 @@
 import React from 'react';
-import { TouchableHighlight, Dimensions, Button, StyleSheet, Text, View, TextInput, Image } from 'react-native';
+import {Slider, Switch, TouchableHighlight, Dimensions, Button, StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import renderIf from './renderIf.js';
 
-//preferences send to db
 emoji = require('node-emoji')
+
+//preferences send to db
 emojis = [0,0,0,0,0,0,0,0,0] //length 9
 
 const {width, height} = Dimensions.get('window');
 
-//I don't think this looks good
-//<Text style = {{fontSize: 40, fontWeight: 'bold', color: 'black'}}> Sign Up </Text>	
-export default class SignUpComplete extends React.Component {
+export default class UserPreference extends React.Component {
   
   constructor(){
     super();
     this.state ={
+      allNotifications:false,
+      popularActivities:false,
+      radius:0,
       emoji1:false,
       emoji2:false,
       emoji3:false,
@@ -26,10 +28,9 @@ export default class SignUpComplete extends React.Component {
       emoji9:false,
     }
   }
-  completeSignUp(){
-    //store arry of bools emojis in db
-    //complete profile creation
-    
+  
+  savePreferences(){
+    //update all preferences of user to db
     this.props.navigation.navigate('MapScreen')
   }
   flipEmoji(num){
@@ -68,11 +69,49 @@ export default class SignUpComplete extends React.Component {
     return (
       <View style = {styles.container}>
 	<Text></Text>	
-	<Text></Text>
 	
-	<Text style = {{fontSize: 30, fontWeight: 'bold', color: 'black'}}> Categories</Text>
-	<Text style = {{fontSize: 15, color: 'black'}}> Choose the categories of activities you want</Text>
-	<Text style = {{fontSize: 15, color: 'black'}}> to see on the map and be notified about </Text>
+	<Text style = {{fontSize: 30, fontWeight: 'bold', color: 'black'}}>User Preferences</Text>	
+	<View style = {{flex: 1}}></View>
+
+	<View style = {{flex: 4, width: width, flexDirection: 'column'}}>
+	  <View style = {{flexDirection: 'row'}}>
+	    <Text style = {{flex: 1}}></Text>
+	    <Text style = {styles.textFontB}>All Notifications</Text>
+	    <Text style = {{flex: 1}}></Text>
+	    <Switch onValueChange={(value) => this.setState({allNotifications: value})} value={this.state.allNotifications}/>
+	    <Text style = {{flex: 1}}></Text>
+	  </View>
+
+	  <View style = {{flexDirection: 'row'}}>
+	    <Text style = {{flex: 1}}></Text>
+	    <Text style = {styles.textFontB}>Popular Activities</Text>
+	    <Text style = {{flex: 1}}></Text>
+	    <Switch onValueChange={(value) => this.setState({popularActivities: value})} value={this.state.popularActivities}
+								disabled = {!this.state.allNotifications}/>
+	    <Text style = {{flex: 1}}></Text>
+	  </View>
+
+	  <View style = {{flexDirection: 'row'}}>
+	    <Text style = {{flex: 1}}></Text>
+	    <Text style = {styles.textFontB}>Activity Radius</Text>
+	    <Text style = {{flex: 1}}></Text>
+	    <Text style = {styles.textFontB}>{this.state.radius} miles</Text>
+	    <Text style = {{flex: 1}}></Text>
+	  </View>
+	</View>
+          <Slider
+            style={{ width: width*.8 }}
+            step={1}
+            minimumValue={0}
+            maximumValue={50}
+            value={this.state.radius}
+			disabled = {!this.state.allNotifications}
+            onValueChange={val => this.setState({ radius: val })}
+          />
+        
+	<Text style = {{fontSize: 20, fontWeight: 'bold', color: 'black'}}> Categories</Text>
+	<Text style = {styles.textFont}> Choose the categories of activities you want</Text>
+	<Text style = {styles.textFont}> to see on the map and be notified about </Text>
 
 	<Text></Text>
 
@@ -158,13 +197,21 @@ export default class SignUpComplete extends React.Component {
 	    <Text style = {{flex: 1}}></Text>
 	  </View>
 
-	  <Text></Text>
+	  <Text style = {{height: height*.1}}></Text>
 	</View>
 
 	<View style = {styles.buttons}>
 	  <Button style = {{color: 'blue'}}
-  	    onPress={() => this.completeSignUp()}
-  	    title="Complete Sign Up"
+  	    onPress={() => this.savePreferences()}
+  	    title="Save Preferences"
+  	    color="#000"
+	  />
+
+	  <Text style = {{width: width*.2}}></Text>
+
+	  <Button style = {{color: 'blue'}}
+  	    onPress={() => this.props.navigation.navigate('LogInScreen')}
+  	    title="Sign Out"
   	    color="#000"
 	  />
 	</View>
@@ -193,12 +240,12 @@ const styles = StyleSheet.create({
   },
   emote: {
     flex: 1,
-    fontSize: Math.round(height/20),
+    fontSize: Math.round(height/25),
     color: 'green',
   },
   emoteSmall: {
     flex: 1,
-    fontSize: Math.round(height/25),
+    fontSize: Math.round(height/45),
     color: 'green',
   },
   emoteRow: {
@@ -208,6 +255,15 @@ const styles = StyleSheet.create({
   emoteRowSmall: {
     flex: 1,
     flexDirection: 'row',
+  },
+  textFont:{
+    fontSize: 15,
+    color: 'black',
+  },
+  textFontB:{
+    fontSize: 15,
+    color: 'black',
+    fontWeight: 'bold',
   },
 });
 
