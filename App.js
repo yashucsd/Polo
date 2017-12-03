@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Text, View, Dimensions, FlatList } from 'react-native';
 import MapView from 'react-native-maps';
+import moment from 'moment';
 
 var deviceHeight = Dimensions.get('window').height;
 var deviceWidth =  Dimensions.get('window').width;
@@ -52,19 +53,16 @@ export default class App extends React.Component {
           followsUserLocation={true}
         />
         <Text style={styles.header}>Polo by MARCO</Text>
-        <Text>{ activityList[1].title }</Text>
-        <View>
+        <View style={styles.list}>
           <FlatList
             data={ activityList }
             renderItem={({ item }) => (
-              <View>
-                <Text>{item.emoji}</Text>
-                <Text>{item.title}</Text>
-                <Text>{
-                  new Date(Date.now() - 
-                  Number(item.time))
-                  // (new Date(Date.now() - Number(item.time))).getMonth()
-                }</Text>
+              <View style={styles.activityListElement}>
+                <Text style={styles.activityEmoji}>{item.emoji}</Text>
+                <View style={styles.activityInfo}>
+                  <Text style={styles.activityTitle}>{item.title}</Text>
+                  <Text>{moment(item.startTime).fromNow()}</Text>
+                </View>
               </View>
             )}
           />
@@ -73,18 +71,6 @@ export default class App extends React.Component {
     );
   }
 }
-
-class ActivityListElement extends Component {
-  render() {
-    return (
-      <View style={styles.activityListElement}>
-        {/*<Text>{this.props.data}</Text>*/}
-        {/*<Text>Yash {this.props.data}</Text>*/}
-        <Text>{this.props.data.key}</Text>
-      </View>
-    );
-  }
-};
 
 const styles = StyleSheet.create({
   container: {
@@ -103,25 +89,57 @@ const styles = StyleSheet.create({
     height: deviceHeight,
     width: deviceWidth,
   },
+  list: {
+    padding: 10,
+    alignItems: "flex-start",
+    flexDirection: "row",
+    height: 500,
+  },
   activityListElement: {
-    // color: '#000',
-  }
+    margin: 5,
+    paddingTop: 5,
+    flexDirection:'row',
+    flexWrap:'wrap'
+  },
+  activityEmoji: {
+    fontSize: 20,
+  },
+  activityInfo: {
+    marginLeft: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: "grey",
+    width: deviceWidth - 80,
+    paddingBottom: 5,
+  },
+  activityTitle: {
+    fontWeight: "bold",
+  },
+  activityTime: {
+    fontSize: 9,
+    fontWeight: "100",
+  } 
 });
 
 const activityList = [
   {
-    emoji: '🏓',
-    title: 'Ping Pong',
-    time: 1510854138,
+    activityId: 19230123,
+    startTime: "2017-12-03 09:30",
+    categoryId: 2,
+    emoji: '⛵',
+    title: 'Sailing',
   },
   {
+    activityId: 19230124,
+    startTime: "2017-12-03 10:30",
+    categoryId: 3,
     emoji: '🥐',
-    'title': 'Breakfast',
-    time: 1510854138,
+    title: 'Breakfast',
   },
   {
+    activityId: 19230125,
+    startTime: "2017-12-03 12:30",
+    categoryId: 2,
     emoji: '🏓',
     title: 'Ping Pong',
-    time: 1510854138,
   },
 ];
