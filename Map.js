@@ -130,10 +130,10 @@ export default class Map extends React.Component {
 	
 
         
-	<View style ={{position: 'absolute', flexDirection: 'row', top: -75}}>
+	{/*<View style ={{position: 'absolute', flexDirection: 'row', top: -75}}>
           {this._renderImage(image = require('./pictures/realplus.png'), () => this.setState({ visibleModal: 1 }))}
           {this._renderImage(image = require('./pictures/realprofile.png'), () => this.props.navigation.navigate('profileScreen'))}
-        </View>
+        </View>*/}
 
         <Modal isVisible={this.state.visibleModal === 1}>{this._renderModalContent()}</Modal>
         {/* <View style={styles.container}>
