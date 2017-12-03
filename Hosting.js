@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
 	flex: 1,
         flexDirection: "column",
         justifyContent: "flex-start",
-        backgroundColor: "white",
+        backgroundColor: "rgba(0,0,0,0)",
         alignItems: "center"
 
     },
