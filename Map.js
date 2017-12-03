@@ -19,6 +19,7 @@ import Hosting from "./Hosting.js";
 import ActivityDetails from "./ActivityDetails.js";
 import renderIf from "./renderIf";
 import moment from "moment";
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
@@ -52,6 +53,8 @@ circleSize = Math.round(width / 7);
 var markers2 = JSON.parse(markersData.test);
 
 //console.log(markers2);
+
+console.disableYellowBox = true;
 
 export default class Map extends React.Component {
   constructor(props) {
@@ -248,9 +251,15 @@ const styles = StyleSheet.create({
     flexDirection: "row",
 
     justifyContent: "space-between",
-    paddingTop: 20,
+    
     paddingLeft: 10,
     paddingRight: 10,
+
+    ...ifIphoneX({
+      paddingTop: 40
+    }, {
+      paddingTop: 20,
+    })
   },
 
   map: {
@@ -263,6 +272,11 @@ const styles = StyleSheet.create({
   listContainer: {
     padding: 10,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
+    ...ifIphoneX({
+      paddingBottom: 30
+    }, {
+      paddingBottom: 10,
+    })
   },
 
   activityListElement: {
