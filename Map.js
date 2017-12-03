@@ -119,8 +119,8 @@ export default class Map extends React.Component {
       position => {
         this.setState({
           region: {
-            latitude: 32.8803,//position.coords.latitude,
-            longitude: -117.241,//position.coords.longitude,
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }
