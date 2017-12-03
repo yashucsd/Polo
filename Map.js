@@ -1,16 +1,53 @@
-import React, { Component } from 'react';
-import { Image, TouchableOpacity, TouchableHighlight, Button, StyleSheet, Text, View, Dimensions } from 'react-native';
-import MapView from 'react-native-maps';
-import Modal from 'react-native-modal';
-import {StackNavigator} from "react-navigation"
-import emoji from 'node-emoji';
-import markersData from './markers.js';
-import Hosting from './Hosting.js';
-import renderIf from './renderIf';
+import React, { Component } from "react";
+import {
+  FlatList,
+  Image,
+  TouchableOpacity,
+  TouchableHighlight,
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  Dimensions
+} from "react-native";
+import MapView from "react-native-maps";
+import Modal from "react-native-modal";
+import { StackNavigator } from "react-navigation";
+import emoji from "node-emoji";
+import markersData from "./markers.js";
+import Hosting from "./Hosting.js";
+import renderIf from "./renderIf";
+import moment from "moment";
 
+var deviceHeight = Dimensions.get("window").height;
+var deviceWidth = Dimensions.get("window").width;
 
-const {width, height} = Dimensions.get('window');
-circleSize = Math.round(width/7)
+const activityList = [
+  {
+    activityId: 19230123,
+    startTime: "2017-12-03 09:30",
+    categoryId: 2,
+    emoji: "⛵",
+    title: "Sailing"
+  },
+  {
+    activityId: 19230124,
+    startTime: "2017-12-03 10:30",
+    categoryId: 3,
+    emoji: "🥐",
+    title: "Breakfast"
+  },
+  {
+    activityId: 19230125,
+    startTime: "2017-12-03 12:30",
+    categoryId: 2,
+    emoji: "🏓",
+    title: "Ping Pong"
+  }
+];
+
+const { width, height } = Dimensions.get("window");
+circleSize = Math.round(width / 7);
 var markers2 = JSON.parse(markersData.test);
 
 //console.log(markers2);
@@ -24,47 +61,71 @@ export default class Map extends React.Component {
         latitude: 32.8804,
         longitude: -117.2375,
         latitudeDelta: 0.008,
-        longitudeDelta: 0.008,
+        longitudeDelta: 0.008
       },
-      
-      markers:[
+
+      markers: [
         {
-          latlng: {latitude: 32.8804, longitude: -117.2375},
-          title: "Geisel Library", description: "Come study!", image: "books"
+          latlng: {
+            latitude: 32.8804,
+            longitude: -117.2375
+          },
+          title: "Geisel Library",
+          description: "Come study!",
+          image: "books"
         },
         {
-          latlng: {latitude: 32.884, longitude: -117.2381},
-          title: "RIMAC", description: "Playing basketball", image: "basketball"
+          latlng: {
+            latitude: 32.884,
+            longitude: -117.2381
+          },
+          title: "RIMAC",
+          description: "Playing basketball",
+          image: "basketball"
         },
         {
-          latlng: {latitude: 32.8801, longitude: -117.2340},
-          title: "Warren Dorms", description: "Playing video games", image: "video_game"
-        }, 
+          latlng: {
+            latitude: 32.8801,
+            longitude: -117.234
+          },
+          title: "Warren Dorms",
+          description: "Playing video games",
+          image: "video_game"
+        },
         {
-          latlng: {latitude: 32.8803, longitude: -117.241},
-          title: "Marshall College", description: "Walking my dog!", image: "dog"
-        }, 
+          latlng: {
+            latitude: 32.8803,
+            longitude: -117.241
+          },
+          title: "Marshall College",
+          description: "Walking my dog!",
+          image: "dog"
+        }
       ] // end of markers
     }; // end of this.state
     this.onRegionChange = this.onRegionChange.bind(this);
   }
 
   onRegionChange(region) {
-    this.setState({ region });
+    this.setState({
+      region
+    });
   }
 
-  activityCreation(){
+  activityCreation() {
     /* after first activity creation, will need to tap twice
-     * to create more activities, b/c when activityModule closes itself
-     * the map doesn't if that happens or not
-     */
+         * to create more activities, b/c when activityModule closes itself
+         * the map doesn't if that happens or not
+         */
     //start flow for creating an activity
-    this.setState({status: !this.state.status});
+    this.setState({
+      status: !this.state.status
+    });
   }
   _renderButton = (text, onPress) => (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.button}>
-        <Text>{text}</Text>
+        <Text> {text} </Text>
       </View>
     </TouchableOpacity>
   );
@@ -72,27 +133,66 @@ export default class Map extends React.Component {
   _renderImage = (image, onPress) => (
     <TouchableOpacity onPress={onPress}>
       <View style={styles.button}>
-        <Image 
-          source = {image}
-          style = {styles.image}
-        />
+        <Image source={image} style={styles.image} />
       </View>
     </TouchableOpacity>
   );
 
   _renderModalContent = () => (
     <View style={styles.modalContent}>
-      <Text>Insert Activity Creation</Text>
-      {this._renderButton('Close', () => this.setState({ visibleModal: null }))}
+      <Text> Insert Activity Creation </Text>
+      {this._renderButton("Close", () =>
+        this.setState({
+          visibleModal: null
+        })
+      )}
     </View>
-  )
+  );
 
   render() {
     return (
       <View style={styles.container}>
-        {renderIf(this.state.status)(<Hosting/>)}
+        {renderIf(this.state.status)(<Hosting />)}
         {/* Setting attributes for the MapView */}
-	<MapView style={styles.map}
+        
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => this.activityCreation()}
+          >
+            <Text> + </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() =>
+              this.props.navigation.navigate("UserPreferenceScreen")
+            }
+          >
+            <Image
+              style={styles.buttonImage}
+              source={require("./pictures/realprofile.png")}
+            />
+          </TouchableOpacity>
+        </View>
+
+        <View style={styles.listContainer}>
+          <FlatList
+            data={activityList}
+            renderItem={({ item }) => (
+              <View style={styles.activityListElement}>
+                <Text style={styles.activityEmoji}> {item.emoji} </Text>
+                <View style={styles.activityInfo}>
+                  <Text style={styles.activityTitle}> {item.title} </Text>
+                  <Text> {moment(item.startTime).fromNow()} </Text>
+                </View>
+              </View>
+            )}
+          />
+        </View>
+
+        <MapView
+          style={styles.map}
           mapType="standard"
           showsUserLocation={true}
           showsCompass={true}
@@ -102,134 +202,138 @@ export default class Map extends React.Component {
           region={this.state.region}
           onRegionChange={this.onRegionChange}
         >
-		
-        {/* Information for each marker is used to create them 
-            (Child of MapView) */}
-        {this.state.markers.map((marker, i) => (
-          <MapView.Marker
-            key={i}
-            coordinate={marker.latlng}
-            title={marker.title}
-            description={marker.description}>
-
-            {/* This is a custom view to show an emoji and its BG 
-                (Child of MapView.Marker) */}
-            <View style={styles.markerBG}>
-              <Text style={styles.markerEmoji}>{emoji.get(marker.image)}</Text>
-            </View>
-
-          </MapView.Marker>
-        ))}
-
+          {/* Information for each marker is used to create them (Child of MapView) */}
+          {this.state.markers.map((marker, i) => (
+            <MapView.Marker
+              key={i}
+              coordinate={marker.latlng}
+              title={marker.title}
+              description={marker.description}
+            >
+              {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
+              <View style={styles.markerBG}>
+                <Text style={styles.markerEmoji}>
+                  {emoji.get(marker.image)}
+                </Text>
+              </View>
+            </MapView.Marker>
+          ))}
         </MapView>
-	
-       {/*<View style ={{position: 'absolute', flexDirection: 'row', top: -75}}>
-          {this._renderImage(image = require('./pictures/realplus.png'), () => this.setState({ visibleModal: 1 }))}
-          {this._renderImage(image = require('./pictures/realprofile.png'), () => this.props.navigation.navigate('UserPreferenceScreen'))}
-        </View>
-
-        <Modal isVisible={this.state.visibleModal === 1}>{this._renderModalContent()}</Modal>*/}
-        {/* <View style={styles.container}>
-          <Text style={styles.header}>
-            Latitude: {this.state.region.latitude}{'\n'}
-            Longitude: {this.state.region.longitude}{'\n'}
-            LatitudeDelta: {this.state.region.latitudeDelta}{'\n'}
-            LongitudeDelta: {this.state.region.longitudeDelta}
-          </Text>
-        </View> */}
-	  <View style = {{flex: 1, position: 'absolute'}}></View>
-
-	  <View style = {{flexDirection: 'row', position: 'absolute'}}>
-	    <TouchableOpacity style = {styles.circle} onPress={() => this.activityCreation()}>
-	      <Text>+</Text>
-	    </TouchableOpacity>
-	    
-	    <Text style = {{width: Math.floor(width*.71)}}> </Text>
-
-	    <TouchableOpacity style = {styles.circle}
-      	      onPress={() => this.props.navigation.navigate('UserPreferenceScreen')}>
-
-	      <Image 
-	        style = {styles.circleImage} 
-	        source = {require('./pictures/realprofile.png')}
-	      />
-	    </TouchableOpacity>
-
-	  </View>
-
-	  <View style = {{flex: 5}}></View>
-  	</View>
+      </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
+
   container: {
     flex: 1,
-    backgroundColor: '#d3d3d3',
+    backgroundColor: "rgba(0,0,0,0)",
+    justifyContent: "space-between",
+    flexDirection: "column",
   },
-  header: {
-    fontSize: 18,
-    color: 'black',
-    fontWeight: 'bold',
+
+  buttonContainer: {
+    flexDirection: "row",
+
+    justifyContent: "space-between",
+    paddingTop: 20,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
+
   map: {
-    width: Dimensions.get('window').width,
-    height: Dimensions.get('window').height,
+    position: "absolute",
+    height: deviceHeight,
+    width: deviceWidth,
     zIndex: -1,
   },
+
+  listContainer: {
+    padding: 10,
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+  },
+
+  activityListElement: {
+    margin: 5,
+    paddingTop: 5,
+    flexDirection: "row",
+    flexWrap: "wrap"
+  },
+
+  activityEmoji: {
+    fontSize: 20
+  },
+
+  activityInfo: {
+    marginLeft: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: "grey",
+    width: deviceWidth - 100,
+    paddingBottom: 5
+  },
+
+  activityTitle: {
+    fontWeight: "bold",
+  },
+
+  activityTime: {
+    fontSize: 9,
+    fontWeight: "100"
+  },
+
   markerBG: {
-    backgroundColor: 'rgba(52, 52, 52, 0.75)',
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: 'black',
+    backgroundColor: "rgba(52, 52, 52, 0.75)",
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "black",
     height: 60,
-    width: 60, 
+    width: 60,
     padding: 5,
     borderRadius: 30,
   },
+
   markerEmoji: {
     fontSize: 30,
-    color: 'black'
+    color: "black",
   },
-  circle:{
-    borderWidth:1,
-    alignItems:'center',
-    justifyContent:'center',
-    width:circleSize,
-    height:circleSize,
-    borderRadius:circleSize,
-    borderColor: 'white',
-    backgroundColor: '#fff' 
-  },
-  circleImage:{
-    borderWidth:1,
-    width:circleSize,
-    height:circleSize,
-    borderRadius:circleSize,
-  },
+
   button: {
-    padding: 12,
-    margin: 85,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    width: circleSize,
+    height: circleSize,
+    borderRadius: circleSize,
+    borderColor: "white",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
   },
-  image:{
+
+  buttonImage: {
+    borderWidth: 1,
+    width: circleSize,
+    height: circleSize,
+    borderRadius: circleSize,
+  },
+
+  image: {
     height: 50,
     width: 50,
   },
+
   modalContent: {
-    backgroundColor: 'white',
+    backgroundColor: "white",
     padding: 22,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 4,
-    borderColor: 'rgba(0, 0, 0, 0.1)',
+    borderColor: "rgba(0, 0, 0, 0.1)",
   },
+
   bottomModal: {
-    justifyContent: 'flex-end',
+    justifyContent: "flex-end",
     margin: 0,
-  },
+  }
+
 });
+
