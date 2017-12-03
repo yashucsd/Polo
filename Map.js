@@ -234,12 +234,9 @@ const styles = StyleSheet.create({
   },
 
   buttonContainer: {
-    height: 50,
-    flex: 1,
     flexDirection: "row",
 
     justifyContent: "space-between",
-    backgroundColor: "transparent",
     paddingTop: 20,
     paddingLeft: 10,
     paddingRight: 10,
