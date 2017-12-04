@@ -60,9 +60,11 @@ export default class ActivityDetails extends React.Component {
         >
           <View style={styles.modalContentContainer}>
             <View style={styles.row}>
-              <Text style={styles.titleText}>Emoji</Text>
-              <Text> </Text>
-              <Text style={styles.titleText}>{event.title}</Text>
+              <Text style={styles.titleText}> 🐶 </Text>
+              <View style={styles.column}>
+                <Text style={styles.titleText}>{event.title}</Text>
+                <Text style={styles.miniText}>Start time:{event.startTime}</Text>
+              </View>
               <Text> </Text>
               <Image
                 source={{
@@ -94,35 +96,37 @@ export default class ActivityDetails extends React.Component {
               />
             </View>
             <View style={styles.row}>
-              <Text style={styles.miniText}>Start time:{event.startTime}</Text>
-            </View>
-            <View style={styles.row}>
               <Directions />
               <TouchableOpacity
                 style={styles.roundButton}
-                onPress={() => this.handleGetDirections(this.activity_location.latitude,
-                                                        this.activity_location.longitude)}
-                >
+              >
                   <Text style={styles.joinText}>Join Activity</Text>
               </TouchableOpacity>
             </View>
-            <Text style={styles.descriptionText}>{event.description}</Text>
+            <View style={styles.row}>
+              <Text style={styles.descriptionText}>{event.description}</Text>
+            </View>
             <View style={styles.row}>
               <Icon
                 name="share"
-                size={30}
-                color="skyblue"
+                size={25}
+                color="#058EFA"
                 onPress={() => {
                   Share.open(shareOptions);
                 }}
               />
               <Text style={{ flex: 1 }}> </Text>
-              <Button title="Close" color="black" onPress={this._hideModal} />
+              <TouchableOpacity
+                style={styles.closeButton}
+                onPress={this._hideModal}
+              >
+                <Text style={styles.closeText}>X</Text>
+              </TouchableOpacity>
               <Text style={{ flex: 1 }}> </Text>
               <Icon
                 name="flag"
-                size={30}
-                color="skyblue"
+                size={25}
+                color="#058EFA"
                 onPress={() => {
                   if (!reportFlag) {
                     Alert.alert(
@@ -178,6 +182,11 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     padding: 10,
   },
+  column: {
+    flex: 1,
+    flexDirection: "column",
+    width: 40
+  },
   extras: {
     flex: 1,
     flexDirection: "column",
@@ -220,7 +229,7 @@ const styles = StyleSheet.create({
   roundButton: {
     backgroundColor: '#FFFFFF',
     borderRadius: 10,
-    height: 40,
+    height: 35,
     width: 165,
     alignItems: 'center',
     borderColor: '#058EFA',
@@ -228,6 +237,19 @@ const styles = StyleSheet.create({
   },
   joinText: {
     color: '#058EFA',
-    paddingTop: 10,
+    paddingTop: 7.5,
   },
+  closeButton: {
+    backgroundColor: '#FFFFFF',
+    borderRadius: 10,
+    height: 30,
+    width: 30,
+    alignItems: 'center',
+    borderColor: '#058EFA',
+  },
+  closeText: {
+    color: '#058EFA',
+    fontSize: 24,
+    fontWeight: 'bold',
+  }
 });

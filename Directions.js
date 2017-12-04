@@ -52,13 +52,13 @@ const styles = StyleSheet.create ({
    button: {
      backgroundColor: '#058EFA',
      borderRadius: BORDER_RADIUS,
-     height: 40,
+     height: 35,
      width: 165,
      alignItems: 'center',
    },
    text: {
      color: '#FFFFFF',
-     paddingTop: 10,
+     paddingTop: 7.5,
    },
    roundedButton: {
      borderRadius: BORDER_RADIUS,
