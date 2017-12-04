@@ -2,6 +2,10 @@ var ObjectID = require('mongodb').ObjectID;
 var assert = require('assert');
 
 module.exports = function(app, db) {
+
+	app.get('/users/', (req,res)=>{
+		res.send("USERS WORKING");
+	});
 	
 	//getting email for User check
 	app.get("/users/:email", (req,res)=>{
