@@ -1,6 +1,7 @@
 import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import renderIf from './renderIf';
+import useraction from './db_actions/users_actions';
 
 //-1 represents empty values
 name = -1;
@@ -19,21 +20,24 @@ export default class LogIn extends React.Component {
   constructor(){
     super();
     this.state ={
-      status:false
+      status:false,
+      email: "Email",
+      password: "Password"
     }
   }
 
   checkInfo(){
-    //db function to check if <email, pw> pair exists in db
-    x = (email==dbemail && password==dbpassword);
-
-    //prompt incorrect email or password accordingly
-    this.setState({status: !x});
-
-    //log in successful, open the map
-    if(x){
-      this.props.navigation.navigate('MapScreen')
-    }
+    useraction.checkEmail(this.state.email).then(data=>{
+      if(data){
+        useraction.getUser(this.state.email).then(user=>{
+          if(this.state.password == user.password){
+            this.props.navigation.navigate("MapScreen");
+          }
+        });
+      }
+      this.setState({status:!data});
+    });
+    
   }
 
   render() {
@@ -55,12 +59,12 @@ export default class LogIn extends React.Component {
 	<KeyboardAvoidingView style = {{flex: 2, width: Math.round(width*.66)}} behavior="height">	
 	  <TextInput style = {{flex:1, fontSize: 25}}
 	     placeholder = "Email"
-	     onEndEditing ={(event) => email = event.nativeEvent.text}
+	     onChangeText ={(event) => this.setState({email:event})}
 	  />
 
 	  <TextInput style = {{flex: 1, fontSize: 25}}
 	     placeholder = "Password"
-	     onEndEditing ={(event) => password = event.nativeEvent.text}
+	     onChangeText ={(event) => this.setState({password:event})}
 	  />
 	  <Text style = {{flex: 1, height: Math.round(height*.05)}}></Text>
 	</KeyboardAvoidingView>
