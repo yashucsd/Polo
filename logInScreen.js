@@ -24,18 +24,16 @@ export default class LogIn extends React.Component {
      console.log('entered pw ' + this.state.password)
      console.log('entered email ' + this.state.email)
 	 
-     useraction.checkEmail(this.state.email).then((value)=>{
+     useraction.checkEmail("User@gmail.com").then((value)=>{
           console.log("I'M IN")
 	  if(value){
-            useraction.getUser(this.state.email).then((user)=>{
+            useraction.getUser("User@gmail.com").then((user)=>{
                if(this.state.password == user.password){
                  console.log("Name is " +user.name);
                  console.log("Email is " + user.email);
                  this.props.navigation.navigate("MapScreen")
                }
-            }).catch(function (err) {
-        	return err;
-      	    });
+            })
          }
          this.setState({status:!value});
      });
