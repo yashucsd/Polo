@@ -9,24 +9,29 @@ import UserPreference from './userPreferenceScreen.js';
 
 const RootNavigator = StackNavigator({
   
-  MapScreen:{
-    screen: Map,
-    navigationOptions: { header: null },
-  },
   LogInScreen: {
     screen: LogIn,
+    navigationOptions: { header: null },
   },
 
   SignUpScreen: {
     screen: SignUp,
+    navigationOptions: { header: null },
+  },
+  
+  MapScreen:{
+    screen: Map,
+    navigationOptions: { header: null },
   },
 
   SignUpCompleteScreen: {
     screen: SignUpComplete,
+    navigationOptions: { header: null },
   },
 
   UserPreferenceScreen: {
     screen: UserPreference,
+    navigationOptions: { header: null },
   },
 });
 

@@ -22,7 +22,12 @@ export default class SignUp extends React.Component {
       password: "Password"
     }
   }
-
+  /*
+	checkEmail: checkEmail,
+	checkPhone: checkPhone,
+	addUser: addUser,
+	getUser: getUser
+  */
   checkInfo(){
     //check if email or phone# exist in the db
     var emailCheck;

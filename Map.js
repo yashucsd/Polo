@@ -23,6 +23,10 @@ import { ifIphoneX } from 'react-native-iphone-x-helper';
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
+var markers2 = JSON.parse(markersData.test);
+
+const {width, height} = Dimensions.get('window');
+circleSize = Math.round(width/7)
 
 const activityList = [
   {
@@ -47,10 +51,6 @@ const activityList = [
     title: "Ping Pong"
   }
 ];
-
-const { width, height } = Dimensions.get("window");
-circleSize = Math.round(width / 7);
-var markers2 = JSON.parse(markersData.test);
 
 const LATITUDE = 32.8804;
 const LONGITUDE = -117.2375;
