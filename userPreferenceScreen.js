@@ -13,9 +13,10 @@ import {
     ScrollView,
 } from "react-native";
 import renderIf from "./renderIf.js";
+import preferences from "./db_actions/preferences_actions";
 
 emoji = require("node-emoji");
-
+checkmark = './resources/checkmark.svg';
 //preferences send to db
 emojisArr= [0, 0, 0, 0, 0, 0, 0, 0, 0]; //length 9
 col1 = [emoji.get("basketball"), emoji.get("books"), emoji.get("hamburger")];
@@ -83,7 +84,7 @@ export default class UserPreference extends React.Component {
                 this.setState({ emoji9: !this.state.emoji9 });
                 break;
         }
-        emoji[num - 1] = !emoji[num - 1];
+
 
         emojisArr[num - 1] = !emojisArr[num-1];
     }
@@ -178,19 +179,156 @@ export default class UserPreference extends React.Component {
                 <View style={{backgroundColor: 'white', justifyContent: 'space-between', paddingBottom: 30,
                 marginBottom:30, }}>
                     <View style = {styles.yashMargin}>
-                        <View style = {styles.markerBG}></View>
-                        <View style = {styles.markerBG}></View>
-                        <View style = {styles.markerBG}></View>
+
+                        <View style = {styles.markerBG}>
+                            <Text style = {styles.emoteSmall}>
+                                {renderIf(this.state.emoji1)
+                                (<Image
+                                    source = {require('./pictures/checkmark.png')}
+
+                                />)}
+                            </Text>
+                            <TouchableHighlight style = {{}}
+                                                onPress = {() => this.flipEmoji(1)}
+                                                underlayColor={'transparent'}>
+                                <Text style = {styles.emote}>
+                                    {emoji.get('basketball')}
+                                </Text>
+                            </TouchableHighlight>
+                        </View>
+
+                        <View style = {styles.markerBG}>
+                            <Text style = {styles.emoteSmall}>
+                                {renderIf(this.state.emoji2)
+                                (<Image
+                                    source = {require('./pictures/checkmark.png')}
+                                    style = {{position: 'absolute'}}
+                                />)}
+                            </Text>
+                            <TouchableHighlight style = {{}}
+                                                onPress = {() => this.flipEmoji(2)}
+                                                underlayColor={'transparent'}>
+                                <Text style = {styles.emote}>
+                                    {emoji.get('books')}
+                                </Text>
+                            </TouchableHighlight>
+                        </View>
+                        <View style = {styles.markerBG}>
+                            <Text style = {styles.emoteSmall}>
+                                {renderIf(this.state.emoji3)
+                                (<Image
+                                    source = {require('./pictures/checkmark.png')}
+                                    style = {{position: 'absolute'}}
+                                />)}
+                            </Text>
+                            <TouchableHighlight style = {{}}
+                                                onPress = {() => this.flipEmoji(3)}
+                                                underlayColor={'transparent'}>
+                                <Text style = {styles.emote}>
+                                    {emoji.get('hamburger')}
+                                </Text>
+                            </TouchableHighlight>
+                        </View>
                     </View>
                     <View style = {styles.yashMargin}>
-                        <View style = {styles.markerBG}></View>
-                        <View style = {styles.markerBG}></View>
-                        <View style = {styles.markerBG}></View>
+                        <View style = {styles.markerBG}>
+                            <Text style = {styles.emoteSmall}>
+                                {renderIf(this.state.emoji4)
+                                (<Image
+                                    source = {require('./pictures/checkmark.png')}
+                                    style = {{position: 'absolute'}}
+                                />)}
+                            </Text>
+                            <TouchableHighlight style = {{}}
+                                                onPress = {() => this.flipEmoji(4)}
+                                                underlayColor={'transparent'}>
+                                <Text style = {styles.emote}>
+                                    {emoji.get('snow_capped_mountain')}
+                                </Text>
+                            </TouchableHighlight>
+                        </View>
+                        <View style = {styles.markerBG}>
+                            <Text style = {styles.emoteSmall}>
+                                {renderIf(this.state.emoji5)
+                                (<Image
+                                    source = {require('./pictures/checkmark.png')}
+                                    style = {{position: 'absolute'}}
+                                />)}
+                            </Text>
+                            <TouchableHighlight style = {{}}
+                                                onPress = {() => this.flipEmoji(5)}
+                                                underlayColor={'transparent'}>
+                                <Text style = {styles.emote}>
+                                    {emoji.get('shopping_bags')}
+                                </Text>
+                            </TouchableHighlight>
+                        </View>
+                        <View style = {styles.markerBG}>
+                            <Text style = {styles.emoteSmall}>
+                                {renderIf(this.state.emoji6)
+                                (<Image
+                                    source = {require('./pictures/checkmark.png')}
+                                    style = {{position: 'absolute'}}
+                                />)}
+                            </Text>
+                            <TouchableHighlight style = {{}}
+                                                onPress = {() => this.flipEmoji(6)}
+                                                underlayColor={'transparent'}>
+                                <Text style = {styles.emote}>
+                                    {emoji.get('snowflake')}
+                                </Text>
+                            </TouchableHighlight>
+                        </View>
                     </View>
                     <View style = {styles.yashMargin}>
-                        <View style = {styles.markerBG}></View>
-                        <View style = {styles.markerBG}></View>
-                        <View style = {styles.markerBG}></View>
+                        <View style = {styles.markerBG}>
+                            <Text style = {styles.emoteSmall}>
+                                {renderIf(this.state.emoji7)
+                                (<Image
+                                    source = {require('./pictures/checkmark.png')}
+                                    style = {{position: 'absolute'}}
+                                />)}
+                            </Text>
+                            <TouchableHighlight style = {{}}
+                                                onPress = {() => this.flipEmoji(7)}
+                                                underlayColor={'transparent'}>
+                                <Text style = {styles.emote}>
+                                    {emoji.get('video_game')}
+                                </Text>
+                            </TouchableHighlight>
+                        </View>
+                        <View style = {styles.markerBG}>
+                            <Text style = {styles.emoteSmall}>
+                                {renderIf(this.state.emoji8)
+                                (<Image
+                                    source = {require('./pictures/checkmark.png')}
+                                    style = {{position: 'absolute'}}
+                                />)}
+                            </Text>
+                            <TouchableHighlight style = {{}}
+                                                onPress = {() => this.flipEmoji(8)}
+                                                underlayColor={'transparent'}>
+                                <Text style = {styles.emote}>
+                                    {emoji.get('tada')}
+                                </Text>
+                            </TouchableHighlight>
+                        </View>
+                        <View style = {styles.markerBG}>
+                            <Text style = {styles.emoteSmall}>
+                                {renderIf(this.state.emoji9)
+                                (<Image
+                                    source = {require('./pictures/checkmark.png')}
+                                    style = {{position: 'absolute'}}
+                                />)}
+                            </Text>
+                            <TouchableHighlight style = {{}}
+                                                onPress = {() => this.flipEmoji(9)}
+                                                underlayColor={'transparent'}>
+                                <Text style = {styles.emote}>
+                                    {emoji.get('weight_lifter')}
+                                </Text>
+                            </TouchableHighlight>
+                        </View>
                     </View>
 
                 </View>
@@ -227,14 +365,16 @@ const styles = StyleSheet.create({
         fontSize: 25
     },
     emote: {
-        flex: 1,
         fontSize: Math.round(height / 25),
-        color: "green"
+        color: "green",
+        paddingBottom: 25,
+
     },
     emoteSmall: {
-        flex: 1,
-        fontSize: Math.round(height / 45),
-        color: "green"
+        fontSize: Math.round(height / 80),
+        color: "green",
+        paddingLeft: 50,
+
     },
     emoteRow: {
         flex: 2,
@@ -277,12 +417,15 @@ const styles = StyleSheet.create({
     },
 
     markerBG: {
-        backgroundColor: "rgba(52, 52, 52, 0.75)",
+        backgroundColor: "#333",
         borderColor: "black",
         height: 84,
         width: 84,
         borderRadius: 42,
         marginTop: 10,
+        alignItems: 'center',
+        justifyContent: 'space-between',
+
 
     },
 
