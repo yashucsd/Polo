@@ -17,6 +17,7 @@ import Share, { ShareSheet } from "react-native-share"; //Need to npm install re
 import Directions from "./Directions.js";
 
 var activityDetails = require('./db_actions/activities_actions');
+
 var MOCKED_EVENT_DATA = [
   {
     title: "Soccer",
@@ -29,10 +30,11 @@ var MOCKED_EVENT_DATA = [
 var reportFlag = false;
 
 export default class ActivityDetails extends React.Component {
+
   constructor(props) {
     super(props);
     this.state = {
-      isModalVisible: false
+      isModalVisible: true
     }
   }
 
@@ -41,6 +43,7 @@ export default class ActivityDetails extends React.Component {
   
   render() {
     var event = MOCKED_EVENT_DATA[0];
+
     let shareOptions = {
       title: "Lil Pump-Gucci Gang",
       message: "Look at what I'm doing on Polo!",
@@ -50,16 +53,13 @@ export default class ActivityDetails extends React.Component {
  
     return (
       <View style={styles.container}>
-        <Button
-          onPress={this._showModal}
-          title="Activity Details"
-          color="black"
-        />
+
         <Modal
           isVisible={this.state.isModalVisible}
           backdropOpacity={0}
           style={styles.bottomModal}
         >
+
           <View style={styles.modalContentContainer}>
             <View style={styles.row}>
               <Text style={styles.titleText}> {event.emoji} </Text>
@@ -167,7 +167,6 @@ export default class ActivityDetails extends React.Component {
         </Modal>
       </View> 
     );
-
   }
 }
 
@@ -178,8 +177,6 @@ const styles = StyleSheet.create({
     borderRadius: 30/2
   },
   container: {
-    flex: 1,
-    backgroundColor: "#d3d3d3",
     alignItems: "center",
     justifyContent: "center"
   },
