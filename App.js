@@ -6,6 +6,7 @@ import SignUp from './signUpScreen.js';
 import SignUpComplete from './signUpCompleteScreen.js';
 import Map from './Map.js';
 import UserPreference from './userPreferenceScreen.js';
+import UserPreferenceBackup from './userPreferenceScreenBackup';
 
 const RootNavigator = StackNavigator({
   
