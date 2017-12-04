@@ -12,18 +12,21 @@ import {
   TouchableOpacity
 } from "react-native";
 import Modal from "react-native-modal"; //Need to npm install react-native-modal --save
-import Icon from "react-native-vector-icons/FontAwesome"; //Need to npm install react-native-elements --save
+import Icon from "react-native-vector-icons/Feather"; //Need to npm install react-native-elements --save
 import Share, { ShareSheet } from "react-native-share"; //Need to npm install react-native-share --save
 import Directions from "./Directions.js";
 
+var activityDetails = require('./db_actions/activities_actions');
 var MOCKED_EVENT_DATA = [
   {
     title: "Soccer",
+    emoji: "🐶",
     startTime: "12:00",
     description:
       "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Get ready... Start!"
   }
 ];
+var reportFlag = false;
 
 export default class ActivityDetails extends React.Component {
   constructor(props) {
@@ -35,17 +38,16 @@ export default class ActivityDetails extends React.Component {
 
   _showModal = () => this.setState({ isModalVisible: true });
   _hideModal = () => this.setState({ isModalVisible: false });
-
+  
   render() {
     var event = MOCKED_EVENT_DATA[0];
     let shareOptions = {
-      title: "Lil Pump",
-      message: "Gucci Gang",
+      title: "Lil Pump-Gucci Gang",
+      message: "Look at what I'm doing on Polo!",
       url: "https://www.youtube.com/watch?v=4LfJnj66HVQ",
       subject: "Share Link"
     };
-    var reportFlag = false;
-
+ 
     return (
       <View style={styles.container}>
         <Button
@@ -60,7 +62,7 @@ export default class ActivityDetails extends React.Component {
         >
           <View style={styles.modalContentContainer}>
             <View style={styles.row}>
-              <Text style={styles.titleText}> 🐶 </Text>
+              <Text style={styles.titleText}> {event.emoji} </Text>
               <View style={styles.column}>
                 <Text style={styles.titleText}>{event.title}</Text>
                 <Text style={styles.miniText}>Start time:{event.startTime}</Text>
@@ -71,28 +73,28 @@ export default class ActivityDetails extends React.Component {
                   uri:
                     "https://cdn1.thr.com/sites/default/files/imagecache/scale_crop_768_433/2017/08/110129_0773b2_-_h_2017.jpg"
                 }}
-                style={{ width: 30, height: 30, borderRadius: 30 / 2 }}
+                style={styles.attendeePhotos}
               />
               <Image
                 source={{
                   uri:
                     "http://cdn.skim.gs/image/upload/c_fill,dpr_1.0,f_auto,fl_lossy,q_auto,w_940/c_scale,w_640/v1463693334/Cydney-Gillon-cast-survivor-kaoh-rong-season-32-cbs_hn1y3n.jpg"
                 }}
-                style={{ width: 30, height: 30, borderRadius: 30 / 2 }}
+                style={styles.attendeePhotos}
               />
               <Image
                 source={{
                   uri:
                     "http://wwwimage1.cbsstatic.com/base/files/cast/surv33_cast_hannahshapiro.jpg"
                 }}
-                style={{ width: 30, height: 30, borderRadius: 30 / 2 }}
+                style={styles.attendeePhotos}
               />
               <Image
                 source={{
                   uri:
                     "http://wwwimage2.cbsstatic.com/base/files/cast/surv28_cast_sarah.jpg"
                 }}
-                style={{ width: 30, height: 30, borderRadius: 30 / 2 }}
+                style={styles.attendeePhotos}
               />
             </View>
             <View style={styles.row}>
@@ -108,7 +110,7 @@ export default class ActivityDetails extends React.Component {
             </View>
             <View style={styles.row}>
               <Icon
-                name="share"
+                name="upload"
                 size={25}
                 color="#058EFA"
                 onPress={() => {
@@ -134,7 +136,7 @@ export default class ActivityDetails extends React.Component {
                       "Are you sure you would like to report this event?",
                       [
                         {
-                          text: "OK",
+                          text: "Flag this Activity",
                           onPress: () => {
                             reportFlag = true;
                             Alert.alert(
@@ -145,9 +147,9 @@ export default class ActivityDetails extends React.Component {
                             );
                           }
                         },
-                        { text: "Cancel" }
+                      { text: "Cancel" }
                       ],
-                      { cancelable: false }
+                    { cancelable: false }
                     );
                   } else {
                     Alert.alert(
@@ -157,17 +159,24 @@ export default class ActivityDetails extends React.Component {
                       { cancelable: false }
                     );
                   }
-                }}
+                  }
+                }
               />
             </View>
           </View>
         </Modal>
-      </View>
+      </View> 
     );
+
   }
 }
 
 const styles = StyleSheet.create({
+  attendeePhotos: {
+    height: 30,
+    width: 30,
+    borderRadius: 30/2
+  },
   container: {
     flex: 1,
     backgroundColor: "#d3d3d3",
@@ -205,7 +214,7 @@ const styles = StyleSheet.create({
   },
   descriptionText: {
     fontSize: 14,
-    padding: 0,
+    padding: 6,
     margin: 0
   },
   miniText: {
