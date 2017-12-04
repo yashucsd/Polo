@@ -1,41 +1,48 @@
 import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import renderIf from './renderIf.js';
+import useraction from './db_actions/users_actions';
 
 //-1 represents empty values
-name = -1;
-phoneNum = -1;
-email = -1;
-password = -1;
-
-//vars for testing
-dbphoneNum = 123
-dbemail = 123
 
 //for sizing
 const {width, height} = Dimensions.get('window');
+
+var expEmail = -1;
 
 export default class SignUp extends React.Component {
   
   constructor(){
     super();
     this.state ={
-      status:false
+      status:false,
+      name: "Name",
+      email: "Email",
+      phone: "Phone",
+      password: "Password"
     }
   }
 
   checkInfo(){
     //check if email or phone# exist in the db
-    x = (phoneNum==dbphoneNum || email == dbemail);
-
-    //prompt incorrect email or password accordingly
-    this.setState({status: x});
-
-    //log in successful, open the map
-    if(!x){
-      //create new account for the user
-      this.props.navigation.navigate('SignUpCompleteScreen')
-    }
+    var emailCheck;
+    var phoneCheck;
+    useraction.checkEmail(this.state.email).then(exist=>{
+      if(!exist){
+        useraction.checkPhone(this.state.phone).then(val=>{
+          if(!val){
+            console.log("ENTERING SIGN UP");
+            useraction.addUser(this.state.name, this.state.email, this.state.phone, this.state.password).then(suc=>{});
+            this.props.navigation.navigate("SignUpCompleteScreen");
+          }else{
+            phoneCheck = false;
+          }
+        });
+      }else{
+        emailCheck = false;
+      }
+      this.setState({status:emailCheck || phoneCheck});
+    });
   }
 
   render() {
@@ -55,21 +62,26 @@ export default class SignUp extends React.Component {
 	<KeyboardAvoidingView style = {{flex: 5, width: Math.round(width*.6)}} behavior = "height">	
 	  <TextInput style = {styles.input}
 	     placeholder = "Name"
-	     onEndEditing ={(event) => name = event.nativeEvent.text}
+	     onChangeText = {event => this.setState({name: event})}
 	  />
 
 	  <TextInput style = {styles.input}
 	     placeholder = "Email"
-	     onEndEditing ={(event) => email = event.nativeEvent.text}
+	     onChangeText = {event => {
+        this.setState({email: event});
+        expEmail = event;
+      }
+     }
 	  />
 
 	  <TextInput style = {styles.input}
 	     placeholder = "Phone #"
-	     onEndEditing ={(event) => phoneNum = event.nativeEvent.text}
-	  />
+	     onChangeText = {event => this.setState({phone: event})}	 
+    />
+
 	  <TextInput style = {styles.input}
 	     placeholder = "Password"
-	     onEndEditing ={(event) => password = event.nativeEvent.text}
+	     onChangeText = {event => this.setState({password: event})}
 	  />
 	  <Text style = {{flex: 1}}></Text>
 	</KeyboardAvoidingView>
@@ -106,3 +118,4 @@ const styles = StyleSheet.create({
   },
 });
 
+export {expEmail};

@@ -1,6 +1,8 @@
 import React, {Component} from 'react';
-import {Button, StyleSheet, Text, View} from 'react-native';
+import {Button, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import getDirections from 'react-native-google-maps-directions'; //npm install --save react-native-google-maps-directions
+
+const BORDER_RADIUS = 10;
 
 export default class Directions extends React.Component{
   //Will get location coords from JSON object later
@@ -29,12 +31,15 @@ export default class Directions extends React.Component{
 
   render() {
     return (
-      <Button
-        title="Get Directions"
-        color="blue"
+      <TouchableOpacity
+        style={styles.button}
         onPress={() => this.handleGetDirections(this.activity_location.latitude,
                                                 this.activity_location.longitude)}
-      />
+      >
+        <Text style={styles.text}>Get Directions</Text>
+      </TouchableOpacity>
+
+
     )
   }
 }
@@ -44,4 +49,18 @@ const styles = StyleSheet.create ({
       flex: 1,
       alignItems: 'center',
    },
+   button: {
+     backgroundColor: '#058EFA',
+     borderRadius: BORDER_RADIUS,
+     height: 35,
+     width: 165,
+     alignItems: 'center',
+   },
+   text: {
+     color: '#FFFFFF',
+     paddingTop: 7.5,
+   },
+   roundedButton: {
+     borderRadius: BORDER_RADIUS,
+   }
 })

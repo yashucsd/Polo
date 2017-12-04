@@ -190,25 +190,13 @@ export default class Map extends React.Component {
     </View>
   );
 
-  componentWillMount = () => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      this.setState({position: {longitude: position.longitude, latitude: position.latitude}});
-    }, (error) => {
-      alert(JSON.stringify(error))
-    }, {
-      enableHighAccuracy: false,
-      timeout: 20000,
-      maximumAge: 1000
-    });
-  }
-
   render() {
     return (
       <View style={styles.container}>
         {renderIf(this.state.status)(<Hosting />)}
         {renderIf(this.state.activity)(<ActivityDetails />)}
         {/* Setting attributes for the MapView */}
-        
+
         <View style={styles.buttonContainer}>
           <TouchableOpacity
             style={styles.button}
@@ -255,7 +243,6 @@ export default class Map extends React.Component {
           toolbarEnabled={true}
           region={this.state.region}
           onRegionChange={this.onRegionChange}
-          followsUserLocation={true}
         >
           {/* Information for each marker is used to create them (Child of MapView) */}
           {this.state.markers.map((marker, i) => (
