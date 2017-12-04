@@ -12,16 +12,10 @@ module.exports = function(app, db) {
     });
 
     // POST all perferences of the user, with an email, have to pass in email to this
-    app.post('/preferences/', (req, res) => {
-        console.log("ENtering Preference POst");
-        const user = {"email": req.body.email, "notif_tog": req.body.notif_tog, "radius": req.body.radius, "categories": req.body.categories};
-        db.collection('preferences').insert(user, (err, result) => {
-            if (err) {
-                res.send({ "error": "An error has occured"});
-            } else {
-                console.log("POSTING PREF SUCCESS");
-                res.send(result.ops[0]);
-            }
+    app.post("/preferences/", (req, res)=>{
+        var ins = {email:req.body.email, notif_tog:req.body.notif_tog, radius: req.body.radius, categories: req.body.categories};
+        db.collection('preferences').insert(ins, (err,result)=>{
+            res.sendStatus(200);
         });
     });
 

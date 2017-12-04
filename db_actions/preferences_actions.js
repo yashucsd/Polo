@@ -4,11 +4,9 @@ var sub = 'http://localhost:3001/preferences/';
 function createPreferences(email, categories) {
 
     // categories must be an array of booleans 
-    var user = { "email": email, "notif_tog": true, "radius": 50, "categories": categories};
-    
+    var user = { email: email, notif_tog: true, radius: 50, categories: categories};
     // use fetch() to make HTTP requests to our api
-    var path = sub;
-    fetch(path, {
+    return fetch(sub, {
         method: 'POST', 
         headers: {
         'Accept': 'application/json',
