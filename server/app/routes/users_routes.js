@@ -46,6 +46,7 @@ module.exports = function(app, db) {
         db.collection('Users').insert(user, (err, result) => {
         	assert.equal(err,null);
             console.log("Successfully Inserted User");
+            res.send(200);
         });
     });
 

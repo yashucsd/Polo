@@ -1,10 +1,12 @@
 import React from 'react';
 import { TouchableHighlight, Dimensions, Button, StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import renderIf from './renderIf.js';
+import {expEmail} from './signUpScreen.js';
+import preferences from './db_actions/preferences_actions.js';
 
 //preferences send to db
 emoji = require('node-emoji')
-emojis = [0,0,0,0,0,0,0,0,0] //length 9
+emojis = [false,false,false,false,false,false,false,false,false] //length 9
 
 const {width, height} = Dimensions.get('window');
 
@@ -28,8 +30,13 @@ export default class SignUpComplete extends React.Component {
   }
   completeSignUp(){
     //store arry of bools emojis in db
-    //complete profile creation
-    
+    //complete profile 
+    console.log("EMAIL IS " + expEmail);
+    preferences.createPreferences(expEmail, emojis).then(val=>{
+    	if(val == 200){
+    		console.log("200 hondo");
+    	}
+    });
     this.props.navigation.navigate('MapScreen')
   }
   flipEmoji(num){

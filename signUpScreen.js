@@ -1,27 +1,25 @@
 import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image } from 'react-native';
 import renderIf from './renderIf.js';
-import useraction from './db_actions/users_actions.js';
+import useraction from './db_actions/users_actions';
 
 //-1 represents empty values
-name = -1;
-phoneNum = -1;
-email = -1;
-password = -1;
-
-//vars for testing
-dbphoneNum = 123
-dbemail = 123
 
 //for sizing
 const {width, height} = Dimensions.get('window');
+
+var expEmail = -1;
 
 export default class SignUp extends React.Component {
   
   constructor(){
     super();
     this.state ={
-      status:false
+      status:false,
+      name: "Name",
+      email: "Email",
+      phone: "Phone",
+      password: "Password"
     }
   }
   /*
@@ -31,25 +29,25 @@ export default class SignUp extends React.Component {
 	getUser: getUser
   */
   checkInfo(){
-    x = useraction.checkEmail(email)
-    y = useraction.checkPhone(phoneNum)
-
-    error = x || y
-
-    //prompt incorrect email or password accordingly
-    this.setState({status: error});
-  
-    console.log("used email? " + x)
-    console.log("used phone? " + y)
-
-
-    //log in successful, open the map
-    if(!error){
-      //create new account for the user
-      console.log('add user was successful')
-      useraction.addUser(name, email, phoneNum, password)
-      this.props.navigation.navigate('SignUpCompleteScreen')
-    }
+    //check if email or phone# exist in the db
+    var emailCheck;
+    var phoneCheck;
+    useraction.checkEmail(this.state.email).then(exist=>{
+      if(!exist){
+        useraction.checkPhone(this.state.phone).then(val=>{
+          if(!val){
+            console.log("ENTERING SIGN UP");
+            useraction.addUser(this.state.name, this.state.email, this.state.phone, this.state.password).then(suc=>{});
+            this.props.navigation.navigate("SignUpCompleteScreen");
+          }else{
+            phoneCheck = false;
+          }
+        });
+      }else{
+        emailCheck = false;
+      }
+      this.setState({status:emailCheck || phoneCheck});
+    });
   }
 
   render() {
@@ -69,21 +67,26 @@ export default class SignUp extends React.Component {
 	<KeyboardAvoidingView style = {{flex: 5, width: Math.round(width*.6)}} behavior = "height">	
 	  <TextInput style = {styles.input}
 	     placeholder = "Name"
-	     onEndEditing ={(event) => name = event.nativeEvent.text}
+	     onChangeText = {event => this.setState({name: event})}
 	  />
 
 	  <TextInput style = {styles.input}
 	     placeholder = "Email"
-	     onEndEditing ={(event) => email = event.nativeEvent.text}
+	     onChangeText = {event => {
+        this.setState({email: event});
+        expEmail = event;
+      }
+     }
 	  />
 
 	  <TextInput style = {styles.input}
 	     placeholder = "Phone #"
-	     onEndEditing ={(event) => phoneNum = event.nativeEvent.text}
-	  />
+	     onChangeText = {event => this.setState({phone: event})}	 
+    />
+
 	  <TextInput style = {styles.input}
 	     placeholder = "Password"
-	     onEndEditing ={(event) => password = event.nativeEvent.text}
+	     onChangeText = {event => this.setState({password: event})}
 	  />
 	  <Text style = {{flex: 1}}></Text>
 	</KeyboardAvoidingView>
@@ -120,3 +123,4 @@ const styles = StyleSheet.create({
   },
 });
 
+export {expEmail};

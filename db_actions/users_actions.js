@@ -49,8 +49,7 @@ function checkPhone(phone){
 
 //adding user into the system
 function addUser(name, email, phone, password){
-	var user = {name: name, email:email, phone:phone, password: password, list: list};
-	return function(){
+	var user = {name: name, email:email, phone:phone, password: password};
 		var link = sub;
 		return fetch(link, {
 			method: "POST",
@@ -59,8 +58,12 @@ function addUser(name, email, phone, password){
         		'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(user)
+		}).then(response => response.json())
+		.then(message=>{
+			if(message == 200){
+				return true;
+			}
 		});
-	}
 }
 
 
