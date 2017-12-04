@@ -2,6 +2,8 @@ import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import renderIf from './renderIf';
 import useraction from './db_actions/users_actions';
+import preferences from "./db_actions/preferences_actions.js";
+
 
 //-1 represents empty values
 name = -1;
@@ -65,13 +67,14 @@ export default class LogIn extends React.Component {
 	  <TextInput style = {{flex: 1, fontSize: 25}}
 	     placeholder = "Password"
 	     onChangeText ={(event) => this.setState({password:event})}
+       text = {this.state.password}
 	  />
 	  <Text style = {{flex: 1, height: Math.round(height*.05)}}></Text>
 	</KeyboardAvoidingView>
 
 	<View style = {styles.buttons}>
 	  <Button
-  	    onPress={()=>this.checkInfo()}
+  	    onPress={()=> this.checkInfo()}
   	    title="Log In"
   	    color="#000"
 	  />
