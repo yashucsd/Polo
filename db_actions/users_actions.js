@@ -66,7 +66,7 @@ function addUser(name, email, phone, password){
 
 //gets info of user
 //returns object in form of an object 
-// {name: "name", email: "email@gmail.com", phone: "123-456-7890", password: "asdf", list: [true,true,true,true,true]}
+// {name: "name", email: "email@gmail.com", phone: "123-456-7890", password: "asdf"}
 function getUser(email){
 
 		var link = sub + "getUser/" + email;
@@ -78,9 +78,12 @@ function getUser(email){
 			}})
 		.then(response=>response.json())
 		.then(data=>{
-			console.log(data.name);
-			return data;
+			var obj = {name: data.name, email: data.email, phone: data.phone, password: data.password};
+			return obj;
+
 		});
+
+
 	
 }
 

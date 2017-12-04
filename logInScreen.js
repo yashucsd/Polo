@@ -1,8 +1,8 @@
 import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import renderIf from './renderIf';
-import useraction from './db_actions/users_actions.js';
-import preferences from './db_actions/preferences_actions.js';
+import useraction from './db_actions/users_actions';
+
 
 //-1 represents empty values
 name = -1;
@@ -15,28 +15,23 @@ export default class LogIn extends React.Component {
     super(props);
     this.state ={
       status:false,
-      password: "Password",
-      email: "email",
+      email: "Email",
+      password: "Password"
     }
   }
 
   checkInfo(){
-     console.log('entered pw ' + this.state.password)
-     console.log('entered email ' + this.state.email)
-	 
-     useraction.checkEmail("User@gmail.com").then((value)=>{
-          console.log("I'M IN")
-	  if(value){
-            useraction.getUser("User@gmail.com").then((user)=>{
-               if(this.state.password == user.password){
-                 console.log("Name is " +user.name);
-                 console.log("Email is " + user.email);
-                 this.props.navigation.navigate("MapScreen")
-               }
-            })
-         }
-         this.setState({status:!value});
-     });
+    useraction.checkEmail(this.state.email).then(data=>{
+      if(data){
+        useraction.getUser(this.state.email).then(user=>{
+          if(this.state.password == user.password){
+            this.props.navigation.navigate("MapScreen");
+          }
+        });
+      }
+      this.setState({status:!data});
+    });
+    
   }
  
   render() {
@@ -52,44 +47,46 @@ export default class LogIn extends React.Component {
     <View style = {{flex: 1}}>
       <Text style = {{flex: 1}}></Text>
           {renderIf(this.state.status)(<Text style = {{height: 20, color: 'red', fontSize: 15}}>Incorrect Phone # or Password</Text>)}
-      <Text style = {{flex: 1}}></Text>
-    </View>
-         
-    <KeyboardAvoidingView style = {{flex: 2, width: Math.round(width*.66)}} behavior="height"> 
-      <TextInput style = {{flex:1, fontSize: 25}}
-         placeholder = "Email"
-         onChangeText = {(event) => this.setState({email: event})}
-         text = {this.state.email}
-      />
- 
-      <TextInput style = {{flex: 1, fontSize: 25}}
-         placeholder = "Password"
-         onChangeText = {(event) => this.setState({password: event})}
-         text = {this.state.password}
-      />
-      <Text style = {{flex: 1, height: Math.round(height*.05)}}></Text>
-    </KeyboardAvoidingView>
- 
-    <View style = {styles.buttons}>
-      <Button
-        onPress={()=> this.checkInfo()}
-        title="Log In"
-        color="#000"
-      />
- 
-      <Text style = {{width: Math.floor(width*.2)}}> </Text>
- 
-      <Button
-            onPress={() => this.props.navigation.navigate('SignUpScreen')}
-        title="Sign Up"
-        color="#000"
-      />
-    </View>
- 
-    <View style = {{flex: 3}}>
-      <Text style = {{height: Math.round(height*.085)}}></Text>
-    </View>
- 
+	  <Text style = {{flex: 1}}></Text>
+   	</View>
+          
+	<KeyboardAvoidingView style = {{flex: 2, width: Math.round(width*.66)}} behavior="height">	
+	  <TextInput style = {{flex:1, fontSize: 25}}
+	     placeholder = "Email"
+	     onChangeText ={(event) => this.setState({email:event})}
+	  />
+
+	  <TextInput style = {{flex: 1, fontSize: 25}}
+	     placeholder = "Password"
+	     onChangeText ={(event) => this.setState({password:event})}
+       text = {this.state.password}
+	  />
+	  <Text style = {{flex: 1, height: Math.round(height*.05)}}></Text>
+	</KeyboardAvoidingView>
+
+	<View style = {styles.buttons}>
+	  <Button
+  	    onPress={()=> this.checkInfo()}
+  	    title="Log In"
+  	    color="#000"
+	  />
+
+	  <Text style = {{width: Math.floor(width*.2)}}> </Text>
+
+	  <Button
+      	    onPress={() => this.props.navigation.navigate('SignUpScreen')}
+  	    title="Sign Up"
+  	    color="#000"
+	  />
+	</View>
+
+	<View style = {{flex: 3}}>
+	  <Text style = {{height: Math.round(height*.085)}}></Text>
+	  
+	  <View style = {{flexDirection: 'row'}}>
+	  </View>
+	</View>
+
       </View>
      
  )}
