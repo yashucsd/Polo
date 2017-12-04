@@ -5,7 +5,7 @@ var sub = "http://localhost:3001/users/";
 //returns false if it doesn't exists
 function checkEmail(email){
 		var link = sub + email;
-		fetch(link, {method: "GET", 
+		return fetch(link, {method: "GET", 
 			headers: {
         		'Accept': 'application/json',
         		'Content-Type': 'application/json',
@@ -30,7 +30,7 @@ function checkEmail(email){
 //returns false if it doesnt exist
 function checkPhone(phone){
 		var link = sub + "getPhone/" + phone;
-		fetch(link, {method: "GET", 
+		return fetch(link, {method: "GET", 
 			headers: {
 				'Accept': 'application/json',
         		'Content-Type': 'application/json',
@@ -66,11 +66,11 @@ function addUser(name, email, phone, password){
 
 //gets info of user
 //returns object in form of an object 
-// {name: "name", email: "email@gmail.com", phone: "123-456-7890", password: "asdf", list: [true,true,true,true,true]}
+// {name: "name", email: "email@gmail.com", phone: "123-456-7890", password: "asdf"}
 function getUser(email){
 
 		var link = sub + "getUser/" + email;
-		fetch(link, {
+		return fetch(link, {
 			method: "GET",
 			headers: {
 				'Accept': 'application/json',
@@ -78,9 +78,12 @@ function getUser(email){
 			}})
 		.then(response=>response.json())
 		.then(data=>{
-			console.log(data.name);
-			return data;
+			var obj = {name: data.name, email: data.email, phone: data.phone, password: data.password};
+			return obj;
+
 		});
+
+
 	
 }
 
