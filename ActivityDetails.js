@@ -53,11 +53,7 @@ export default class ActivityDetails extends React.Component {
  
     return (
       <View style={styles.container}>
-        <Button
-          onPress={this._showModal}
-          title="Activity Details"
-          color="black"
-        />
+
         <Modal
           isVisible={this.state.isModalVisible}
           backdropOpacity={0}
@@ -181,8 +177,6 @@ const styles = StyleSheet.create({
     borderRadius: 30/2
   },
   container: {
-    flex: 1,
-    backgroundColor: "#d3d3d3",
     alignItems: "center",
     justifyContent: "center"
   },

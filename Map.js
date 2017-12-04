@@ -119,8 +119,8 @@ export default class Map extends React.Component {
       position => {
         this.setState({
           region: {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+            latitude: 32.8803,//position.coords.latitude,
+            longitude: -117.241,//position.coords.longitude,
             latitudeDelta: LATITUDE_DELTA,
             longitudeDelta: LONGITUDE_DELTA,
           }
@@ -202,7 +202,7 @@ export default class Map extends React.Component {
             style={styles.button}
             onPress={() => this.activityCreation()}
           >
-            <Text> + </Text>
+            <Text style = {{fontWeight: "bold", fontSize: 24}}> + </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
