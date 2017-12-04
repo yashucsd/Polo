@@ -7,19 +7,13 @@ import useraction from './db_actions/users_actions';
 //-1 represents empty values
 name = -1;
 phoneNum = -1;
-email = -1;
-password = -1;
 
-//for testing
-dbemail = 123;
-dbpassword = 123;
-
-//for sizing
+logInEmail = -1
 const {width, height} = Dimensions.get('window');
-
+ 
 export default class LogIn extends React.Component {
-  constructor(){
-    super();
+  constructor(props){
+    super(props);
     this.state ={
       status:false,
       email: "Email",
@@ -36,23 +30,24 @@ export default class LogIn extends React.Component {
           }
         });
       }
+      logInEmail = this.state.email
       this.setState({status:!data});
     });
     
   }
-
+ 
   render() {
-    return (   
+    return (  
       <View style = {styles.container}>
         <Text style = {{flex: 1}}></Text>
-	
-	<Image 
-	   style = {{width: 165, height: 108}} 
-	   source = {require('./resources/polo_logo.png')}
-	/>
-	
-	<View style = {{flex: 1}}>
-	  <Text style = {{flex: 1}}></Text>
+   
+    <Image
+       style = {{width: 165, height: 108}}
+       source = {require('./resources/polo_logo.png')}
+    />
+   
+    <View style = {{flex: 1}}>
+      <Text style = {{flex: 1}}></Text>
           {renderIf(this.state.status)(<Text style = {{height: 20, color: 'red', fontSize: 15}}>Incorrect Phone # or Password</Text>)}
 	  <Text style = {{flex: 1}}></Text>
    	</View>
@@ -66,7 +61,7 @@ export default class LogIn extends React.Component {
 	  <TextInput style = {{flex: 1, fontSize: 25}}
 	     placeholder = "Password"
 	     onChangeText ={(event) => this.setState({password:event})}
-       text = {this.state.password}
+             text = {this.state.password}
 	  />
 	  <Text style = {{flex: 1, height: Math.round(height*.05)}}></Text>
 	</KeyboardAvoidingView>
@@ -91,24 +86,14 @@ export default class LogIn extends React.Component {
 	  <Text style = {{height: Math.round(height*.085)}}></Text>
 	  
 	  <View style = {{flexDirection: 'row'}}>
-	    <Image
-	       style = {{width: 40, height: 40}}
-	       source = {require('./resources/fb.png')}
-	    />
-	    <Button
-	      style = {{height: 40}}
-  	      onPress={contFb}
-  	      title="Continue with Facebook"
-  	      color="#3b5998"
-	    />
 	  </View>
 	</View>
 
       </View>
-      
+     
  )}
 };
-
+ 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -122,11 +107,4 @@ const styles = StyleSheet.create({
   },
 });
 
-contFb = () =>{
-  //search device for fb account
-  //db function to check if acc exists for fb info
- 
-  //if there's a matching account log in the user
-  //else send user to sign up screen w/ inputed values from fb info
-}
-
+export {logInEmail}

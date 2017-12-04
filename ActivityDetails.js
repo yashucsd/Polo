@@ -37,6 +37,9 @@ export default class ActivityDetails extends React.Component {
       isModalVisible: true
     }
   }
+  joinActivity(){
+  //starts flow for joining activity
+  }
 
   _showModal = () => this.setState({ isModalVisible: true });
   _hideModal = () => this.setState({ isModalVisible: false });
