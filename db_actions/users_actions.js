@@ -52,7 +52,7 @@ function addUser(name, email, phone, password){
 	var user = {name: name, email:email, phone:phone, password: password, list: list};
 	return function(){
 		var link = sub;
-		fetch(link, {
+		return fetch(link, {
 			method: "POST",
 			headers: {
 				'Accept': 'application/json',
