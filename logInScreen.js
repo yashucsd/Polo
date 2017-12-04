@@ -2,7 +2,6 @@ import React from 'react';
 import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image} from 'react-native';
 import renderIf from './renderIf';
 import useraction from './db_actions/users_actions';
-import preferences from "./db_actions/preferences_actions.js";
 
 
 //-1 represents empty values
