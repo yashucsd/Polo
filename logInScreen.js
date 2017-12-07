@@ -60,6 +60,7 @@ export default class LogIn extends React.Component {
 
 	  <TextInput style = {{flex: 1, fontSize: 25}}
 	     placeholder = "Password"
+         secureTextEntry = {true}
 	     onChangeText ={(event) => this.setState({password:event})}
              text = {this.state.password}
 	  />
