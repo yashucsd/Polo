@@ -20,6 +20,9 @@ import ActivityDetails from './ActivityDetails.js';
 import renderIf from "./renderIf";
 import moment from "moment";
 import { ifIphoneX } from 'react-native-iphone-x-helper';
+import {expEmail} from './signUpScreen.js'
+import {logInEmail} from './logInScreen.js'
+import activityActions from './db_actions/activities_actions';
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
@@ -51,6 +54,8 @@ const activityList = [
     title: "Ping Pong"
   }
 ];
+
+var activities = []
 
 const LATITUDE = 32.8804;
 const LONGITUDE = -117.2375;
@@ -110,6 +115,7 @@ export default class Map extends React.Component {
           image: "dog"
         }
       ] // end of markers
+
     }; // end of this.state
     this.onRegionChange = this.onRegionChange.bind(this);
   }
@@ -143,6 +149,13 @@ export default class Map extends React.Component {
     );
   }
 
+  // called before screen is loaded
+  componentWillMount() {
+    activityActions.getActivities().then(data => {
+      console.log(data);
+    })
+  }
+
   componentWillUnmount() {
     navigator.geolocation.clearWatch(this.watchID);
   }
@@ -151,6 +164,12 @@ export default class Map extends React.Component {
     this.setState({
       region
     });
+  }
+
+  get() {
+    activityActions.getActivities((acts) => {
+      console.log(acts);
+    })
   }
 
   activityCreation() {
@@ -191,7 +210,9 @@ export default class Map extends React.Component {
   );
 
   render() {
+    //{ this.get() }
     return (
+      
       <View style={styles.container}>
         {renderIf(this.state.status)(<Hosting />)}
         {renderIf(this.state.activity)(<ActivityDetails />)}

@@ -6,6 +6,8 @@ import ModalSelector from 'react-native-modal-selector';
 import emoji from 'node-emoji';
 import activity_actions from './db_actions/activities_actions';
 import moment from "moment";
+import {expEmail} from './signUpScreen.js'
+import {logInEmail} from './logInScreen.js'
 
 const {width, height} = Dimensions.get('window');
 
@@ -19,6 +21,9 @@ var startTime= 0;
 var longitude= -1;
 var latitude= -1;
 var categoryID= -1;
+var hostEmail = -1;
+var rating = "no ratings yet"
+var guest = []
 
 
 export default class Hosting extends React.Component {
@@ -41,6 +46,11 @@ export default class Hosting extends React.Component {
 
 
     createActivity = () =>{
+        if (logInEmail != -1) {
+            hostEmail = logInEmail;
+        } else {
+            hostEmail = expEmail;
+        }
 
         var activity = {
 
@@ -57,9 +67,13 @@ export default class Hosting extends React.Component {
 
             "description": description,
 
-            "emoji": emoj
+            "emoji": emoj,
 
+            "rating": rating,
 
+            "hostEmail": hostEmail,
+
+            "guests": guest
         }
         activity_actions.createActivity(activity, this.setState({categoryDescription: "Which kind of event is this?"}));
     }
