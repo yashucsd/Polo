@@ -312,8 +312,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   checkboxImg: {
-    height: 27,
-    width: 27,
+    height: width / 15,
+    width: width / 15,
   },
   categoryEmojiRow: {
     flex: 2,
