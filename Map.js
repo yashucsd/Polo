@@ -20,10 +20,15 @@ import ActivityDetails from './ActivityDetails.js';
 import renderIf from "./renderIf";
 import moment from "moment";
 import { ifIphoneX } from 'react-native-iphone-x-helper';
+import {logInEmail} from './logInScreen.js';
+import {expEmail} from './signUpScreen.js';
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
 var markers2 = JSON.parse(markersData.test);
+var email;
+
+
 
 const {width, height} = Dimensions.get('window');
 circleSize = Math.round(width/7)
@@ -115,6 +120,7 @@ export default class Map extends React.Component {
   }
 
   componentDidMount() {
+    email = expEmail + logInEmail;
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -388,4 +394,6 @@ const styles = StyleSheet.create({
   }
 
 });
+
+export {email};
 
