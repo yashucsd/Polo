@@ -56,6 +56,8 @@ export default class SignUp extends React.Component {
         style={styles.container}
         contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
       >
+        <Text style = {{flex: 2}}> </Text>
+        <Text style = {{flex: 2}}> </Text>
         <Text style = {{height: Math.round(height*.025)}}></Text>
 	    <Image
 	      style = {{width: 165, height: 108}}
