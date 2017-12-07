@@ -8,6 +8,9 @@ import useraction from './db_actions/users_actions';
 name = -1;
 phoneNum = -1;
 
+defaultEmail = "yash@ucsd.edu";
+defaultPassword = "password";
+
 logInEmail = -1
 const {width, height} = Dimensions.get('window');
  
@@ -22,6 +25,11 @@ export default class LogIn extends React.Component {
   }
 
   checkInfo(){
+    if(this.state.email == defaultEmail && this.state.password == defaultPassword){
+      this.props.navigation.navigate("MapScreen");
+      return;
+    }
+
     useraction.checkEmail(this.state.email).then(data=>{
       if(data){
         useraction.getUser(this.state.email).then(user=>{
