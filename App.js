@@ -8,7 +8,7 @@ import Map from './Map.js';
 import UserPreference from './userPreferenceScreen.js';
 
 const RootNavigator = StackNavigator({
-  
+
   LogInScreen: {
     screen: LogIn,
     navigationOptions: { header: null },

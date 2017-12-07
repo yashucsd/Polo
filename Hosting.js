@@ -54,11 +54,11 @@ export default class Hosting extends React.Component {
 
         var activity = {
 
-            "startTime": moment().add(startTime, 'hour').format('LT'),
+            "startTime": moment().add(startTime, 'hour'),
 
-            "location": {
-                "lat": latitude,
-                "lng": longitude,
+            "coordinate": {
+                "latitude": latitude,
+                "longitude": longitude,
             },
 
             "category": categoryID,

@@ -15,7 +15,6 @@ import MapView from "react-native-maps";
 import Modal from "react-native-modal";
 import { StackNavigator } from "react-navigation";
 import emoji from "node-emoji";
-import markersData from "./markers.js";
 import Hosting from "./Hosting.js";
 import renderIf from "./renderIf";
 import moment from "moment";
@@ -29,7 +28,7 @@ import Share, { ShareSheet } from "react-native-share";
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
-var markers2 = JSON.parse(markersData.test);
+
 var activityDetails = require('./db_actions/activities_actions');
 
 const {width, height} = Dimensions.get('window');
@@ -59,7 +58,17 @@ const activityList = [
   }
 ];
 
-var activities = []
+var emojiArr = [
+  "basketball",
+  "books",
+  "hamburger",
+  "snow_capped_mountain",
+  "shopping_bags",
+  "snowflake",
+  "video_game",
+  "tada",
+  "weight_lifter",
+]
 
 const LATITUDE = 32.8804;
 const LONGITUDE = -117.2375;
@@ -92,44 +101,7 @@ export default class Map extends React.Component {
         longitudeDelta: LONGITUDE_DELTA,
       },
 
-      markers: [
-        {
-          latlng: {
-            latitude: 32.8804,
-            longitude: -117.2375
-          },
-          title: "Geisel Library",
-          description: "Come study!",
-          image: "books"
-        },
-        {
-          latlng: {
-            latitude: 32.884,
-            longitude: -117.2381
-          },
-          title: "RIMAC",
-          description: "Playing basketball",
-          image: "basketball"
-        },
-        {
-          latlng: {
-            latitude: 32.8801,
-            longitude: -117.234
-          },
-          title: "Warren Dorms",
-          description: "Playing video games",
-          image: "video_game"
-        },
-        {
-          latlng: {
-            latitude: 32.8803,
-            longitude: -117.241
-          },
-          title: "Marshall College",
-          description: "Walking my dog!",
-          image: "dog"
-        }
-      ] // end of markers
+      activities: []
 
     }; // end of this.state
     this.onRegionChange = this.onRegionChange.bind(this);
@@ -167,7 +139,8 @@ export default class Map extends React.Component {
   // called before screen is loaded
   componentWillMount() {
     activityActions.getActivities().then(data => {
-      console.log(data);
+      this.setState({activities: data});
+      console.log(this.state.activities);
     })
   }
 
@@ -222,6 +195,38 @@ export default class Map extends React.Component {
         })
       )}
     </View>
+  );
+
+  _renderMap = () => (
+    <MapView
+      style={styles.map}
+      mapType="standard"
+      showsUserLocation={true}
+      showsCompass={true}
+      showsPointsOfInterest={true}
+      showsMyLocationButton={true}
+      toolbarEnabled={true}
+      region={this.state.region}
+      onRegionChange={this.onRegionChange}
+    >
+      {/* Information for each marker is used to create them (Child of MapView) */}
+      {this.state.activities.map((marker) => (
+        <MapView.Marker
+          key={marker.hostEmail}
+          coordinate={marker.coordinate}
+          title={marker.title}
+          description={marker.description}
+          onPress={() => this.setState({ activity: true })}
+        >
+          {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
+          <View style={styles.markerBG}>
+            <Text style={styles.markerEmoji}>
+              {emoji.get(emojiArr[marker.category - 1])}
+            </Text>
+          </View>
+        </MapView.Marker>
+      ))}
+    </MapView>
   );
 
 
@@ -378,10 +383,10 @@ export default class Map extends React.Component {
 
         <View style={styles.listContainer}>
           <FlatList
-            data={activityList}
+            data={this.state.activities}
             renderItem={({ item }) => (
               <View style={styles.activityListElement}>
-                <Text style={styles.activityEmoji}> {item.emoji} </Text>
+                <Text style={styles.activityEmoji}> {emoji.get(emojiArr[item.category - 1])} </Text>
                 <View style={styles.activityInfo}>
                   <Text style={styles.activityTitle}> {item.title} </Text>
                   <Text> {moment(item.startTime).fromNow()} </Text>
@@ -391,35 +396,8 @@ export default class Map extends React.Component {
           />
         </View>
 
-        <MapView
-          style={styles.map}
-          mapType="standard"
-          showsUserLocation={true}
-          showsCompass={true}
-          showsPointsOfInterest={true}
-          showsMyLocationButton={true}
-          toolbarEnabled={true}
-          region={this.state.region}
-          onRegionChange={this.onRegionChange}
-        >
-          {/* Information for each marker is used to create them (Child of MapView) */}
-          {this.state.markers.map((marker, i) => (
-            <MapView.Marker
-              key={i}
-              coordinate={marker.latlng}
-              title={marker.title}
-              description={marker.description}
-              onPress = {this._showModal}
-            >
-              {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
-              <View style={styles.markerBG}>
-                <Text style={styles.markerEmoji}>
-                  {emoji.get(marker.image)}
-                </Text>
-              </View>
-            </MapView.Marker>
-          ))}
-        </MapView>
+        {this._renderMap()}
+        
       </View>
     );
   }

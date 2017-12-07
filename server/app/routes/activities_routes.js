@@ -43,7 +43,7 @@ module.exports = function(app, db) {
     app.post('/activities', (req, res) => {
         const activity = { 
             startTime: req.body.startTime,
-            location: req.body.location,
+            coordinate: req.body.coordinate,
             category: req.body.category,
             title: req.body.title,
             description: req.body.description,

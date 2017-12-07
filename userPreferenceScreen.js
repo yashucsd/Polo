@@ -13,6 +13,7 @@ import {
   ScrollView
 } from "react-native";
 import renderIf from "./renderIf.js";
+import { ifIphoneX } from 'react-native-iphone-x-helper';
 import preferences from "./db_actions/preferences_actions";
 
 emoji = require("node-emoji");
@@ -273,7 +274,12 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     fontWeight: "bold",
     marginBottom: 50,
-    marginTop: 25,
+    
+    ...ifIphoneX({
+      marginTop: 45
+    }, {
+      marginTop: 25,
+    })
   },
   subheading: {
     fontWeight: "bold",
@@ -312,8 +318,8 @@ const styles = StyleSheet.create({
     backgroundColor: "transparent",
   },
   checkboxImg: {
-    height: 27,
-    width: 27,
+    height: width / 15,
+    width: width / 15,
   },
   categoryEmojiRow: {
     flex: 2,
