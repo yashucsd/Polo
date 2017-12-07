@@ -4,34 +4,82 @@ import Modal from 'react-native-modal'; //Need to npm install react-native-modal
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 import ModalSelector from 'react-native-modal-selector';
 import emoji from 'node-emoji';
+import activity_actions from './db_actions/activities_actions';
+import moment from "moment";
+import {expEmail} from './signUpScreen.js'
+import {logInEmail} from './logInScreen.js'
 
 const {width, height} = Dimensions.get('window');
 
-var NON_SPACING_MARK = String.fromCharCode(65039); // 65039 - '️' - 0xFE0F;
-var nonSpacingRegex = new RegExp(NON_SPACING_MARK, 'g')
 
+var address= "";
+var emoj= "";
+var title= "";
+var categoryDescription= "";
+var description="";
+var startTime= 0;
+var longitude= -1;
+var latitude= -1;
+var categoryID= -1;
+var hostEmail = -1;
+var rating = "no ratings yet"
+var guest = []
 
-const reactStringReplace = require('react-string-replace')
 
 export default class Hosting extends React.Component {
+
+
     constructor(props){
         super(props);
         this.state =
         {
             isACVisible: true,
             isInputVisible: false,
-            address: "",
-            longitude: -1,
-            latitude: -1,
-            emoji: "",
-            eventName: "",
-            category: "",
+            startTime: 0,
             categoryDescription: "",
-            description:"",
-            time:""
+            categoryID: 0
+
 
         };
     }
+
+
+
+    createActivity = () =>{
+        if (logInEmail != -1) {
+            hostEmail = logInEmail;
+        } else {
+            hostEmail = expEmail;
+        }
+
+        var activity = {
+
+            "startTime": moment().add(startTime, 'hour').format('LT'),
+
+            "location": {
+                "lat": latitude,
+                "lng": longitude,
+            },
+
+            "category": categoryID,
+            "title": title,
+
+
+            "description": description,
+
+            "emoji": emoj,
+
+            "rating": rating,
+
+            "hostEmail": hostEmail,
+
+            "guests": guest
+        }
+        activity_actions.createActivity(activity);
+    }
+
+
+
 
     render() {
         let index = 0;
@@ -40,7 +88,7 @@ export default class Hosting extends React.Component {
             { key: index++, label: "Sports " + emoji.get("basketball"), value: "basketball"},
             { key: index++, label: "Study " + emoji.get("books"),  value: "books"},
             { key: index++, label: "Food " + emoji.get("hamburger"), value: "hamburger" },
-            { key: index++, label: "Hiking " + emoji.get("snow_capped_mountain"), value: "snow_capped_mountain" },
+            { key: index++, label: "Hike " + emoji.get("snow_capped_mountain"), value: "snow_capped_mountain" },
             { key: index++, label: "Shopping " + emoji.get("shopping_bags"), value: "shopping_bags" },
             { key: index++, label: "Chill " + emoji.get("snowflake"), value: "snowflake" },
             { key: index++, label: "Gaming " + emoji.get("video_game"), value: "video_game" },
@@ -64,10 +112,10 @@ export default class Hosting extends React.Component {
                             fetchDetails={true}
                             renderDescription={(row) => row.description || row.vicinity} // custom description render
                             onPress={(data, details = null) => { // 'details' is provided when fetchDetails = true
-                                this.setState({latitude: details.geometry.location.lat,
-                                               longtitude: details.geometry.location.lng,
-                                               address: data.description,
-                                               isInputVisible: true});
+                                latitude = details.geometry.location.lat;
+                                longitude = details.geometry.location.lng;
+                                address = data.description;
+                                this.setState({isInputVisible: true});
                             }}
 
                             getDefaultValue={() => ''}
@@ -85,15 +133,15 @@ export default class Hosting extends React.Component {
                                     flexDirection: "row",
                                     width: '100%',
                                     alignItems:"center",
-                                    backgroundColor: "#f9f7f7"
+                                    backgroundColor: "#fbfffb"
                                 },
                                 container:{
 
-                                    backgroundColor: "#f9f7f7"
+                                    backgroundColor: "#fbfffb"
 
                                 },
                                 poweredContainer:{
-                                    backgroundColor: "#f9f7f7",
+                                    backgroundColor: "#fbfffb",
                                     width: 0,
                                     height: 0
 
@@ -168,7 +216,7 @@ export default class Hosting extends React.Component {
                                     borderColor: "black"
                             }}>
                                 <Text numberOfLines={1}>
-                                    {this.state.address}
+                                    {address}
                                 </Text>
                             </TouchableHighlight>
 
@@ -177,18 +225,15 @@ export default class Hosting extends React.Component {
 
                             <View style = {styles.firstRow}>
                                 <TextInput style={styles.name}
-                                           placeholder = "Name of Event"
+                                           placeholder = "Name of your Event"
                                            returnKeyType = 'done'
-                                           onEndEditing ={(text) => this.setState({eventName: text})}
+                                           onChangeText ={(text) => {title = text}}
                                 />
                                 <TextInput style= {{flex: 1, backgroundColor: "#f4f8f4", textAlign: "center"}}
                                            placeholder = "emoji"
                                            returnKeyType = 'done'
-                                           onEndEditing = {(text) => {
-                                               str = reactStringReplace(text, nonSpacingRegex, (match, i) => (
-                                                   <span key={i} style={{ color: 'red' }}>{match}</span>
-                                               ));
-                                               this.setState({emoji: str})
+                                           onChangeText = {(text) => {
+                                               emoj = emoji.unemojify(text);
                                            }}
                                 />
                             </View>
@@ -202,13 +247,17 @@ export default class Hosting extends React.Component {
                                     data={data}
                                     initValue="Categories!"
                                     supportedOrientations={['portrait']}
-                                    onChange={(option)=>{ this.setState({categories: option.value, categoryDescription: option.label})}}>
+                                    onChange={(option)=>{
+                                        categoryDescription=option.label;
+                                        categoryID = option.key;
+                                        this.setState({categoryDescription: option.label, categoryID: option.key})
+                                    }}>
 
                                     <TextInput
                                         style={{textAlign: "center"}}
                                         editable={false}
                                         placeholder="Which kind of event is this?"
-                                        value={this.state.categoryDescription} />
+                                        value={categoryDescription} />
                                 </ModalSelector>
 
                             </View>
@@ -217,7 +266,8 @@ export default class Hosting extends React.Component {
                                 <TextInput style={styles.description}
                                            placeholder = "Event Description"
                                            returnKeyType = 'send'
-                                           onChangeText ={(text) => this.setState({description: text})}
+                                           numberOfLines = {2}
+                                           onChangeText ={(text) => {description = text}}
                                 />
                             </View>
 
@@ -225,8 +275,11 @@ export default class Hosting extends React.Component {
                                 <Picker
                                     style = {styles.picker}
                                     itemStyle = {styles.item}
-                                    selectedValue={this.state.time}
-                                    onValueChange={(itemValue, itemIndex) => this.setState({time: itemValue})}
+                                    selectedValue={this.state.startTime}
+                                    onValueChange={(itemValue, itemIndex) => {
+                                        startTime = itemValue
+                                        this.setState({startTime: itemValue})
+                                    }}
                                     mode = 'dropdown'>
                                     <Picker.Item label="Now" value = "0"/>
                                     <Picker.Item label="In 1 Hour" value="1" />
@@ -239,6 +292,8 @@ export default class Hosting extends React.Component {
                             <View style={{flexDirection:"row", justifyContent:"flex-end"}}>
 
                                 <Button onPress = {()=>{
+                                    this.createActivity()
+
                                     this.setState({isInputVisible:false});
                                     setTimeout(() => {
                                     this.setState({isACVisible: false})},20)
@@ -265,19 +320,22 @@ const styles = StyleSheet.create({
 
     firstRow:{
         flexDirection: "row",
-        backgroundColor: "#fbfffb"
+        backgroundColor: "#fbfffb",
     },
+
     secondRow:{
         flexDirection: "row",
-        backgroundColor: "#fbfffb"
+        backgroundColor: "#fbfffb",
     },
     thirdRow:{
         flexDirection: "row",
-        backgroundColor: "#fbfffb"
+        backgroundColor: "#fbfffb",
     },
     fourthRow:{
         flexDirection: "row",
-        backgroundColor: "#fbfffb"
+        backgroundColor: "#fbfffb",
+        borderWidth: 1,
+        borderColor: "#ebefeb"
 
     },
     create:{
@@ -304,7 +362,7 @@ const styles = StyleSheet.create({
     },
     picker: {
         flex: 1,
-        width: 100
+        width: 100,
     },
     item:{
         height: 100,
