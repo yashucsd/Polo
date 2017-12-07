@@ -75,7 +75,7 @@ export default class Hosting extends React.Component {
 
             "guests": guest
         }
-        activity_actions.createActivity(activity);
+        activity_actions.createActivity(activity, this.setState({categoryDescription: "Which kind of event is this?"}));
     }
 
 
@@ -100,7 +100,7 @@ export default class Hosting extends React.Component {
             <View style={styles.container}>
 
                 <Modal isVisible={this.state.isACVisible} backdropOpacity={0} style={styles.bottomModal}
-                       animationIn ="slideInUp" animationOut = "slideOutLeft" avoidKeyboard={true}>
+                       animationIn ="slideInUp" animationOut = "slideOutDown" avoidKeyboard={true}>
                     <View style={styles.modalContentContainer}>
 
                         <GooglePlacesAutocomplete
@@ -257,7 +257,7 @@ export default class Hosting extends React.Component {
                                         style={{textAlign: "center"}}
                                         editable={false}
                                         placeholder="Which kind of event is this?"
-                                        value={categoryDescription} />
+                                        value={this.state.categoryDescription} />
                                 </ModalSelector>
 
                             </View>
