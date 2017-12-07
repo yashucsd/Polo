@@ -218,16 +218,16 @@ export default class Map extends React.Component {
         {renderIf(this.state.activity)(<ActivityDetails />)}
         {/* Setting attributes for the MapView */}
 
-        <View style={styles.buttonContainer}>
+    {/*<View style={styles.buttonContainer}>*/}
           <TouchableOpacity
-            style={styles.button}
+            style={styles.buttonLeft}
             onPress={() => this.activityCreation()}
           >
             <Text style = {{fontWeight: "bold", fontSize: 24}}> + </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
-            style={styles.button}
+            style={styles.buttonRight}
             onPress={() =>
               this.props.navigation.navigate("UserPreferenceScreen")
             }
@@ -237,7 +237,7 @@ export default class Map extends React.Component {
               source={require("./pictures/realprofile.png")}
             />
           </TouchableOpacity>
-        </View>
+    {/*</View>*/}
 
         <View style={styles.listContainer}>
           <FlatList
@@ -299,9 +299,9 @@ const styles = StyleSheet.create({
 
   buttonContainer: {
     flexDirection: "row",
-
+    //position: "absolute",
+    //top: 0,
     justifyContent: "space-between",
-    
     paddingLeft: 10,
     paddingRight: 10,
 
@@ -319,6 +319,9 @@ const styles = StyleSheet.create({
 
   listContainer: {
     padding: 10,
+    position: "absolute",
+    bottom: 0,
+    width: deviceWidth,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     ...ifIphoneX({
       paddingBottom: 30
@@ -371,16 +374,36 @@ const styles = StyleSheet.create({
     color: "black",
   },
 
-  button: {
+  buttonLeft: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    margin: 10,
     borderWidth: 1,
     alignItems: "center",
     justifyContent: "center",
+
     width: circleSize,
     height: circleSize,
     borderRadius: circleSize,
     borderColor: "white",
     backgroundColor: "rgba(255, 255, 255, 0.9)",
   },
+  buttonRight: {
+      position: "absolute",
+      top: 0,
+      right: 0,
+      borderWidth: 1,
+      margin: 10,
+      alignItems: "center",
+      justifyContent: "center",
+      width: circleSize,
+      height: circleSize,
+      borderRadius: circleSize,
+      borderColor: "white",
+      backgroundColor: "rgba(255, 255, 255, 0.9)",
+  },
+
 
   buttonImage: {
     borderWidth: 1,
