@@ -61,6 +61,7 @@ export default class LogIn extends React.Component {
 	    <TextInput style={styles.input}
 	      placeholder = "Password"
 	      onChangeText ={(event) => this.setState({password:event})}
+          secureTextEntry = {true}
           text = {this.state.password}
 	    />
 	    <Text style = {{flex: 1, height: Math.round(height*.05)}}></Text>

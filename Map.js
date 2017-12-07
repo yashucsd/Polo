@@ -272,7 +272,7 @@ export default class Map extends React.Component {
               coordinate={marker.latlng}
               title={marker.title}
               description={marker.description}
-              onPress = {() => this.setState({ activity: true })}
+              onPress = {() => this.setState({ activity: !this.state.activity })}
             >
               {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
               <View style={styles.markerBG}>

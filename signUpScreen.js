@@ -86,6 +86,7 @@ export default class SignUp extends React.Component {
 	      <TextInput style = {styles.input}
 	        placeholder = "Password"
 	        onChangeText = {event => this.setState({password: event})}
+	        secureTextEntry = {true}
 	      />
 	      <Text style = {{flex: 1}}></Text>
 	    <View style = {styles.buttons}>
