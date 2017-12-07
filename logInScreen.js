@@ -8,7 +8,7 @@ import useraction from './db_actions/users_actions';
 name = -1;
 phoneNum = -1;
 
-logInEmail = -1
+logInEmail = "";
 const {width, height} = Dimensions.get('window');
  
 export default class LogIn extends React.Component {
@@ -16,7 +16,7 @@ export default class LogIn extends React.Component {
     super(props);
     this.state ={
       status:false,
-      email: "Email",
+      email: "",
       password: "Password"
     }
   }
@@ -30,7 +30,8 @@ export default class LogIn extends React.Component {
           }
         });
       }
-      logInEmail = this.state.email
+      logInEmail = this.state.email;
+      console.log("log in emmail is" + logInEmail)
       this.setState({status:!data});
     });
     
@@ -55,7 +56,11 @@ export default class LogIn extends React.Component {
 	<KeyboardAvoidingView style = {{flex: 2, width: Math.round(width*.66)}} behavior="height">	
 	  <TextInput style = {{flex:1, fontSize: 25}}
 	     placeholder = "Email"
-	     onChangeText ={(event) => this.setState({email:event})}
+	     onChangeText ={(event) => {
+        logInEmail = event;
+        this.setState({email:event});
+       }
+      }
 	  />
 
 	  <TextInput style = {{flex: 1, fontSize: 25}}
@@ -107,4 +112,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export {logInEmail}
+export {logInEmail};

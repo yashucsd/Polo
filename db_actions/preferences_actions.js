@@ -21,7 +21,7 @@ function getToggle(email) {
     
     // fix the string passed in 
     var path = sub + 'getToggle/' + email; 
-    fetch(path, {
+    return fetch(path, {
         method: 'GET',
         headers: {
         'Accept': 'application/json',
@@ -29,21 +29,17 @@ function getToggle(email) {
         },
     }).then(response=>response.json())
     .then(data=>{
-        if (data == 'true') 
-            return true;
-        else {
-            return false;
-        }
+        return data;
     })
 }
 
 // set notification toggle
-function setToggle(email) {
+function setToggle(email, notif_tog) {
 
-    var path = sub + 'setToggle/' + email;
+    var path = sub + 'setToggle/';
     // use fetch() to make HTTP requests to our api
     // TODO: can I just enter user with this parameter 
-    var user = {"email": email};
+    var user = {"email": email, "notif_tog": notif_tog};
     fetch(path, {
         method: 'PUT', 
         headers: {
@@ -56,10 +52,9 @@ function setToggle(email) {
 
 // find the notification radius 
 function getRadius(email) {
-
     // fix string passed in
     var path = sub + 'getRadius/' + email;
-    fetch(path, {
+    return fetch(path, {
         method: 'GET',
         headers: {
         'Accept': 'application/json',
@@ -67,27 +62,27 @@ function getRadius(email) {
         },
     }).then(response=>response.json())
     .then(data=>{
-
         // TODO can you just return the integer in this way 
-        return data;
+        return data.radius;
     })
 }
 
 // set notification radius
 function setRadius(email, radius) {
-    
-    var path = sub + 'setRadius' + email;
+    var path = sub + 'setRadius/';
     // use fetch() to make HTTP requests to our api
     // TODO only some parameters as mentioned above ^ 
     var user = {"email": email, "radius": radius};
-    fetch(path, {
+    return fetch(path, {
         method: 'PUT', 
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         },
         body: JSON.stringify(user),
-    })
+    }).then(data=>{
+        return true;
+    });
 }
 
 // update list of categories 
@@ -98,22 +93,23 @@ function updateCategories(email, categories) {
     // use fetch() to make HTTP requests to our api
     // TODO only some parameters as mentioned above ^ 
     var user = {"email": email, "categories": categories};
-    fetch(path, {
+    return fetch(path, {
         method: 'PUT', 
         headers: {
         'Accept': 'application/json',
         'Content-Type': 'application/json',
         },
         body: JSON.stringify(user),
-    })
+    }).then(data=>{
+        return true;
+    });
 }
 
 // find the notification radius 
 function getCategories(email) {
-    
     // fix string passed in
     var path = sub + 'getCategories/' + email;
-    fetch(path, {
+    return fetch(path, {
         method: 'GET',
         headers: {
         'Accept': 'application/json',
@@ -123,7 +119,7 @@ function getCategories(email) {
     .then(data=>{
     
         // TODO can you just return the integer in this way 
-        return data;
+        return data.categories;
     })
 }
 

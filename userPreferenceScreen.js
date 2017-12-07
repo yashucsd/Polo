@@ -14,6 +14,7 @@ import {
 } from "react-native";
 import renderIf from "./renderIf.js";
 import preferences from "./db_actions/preferences_actions";
+import {email} from './Map.js';
 
 emoji = require("node-emoji");
 checkmark = './resources/checkmark.svg';
@@ -52,8 +53,40 @@ export default class UserPreference extends React.Component {
 
     savePreferences() {
         //update all preferences of user to db
-        this.props.navigation.navigate("MapScreen");
+        var emojis = [this.state.emoji1, this.state.emoji2,this.state.emoji3,this.state.emoji4,this.state.emoji5,
+                this.state.emoji6,this.state.emoji7,this.state.emoji8,this.state.emoji9]
+    
+        preferences.updateCategories(email,emojis).then(data=>{
+            this.props.navigation.navigate("MapScreen");
+        });
+
+        preferences.setRadius(email, this.state.radius).then(data=>{
+        });
+
+        preferences.setToggle(email, this.state.allNotifications);
     }
+
+    componentWillMount(){
+        console.log("PREF EMAIL IS " + email);
+        preferences.getCategories(email).then(data=>{
+            this.setState( {emoji1: data[0]} );
+            this.setState( {emoji2: data[1]} );
+            this.setState( {emoji3: data[2]} );
+            this.setState( {emoji4: data[3]} );
+            this.setState( {emoji5: data[4]} );
+            this.setState( {emoji6: data[5]} );
+            this.setState( {emoji7: data[6]} );
+            this.setState( {emoji8: data[7]} );
+            this.setState( {emoji9: data[8]} );
+        });
+        preferences.getRadius(email).then(data=>{
+            this.setState( {radius: data} );
+        });
+        preferences.getToggle(email).then(data=>{
+            this.setState( {allNotifications:data} );
+        });
+    }
+
     flipEmoji(num) {
         switch (num) {
             case 1:
@@ -333,8 +366,15 @@ export default class UserPreference extends React.Component {
 
                 </View>
 
-                <View>
-                    <Button
+                <View style = {{flexDirection: 'row'}}>
+                    <Button style = {{flex: 1}}
+
+                    onPress={() => this.savePreferences()}
+                    title="Save Preferences"
+                    color = 'red'
+
+                    />
+                    <Button style = {{flex: 1}}
 
                     onPress={() => this.props.navigation.navigate("LogInScreen")}
                     title="Sign Out"
