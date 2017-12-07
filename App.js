@@ -15,7 +15,6 @@ const RootNavigator = StackNavigator({
 
   SignUpScreen: {
     screen: SignUp,
-    navigationOptions: { header: null },
   },
   
   MapScreen:{
@@ -25,12 +24,10 @@ const RootNavigator = StackNavigator({
 
   SignUpCompleteScreen: {
     screen: SignUpComplete,
-    navigationOptions: { header: null },
   },
 
   UserPreferenceScreen: {
     screen: UserPreference,
-    //navigationOptions: { header: null },
   },
 });
 

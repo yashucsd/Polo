@@ -6,6 +6,8 @@ import ModalSelector from 'react-native-modal-selector';
 import emoji from 'node-emoji';
 import activity_actions from './db_actions/activities_actions';
 import moment from "moment";
+import {expEmail} from './signUpScreen.js'
+import {logInEmail} from './logInScreen.js'
 
 const {width, height} = Dimensions.get('window');
 
@@ -19,6 +21,9 @@ var startTime= 0;
 var longitude= -1;
 var latitude= -1;
 var categoryID= -1;
+var hostEmail = -1;
+var rating = "no ratings yet"
+var guest = []
 
 
 export default class Hosting extends React.Component {
@@ -41,14 +46,19 @@ export default class Hosting extends React.Component {
 
 
     createActivity = () =>{
+        if (logInEmail != -1) {
+            hostEmail = logInEmail;
+        } else {
+            hostEmail = expEmail;
+        }
 
         var activity = {
 
-            "startTime": moment().add(startTime, 'hour').format('LT'),
+            "startTime": moment().add(startTime, 'hour'),
 
-            "location": {
-                "lat": latitude,
-                "lng": longitude,
+            "coordinate": {
+                "latitude": latitude,
+                "longitude": longitude,
             },
 
             "category": categoryID,
@@ -57,11 +67,15 @@ export default class Hosting extends React.Component {
 
             "description": description,
 
-            "emoji": emoj
+            "emoji": emoj,
 
+            "rating": rating,
 
+            "hostEmail": hostEmail,
+
+            "guests": guest
         }
-        activity_actions.createActivity(activity);
+        activity_actions.createActivity(activity, this.setState({categoryDescription: "Which kind of event is this?"}));
     }
 
 
@@ -86,7 +100,7 @@ export default class Hosting extends React.Component {
             <View style={styles.container}>
 
                 <Modal isVisible={this.state.isACVisible} backdropOpacity={0} style={styles.bottomModal}
-                       animationIn ="slideInUp" animationOut = "slideOutLeft" avoidKeyboard={true}>
+                       animationIn ="slideInUp" animationOut = "slideOutDown" avoidKeyboard={true}>
                     <View style={styles.modalContentContainer}>
 
                         <GooglePlacesAutocomplete
@@ -243,7 +257,7 @@ export default class Hosting extends React.Component {
                                         style={{textAlign: "center"}}
                                         editable={false}
                                         placeholder="Which kind of event is this?"
-                                        value={categoryDescription} />
+                                        value={this.state.categoryDescription} />
                                 </ModalSelector>
 
                             </View>
