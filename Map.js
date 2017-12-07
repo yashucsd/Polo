@@ -92,6 +92,8 @@ export default class Map extends React.Component {
         longitudeDelta: LONGITUDE_DELTA,
       },
 
+      //markers: []
+
       markers: [
         {
           latlng: {
@@ -167,7 +169,7 @@ export default class Map extends React.Component {
   // called before screen is loaded
   componentWillMount() {
     activityActions.getActivities().then(data => {
-      console.log(data);
+      this.setState({markers: data})
     })
   }
 
@@ -227,6 +229,39 @@ export default class Map extends React.Component {
 
   _showModal = () => this.setState({ isActivityModalVisible: true });
   _hideModal = () => this.setState({ isActivityModalVisible: false });
+  _renderMap = () => (
+    <MapView
+      style={styles.map}
+      mapType="standard"
+      showsUserLocation={true}
+      showsCompass={true}
+      showsPointsOfInterest={true}
+      showsMyLocationButton={true}
+      toolbarEnabled={true}
+      region={this.state.region}
+      onRegionChange={this.onRegionChange}
+    >
+      {/* Information for each marker is used to create them (Child of MapView) */}
+      {this.state.markers.map((marker, i) => (
+        <MapView.Marker
+          key={i}
+          coordinate={marker.latlng}
+          title={marker.title}
+          description={marker.description}
+          onPress={() => this.setState({ activity: true })}
+        >
+          {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
+          <View style={styles.markerBG}>
+            <Text style={styles.markerEmoji}>
+              {/* {emoji.get(marker.image)} */}
+              {marker.emoji}
+            </Text>
+          </View>
+        </MapView.Marker>
+      ))}
+    </MapView>
+  );
+
   render() {
     //{ this.get() }
     var event = MOCKED_EVENT_DATA[0];
@@ -391,35 +426,8 @@ export default class Map extends React.Component {
           />
         </View>
 
-        <MapView
-          style={styles.map}
-          mapType="standard"
-          showsUserLocation={true}
-          showsCompass={true}
-          showsPointsOfInterest={true}
-          showsMyLocationButton={true}
-          toolbarEnabled={true}
-          region={this.state.region}
-          onRegionChange={this.onRegionChange}
-        >
-          {/* Information for each marker is used to create them (Child of MapView) */}
-          {this.state.markers.map((marker, i) => (
-            <MapView.Marker
-              key={i}
-              coordinate={marker.latlng}
-              title={marker.title}
-              description={marker.description}
-              onPress = {this._showModal}
-            >
-              {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
-              <View style={styles.markerBG}>
-                <Text style={styles.markerEmoji}>
-                  {emoji.get(marker.image)}
-                </Text>
-              </View>
-            </MapView.Marker>
-          ))}
-        </MapView>
+        {this._renderMap()}
+
       </View>
     );
   }
