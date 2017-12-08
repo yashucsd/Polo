@@ -229,6 +229,7 @@ export default class Hosting extends React.Component {
                                            returnKeyType = 'done'
                                            onChangeText ={(text) => {title = text}}
                                 />
+                                {/*
                                 <TextInput style= {{flex: 1, backgroundColor: "#f4f8f4", textAlign: "center"}}
                                            placeholder = "emoji"
                                            returnKeyType = 'done'
@@ -237,6 +238,7 @@ export default class Hosting extends React.Component {
                                                emoj = emoji.unemojify(text);
                                            }}
                                 />
+                                */}
                             </View>
 
                             <View style={styles.secondRow}>
