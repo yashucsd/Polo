@@ -232,6 +232,7 @@ export default class Hosting extends React.Component {
                                 <TextInput style= {{flex: 1, backgroundColor: "#f4f8f4", textAlign: "center"}}
                                            placeholder = "emoji"
                                            returnKeyType = 'done'
+                                           maxLength = {2}
                                            onChangeText = {(text) => {
                                                emoj = emoji.unemojify(text);
                                            }}
@@ -254,7 +255,7 @@ export default class Hosting extends React.Component {
                                     }}>
 
                                     <TextInput
-                                        style={{textAlign: "center"}}
+                                        style={{textAlign: "left"}}
                                         editable={false}
                                         placeholder="Which kind of event is this?"
                                         value={this.state.categoryDescription} />
@@ -266,7 +267,7 @@ export default class Hosting extends React.Component {
                                 <TextInput style={styles.description}
                                            placeholder = "Event Description"
                                            returnKeyType = 'send'
-                                           numberOfLines = {2}
+                                           numberOfLines = {3}
                                            onChangeText ={(text) => {description = text}}
                                 />
                             </View>
@@ -350,12 +351,12 @@ const styles = StyleSheet.create({
     },
     name: {
         flex: 4,
-        textAlign: 'center',
+        textAlign: 'left',
         padding: 7,
         margin: 5
     },
     description:{
-        textAlign: 'center',
+        textAlign: 'left',
         flex: 1,
         padding: 7,
         margin: 5
