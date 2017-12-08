@@ -36,30 +36,6 @@ var activityDetails = require('./db_actions/activities_actions');
 const {width, height} = Dimensions.get('window');
 circleSize = Math.round(width/7)
 
-const activityList = [
-  {
-    activityId: 19230123,
-    startTime: "2017-12-03 09:30",
-    categoryId: 2,
-    emoji: "⛵",
-    title: "Sailing"
-  },
-  {
-    activityId: 19230124,
-    startTime: "2017-12-03 10:30",
-    categoryId: 3,
-    emoji: "🥐",
-    title: "Breakfast"
-  },
-  {
-    activityId: 19230125,
-    startTime: "2017-12-03 12:30",
-    categoryId: 2,
-    emoji: "🏓",
-    title: "Ping Pong"
-  }
-];
-
 var emojiArr = [
   "basketball",
   "books",
@@ -157,12 +133,6 @@ export default class Map extends React.Component {
     });
   }
 
-  get() {
-    activityActions.getActivities((acts) => {
-      console.log(acts);
-    })
-  }
-
   activityCreation() {
     /* after first activity creation, will need to tap twice
          * to create more activities, b/c when activityModule closes itself
@@ -235,8 +205,8 @@ export default class Map extends React.Component {
 
   _showModal = () => this.setState({ isActivityModalVisible: true });
   _hideModal = () => this.setState({ isActivityModalVisible: false });
+
   render() {
-    //{ this.get() }
     var event = MOCKED_EVENT_DATA[0];
     let shareOptions = {
       title: "Lil Pump-Gucci Gang",
