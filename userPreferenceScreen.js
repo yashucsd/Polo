@@ -13,8 +13,9 @@ import {
   ScrollView
 } from "react-native";
 import renderIf from "./renderIf.js";
-import { ifIphoneX } from 'react-native-iphone-x-helper';
+import { ifIphoneX } from "react-native-iphone-x-helper";
 import preferences from "./db_actions/preferences_actions";
+import { email } from "./Map.js";
 
 emoji = require("node-emoji");
 checkmark = "./resources/checkmark.svg";
@@ -51,10 +52,82 @@ export default class UserPreference extends React.Component {
     };
   }
 
+  flipEmoji(num) {
+    switch (num) {
+      case 1:
+        this.setState({ emoji1: !this.state.emoji1 });
+        break;
+      case 2:
+        this.setState({ emoji2: !this.state.emoji2 });
+        break;
+      case 3:
+        this.setState({ emoji3: !this.state.emoji3 });
+        break;
+      case 4:
+        this.setState({ emoji4: !this.state.emoji4 });
+        break;
+      case 5:
+        this.setState({ emoji5: !this.state.emoji5 });
+        break;
+      case 6:
+        this.setState({ emoji6: !this.state.emoji6 });
+        break;
+      case 7:
+        this.setState({ emoji7: !this.state.emoji7 });
+        break;
+      case 8:
+        this.setState({ emoji8: !this.state.emoji8 });
+        break;
+      case 9:
+        this.setState({ emoji9: !this.state.emoji9 });
+        break;
+    }
+  }
+
   savePreferences() {
     //update all preferences of user to db
-    this.props.navigation.navigate("MapScreen");
+    var emojis = [
+      this.state.emoji1,
+      this.state.emoji2,
+      this.state.emoji3,
+      this.state.emoji4,
+      this.state.emoji5,
+      this.state.emoji6,
+      this.state.emoji7,
+      this.state.emoji8,
+      this.state.emoji9
+    ];
+
+    preferences.updateCategories(email, emojis).then(data => {
+      this.props.navigation.navigate("MapScreen");
+    });
+
+    preferences.setRadius(email, this.state.radius).then(data => {});
+
+    preferences.setToggle(email, this.state.allNotifications);
   }
+
+  componentWillMount() {
+    console.log("PREF EMAIL IS " + email);
+    preferences.getCategories(email).then(data => {
+      this.setState({ emoji1: data[0] });
+      this.setState({ emoji2: data[1] });
+      this.setState({ emoji3: data[2] });
+      this.setState({ emoji4: data[3] });
+      this.setState({ emoji5: data[4] });
+      this.setState({ emoji6: data[5] });
+      this.setState({ emoji7: data[6] });
+      this.setState({ emoji8: data[7] });
+      this.setState({ emoji9: data[8] });
+    });
+    preferences.getRadius(email).then(data => {
+      this.setState({ radius: data });
+    });
+    preferences.getToggle(email).then(data => {
+      this.setState({ allNotifications: data });
+    });
+  }
+
   flipEmoji(num) {
     switch (num) {
       case 1:
@@ -99,7 +172,9 @@ export default class UserPreference extends React.Component {
               <Text style={styles.textFontB}>All Notifications</Text>
               <Switch
                 style={styles.switch}
-                onValueChange={value => this.setState({ allNotifications: value })}
+                onValueChange={value =>
+                  this.setState({ allNotifications: value })
+                }
                 value={this.state.allNotifications}
               />
             </View>
@@ -108,7 +183,9 @@ export default class UserPreference extends React.Component {
               <Text style={styles.textFontB}>Popular Activities</Text>
               <Switch
                 style={styles.switch}
-                onValueChange={value => this.setState({ popularActivities: value })}
+                onValueChange={value =>
+                  this.setState({ popularActivities: value })
+                }
                 value={this.state.popularActivities}
                 disabled={!this.state.allNotifications}
               />
@@ -132,7 +209,14 @@ export default class UserPreference extends React.Component {
           </View>
 
           <View style={{ margin: 15, paddingTop: 35 }}>
-            <Text style={{fontWeight: "bold", fontSize: 22, color: "black", marginBottom: 10,}}>
+            <Text
+              style={{
+                fontWeight: "bold",
+                fontSize: 22,
+                color: "black",
+                marginBottom: 10
+              }}
+            >
               Categories
             </Text>
             <Text style={styles.textFont}>
@@ -141,101 +225,194 @@ export default class UserPreference extends React.Component {
             </Text>
           </View>
 
-          <View style={{ backgroundColor: "white", justifyContent: "space-between", paddingBottom: 30, marginBottom: 30}}>
-            
+          <View
+            style={{
+              backgroundColor: "white",
+              justifyContent: "space-between",
+              paddingBottom: 30,
+              marginBottom: 30
+            }}
+          >
             <View style={styles.categoryRow}>
-
               <View style={styles.categoryButton}>
                 <Text style={styles.checkbox}>
-                  {renderIf(this.state.emoji1)(<Image style={styles.checkboxImg} source={require("./pictures/checkmark.png")} />)}
+                  {renderIf(this.state.emoji1)(
+                    <Image
+                      style={styles.checkboxImg}
+                      source={require("./pictures/checkmark.png")}
+                    />
+                  )}
                 </Text>
-                <TouchableHighlight onPress={() => this.flipEmoji(1)} underlayColor={"transparent"}>
-                  <Text style={styles.categoryEmoji}>{emoji.get("basketball")}</Text>
+                <TouchableHighlight
+                  onPress={() => this.flipEmoji(1)}
+                  underlayColor={"transparent"}
+                >
+                  <Text style={styles.categoryEmoji}>
+                    {emoji.get("basketball")}
+                  </Text>
                 </TouchableHighlight>
               </View>
 
               <View style={styles.categoryButton}>
                 <Text style={styles.checkbox}>
-                  {renderIf(this.state.emoji2)(<Image style={styles.checkboxImg} source={require("./pictures/checkmark.png")} />)}
+                  {renderIf(this.state.emoji2)(
+                    <Image
+                      style={styles.checkboxImg}
+                      source={require("./pictures/checkmark.png")}
+                    />
+                  )}
                 </Text>
-                <TouchableHighlight onPress={() => this.flipEmoji(2)} underlayColor={"transparent"}>
+                <TouchableHighlight
+                  onPress={() => this.flipEmoji(2)}
+                  underlayColor={"transparent"}
+                >
                   <Text style={styles.categoryEmoji}>{emoji.get("books")}</Text>
                 </TouchableHighlight>
               </View>
 
               <View style={styles.categoryButton}>
                 <Text style={styles.checkbox}>
-                  {renderIf(this.state.emoji3)(<Image style={styles.checkboxImg} source={require("./pictures/checkmark.png")} />)}
+                  {renderIf(this.state.emoji3)(
+                    <Image
+                      style={styles.checkboxImg}
+                      source={require("./pictures/checkmark.png")}
+                    />
+                  )}
                 </Text>
-                <TouchableHighlight onPress={() => this.flipEmoji(3)} underlayColor={"transparent"}>
-                  <Text style={styles.categoryEmoji}>{emoji.get("hamburger")}</Text>
+                <TouchableHighlight
+                  onPress={() => this.flipEmoji(3)}
+                  underlayColor={"transparent"}
+                >
+                  <Text style={styles.categoryEmoji}>
+                    {emoji.get("hamburger")}
+                  </Text>
                 </TouchableHighlight>
               </View>
             </View>
 
             <View style={styles.categoryRow}>
-
               <View style={styles.categoryButton}>
                 <Text style={styles.checkbox}>
-                  {renderIf(this.state.emoji4)(<Image style={styles.checkboxImg} source={require("./pictures/checkmark.png")} />)}
+                  {renderIf(this.state.emoji4)(
+                    <Image
+                      style={styles.checkboxImg}
+                      source={require("./pictures/checkmark.png")}
+                    />
+                  )}
                 </Text>
-                <TouchableHighlight onPress={() => this.flipEmoji(4)} underlayColor={"transparent"}>
-                  <Text style={styles.categoryEmoji}>{emoji.get("snow_capped_mountain")}</Text>
+                <TouchableHighlight
+                  onPress={() => this.flipEmoji(4)}
+                  underlayColor={"transparent"}
+                >
+                  <Text style={styles.categoryEmoji}>
+                    {emoji.get("snow_capped_mountain")}
+                  </Text>
                 </TouchableHighlight>
               </View>
 
               <View style={styles.categoryButton}>
                 <Text style={styles.checkbox}>
-                  {renderIf(this.state.emoji5)(<Image style={styles.checkboxImg} source={require("./pictures/checkmark.png")} />)}
+                  {renderIf(this.state.emoji5)(
+                    <Image
+                      style={styles.checkboxImg}
+                      source={require("./pictures/checkmark.png")}
+                    />
+                  )}
                 </Text>
-                <TouchableHighlight onPress={() => this.flipEmoji(5)} underlayColor={"transparent"}>
-                  <Text style={styles.categoryEmoji}>{emoji.get("shopping_bags")}</Text>
+                <TouchableHighlight
+                  onPress={() => this.flipEmoji(5)}
+                  underlayColor={"transparent"}
+                >
+                  <Text style={styles.categoryEmoji}>
+                    {emoji.get("shopping_bags")}
+                  </Text>
                 </TouchableHighlight>
               </View>
 
               <View style={styles.categoryButton}>
                 <Text style={styles.checkbox}>
-                  {renderIf(this.state.emoji6)(<Image style={styles.checkboxImg} source={require("./pictures/checkmark.png")} />)}
+                  {renderIf(this.state.emoji6)(
+                    <Image
+                      style={styles.checkboxImg}
+                      source={require("./pictures/checkmark.png")}
+                    />
+                  )}
                 </Text>
-                <TouchableHighlight onPress={() => this.flipEmoji(6)} underlayColor={"transparent"}>
-                  <Text style={styles.categoryEmoji}>{emoji.get("snowflake")}</Text>
+                <TouchableHighlight
+                  onPress={() => this.flipEmoji(6)}
+                  underlayColor={"transparent"}
+                >
+                  <Text style={styles.categoryEmoji}>
+                    {emoji.get("snowflake")}
+                  </Text>
                 </TouchableHighlight>
               </View>
             </View>
 
             <View style={styles.categoryRow}>
-
               <View style={styles.categoryButton}>
                 <Text style={styles.checkbox}>
-                  {renderIf(this.state.emoji7)(<Image style={styles.checkboxImg} source={require("./pictures/checkmark.png")} />)}
+                  {renderIf(this.state.emoji7)(
+                    <Image
+                      style={styles.checkboxImg}
+                      source={require("./pictures/checkmark.png")}
+                    />
+                  )}
                 </Text>
-                <TouchableHighlight onPress={() => this.flipEmoji(7)} underlayColor={"transparent"}>
-                  <Text style={styles.categoryEmoji}>{emoji.get("video_game")}</Text>
+                <TouchableHighlight
+                  onPress={() => this.flipEmoji(7)}
+                  underlayColor={"transparent"}
+                >
+                  <Text style={styles.categoryEmoji}>
+                    {emoji.get("video_game")}
+                  </Text>
                 </TouchableHighlight>
               </View>
 
               <View style={styles.categoryButton}>
                 <Text style={styles.checkbox}>
-                  {renderIf(this.state.emoji8)(<Image style={styles.checkboxImg} source={require("./pictures/checkmark.png")} />)}
+                  {renderIf(this.state.emoji8)(
+                    <Image
+                      style={styles.checkboxImg}
+                      source={require("./pictures/checkmark.png")}
+                    />
+                  )}
                 </Text>
-                <TouchableHighlight onPress={() => this.flipEmoji(8)} underlayColor={"transparent"}>
+                <TouchableHighlight
+                  onPress={() => this.flipEmoji(8)}
+                  underlayColor={"transparent"}
+                >
                   <Text style={styles.categoryEmoji}>{emoji.get("tada")}</Text>
                 </TouchableHighlight>
               </View>
 
               <View style={styles.categoryButton}>
                 <Text style={styles.checkbox}>
-                  {renderIf(this.state.emoji9)(<Image style={styles.checkboxImg} source={require("./pictures/checkmark.png")} />)}
+                  {renderIf(this.state.emoji9)(
+                    <Image
+                      style={styles.checkboxImg}
+                      source={require("./pictures/checkmark.png")}
+                    />
+                  )}
                 </Text>
-                <TouchableHighlight onPress={() => this.flipEmoji(9)} underlayColor={"transparent"}>
-                  <Text style={styles.categoryEmoji}>{emoji.get("weight_lifter")}</Text>
+                <TouchableHighlight
+                  onPress={() => this.flipEmoji(9)}
+                  underlayColor={"transparent"}
+                >
+                  <Text style={styles.categoryEmoji}>
+                    {emoji.get("weight_lifter")}
+                  </Text>
                 </TouchableHighlight>
               </View>
             </View>
-
           </View>
 
           <View style={styles.signOut}>
+            <Button
+              onPress={() => this.savePreferences()}
+              title="Save Preferences"
+              color="red"
+            />
             <Button
               onPress={() => this.props.navigation.navigate("LogInScreen")}
               title="Sign Out"
@@ -252,15 +429,24 @@ export default class UserPreference extends React.Component {
 // props.categoryId = 1
 // props.categoryEmoji = "basketball"
 
-
 function CategoryButton(props) {
   return (
     <View style={styles.categoryButton}>
       <Text style={styles.checkbox}>
-        {renderIf(props.checkboxState)(<Image style={styles.checkboxImg} source={require("./pictures/checkmark.png")} />)}
+        {renderIf(props.checkboxState)(
+          <Image
+            style={styles.checkboxImg}
+            source={require("./pictures/checkmark.png")}
+          />
+        )}
       </Text>
-      <TouchableHighlight onPress={() => this.flipEmoji(props.categoryId)} underlayColor={"transparent"}>
-        <Text style={styles.categoryEmoji}>{emoji.get(props.categoryEmoji)}</Text>
+      <TouchableHighlight
+        onPress={() => this.flipEmoji(props.categoryId)}
+        underlayColor={"transparent"}
+      >
+        <Text style={styles.categoryEmoji}>
+          {emoji.get(props.categoryEmoji)}
+        </Text>
       </TouchableHighlight>
     </View>
   );
@@ -274,27 +460,30 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     fontWeight: "bold",
     marginBottom: 50,
-    
-    ...ifIphoneX({
-      marginTop: 45
-    }, {
-      marginTop: 25,
-    })
+
+    ...ifIphoneX(
+      {
+        marginTop: 45
+      },
+      {
+        marginTop: 25
+      }
+    )
   },
   subheading: {
     fontWeight: "bold",
     fontSize: 22,
     color: "black",
     marginBottom: 10,
-    paddingLeft: 15,
+    paddingLeft: 15
   },
   switch: {
     marginTop: 22,
     marginRight: 10
   },
   slider: {
-     width: width * 0.8,
-     alignSelf: "center" 
+    width: width * 0.8,
+    alignSelf: "center"
   },
   container: {
     flex: 1,
@@ -310,16 +499,16 @@ const styles = StyleSheet.create({
   },
   categoryEmoji: {
     fontSize: Math.round(height / 25),
-    marginTop: 25,
+    marginTop: 25
   },
   checkbox: {
     position: "absolute",
     right: 0,
-    backgroundColor: "transparent",
+    backgroundColor: "transparent"
   },
   checkboxImg: {
     height: width / 15,
-    width: width / 15,
+    width: width / 15
   },
   categoryEmojiRow: {
     flex: 2,
@@ -348,7 +537,7 @@ const styles = StyleSheet.create({
   },
   notificationListItem: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "space-between"
   },
   border: {
     borderBottomColor: "#E2E2E2",
@@ -361,7 +550,7 @@ const styles = StyleSheet.create({
   signOut: {
     backgroundColor: "white",
     padding: 5,
-    marginBottom: 50,
+    marginBottom: 50
   },
 
   categoryButton: {
@@ -388,4 +577,3 @@ const styles = StyleSheet.create({
     marginRight: 30
   }
 });
-

@@ -8,7 +8,6 @@ import Map from './Map.js';
 import UserPreference from './userPreferenceScreen.js';
 
 const RootNavigator = StackNavigator({
-
   LogInScreen: {
     screen: LogIn,
     navigationOptions: { header: null },
@@ -16,7 +15,6 @@ const RootNavigator = StackNavigator({
 
   SignUpScreen: {
     screen: SignUp,
-    navigationOptions: { header: null },
   },
   
   MapScreen:{
@@ -26,12 +24,10 @@ const RootNavigator = StackNavigator({
 
   SignUpCompleteScreen: {
     screen: SignUpComplete,
-    navigationOptions: { header: null },
   },
 
   UserPreferenceScreen: {
     screen: UserPreference,
-    navigationOptions: { header: null },
   },
 });
 

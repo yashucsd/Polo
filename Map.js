@@ -28,35 +28,13 @@ import Share, { ShareSheet } from "react-native-share";
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
+var email;
 
 var activityDetails = require('./db_actions/activities_actions');
 
+
 const {width, height} = Dimensions.get('window');
 circleSize = Math.round(width/7)
-
-const activityList = [
-  {
-    activityId: 19230123,
-    startTime: "2017-12-03 09:30",
-    categoryId: 2,
-    emoji: "⛵",
-    title: "Sailing"
-  },
-  {
-    activityId: 19230124,
-    startTime: "2017-12-03 10:30",
-    categoryId: 3,
-    emoji: "🥐",
-    title: "Breakfast"
-  },
-  {
-    activityId: 19230125,
-    startTime: "2017-12-03 12:30",
-    categoryId: 2,
-    emoji: "🏓",
-    title: "Ping Pong"
-  }
-];
 
 var emojiArr = [
   "basketball",
@@ -108,6 +86,7 @@ export default class Map extends React.Component {
   }
 
   componentDidMount() {
+    email = expEmail + logInEmail;
     navigator.geolocation.getCurrentPosition(
       position => {
         this.setState({
@@ -152,12 +131,6 @@ export default class Map extends React.Component {
     this.setState({
       region
     });
-  }
-
-  get() {
-    activityActions.getActivities((acts) => {
-      console.log(acts);
-    })
   }
 
   activityCreation() {
@@ -216,7 +189,7 @@ export default class Map extends React.Component {
           coordinate={marker.coordinate}
           title={marker.title}
           description={marker.description}
-          onPress={() => this.setState({ activity: true })}
+          onPress={() => this.setState({isActivityModalVisible: !this.state.isActivityModalVisible})}
         >
           {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
           <View style={styles.markerBG}>
@@ -232,8 +205,8 @@ export default class Map extends React.Component {
 
   _showModal = () => this.setState({ isActivityModalVisible: true });
   _hideModal = () => this.setState({ isActivityModalVisible: false });
+
   render() {
-    //{ this.get() }
     var event = MOCKED_EVENT_DATA[0];
     let shareOptions = {
       title: "Lil Pump-Gucci Gang",
@@ -613,4 +586,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
   }
 });
+
+export {email};
 
