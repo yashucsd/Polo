@@ -8,7 +8,7 @@ import useraction from './db_actions/users_actions';
 //for sizing
 const {width, height} = Dimensions.get('window');
 
-var expEmail = -1;
+var expEmail = "";
 
 export default class SignUp extends React.Component {
 
@@ -19,7 +19,8 @@ export default class SignUp extends React.Component {
       name: "Name",
       email: "Email",
       phone: "Phone",
-      password: "Password"
+      password: "Password",
+      photos: null
     }
   }
   /*
@@ -37,8 +38,12 @@ export default class SignUp extends React.Component {
         useraction.checkPhone(this.state.phone).then(val=>{
           if(!val){
             console.log("ENTERING SIGN UP");
-            useraction.addUser(this.state.name, this.state.email, this.state.phone, this.state.password).then(suc=>{});
-            this.props.navigation.navigate("SignUpCompleteScreen");
+            //adding user 
+            useraction.addUser(this.state.name, this.state.email, this.state.phone, this.state.password).then(suc=>{
+              this.props.navigation.navigate("SignUpCompleteScreen");
+            }).catch(err=>{
+              throw err;
+            });
           }else{
             phoneCheck = false;
           }
@@ -46,9 +51,14 @@ export default class SignUp extends React.Component {
       }else{
         emailCheck = false;
       }
+      expEmail = this.state.email;
+      console.log("sign up email is" + expEmail)
       this.setState({status:emailCheck || phoneCheck});
     });
   }
+
+
+
 
   render() {
     return (
@@ -65,6 +75,7 @@ export default class SignUp extends React.Component {
 	    />
 	    <View style = {{flex: 1}}>
           {renderIf(this.state.status)(<Text style = {{height: 20, color: 'red', fontSize: 15}}>Email or Phone # already in use.</Text>)}
+
 	    </View>
 
 	      <TextInput style = {styles.input}

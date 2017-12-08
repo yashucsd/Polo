@@ -8,10 +8,12 @@ import useraction from './db_actions/users_actions';
 name = -1;
 phoneNum = -1;
 
+
+logInEmail = "";
+
 defaultEmail = "yash@ucsd.edu";
 defaultPassword = "password";
 
-logInEmail = -1
 const {width, height} = Dimensions.get('window');
  
 export default class LogIn extends React.Component {
@@ -19,7 +21,7 @@ export default class LogIn extends React.Component {
     super(props);
     this.state ={
       status:false,
-      email: "Email",
+      email: "",
       password: "Password"
     }
   }
@@ -34,11 +36,11 @@ export default class LogIn extends React.Component {
       if(data){
         useraction.getUser(this.state.email).then(user=>{
           if(this.state.password == user.password){
+            logInEmail = this.state.email;
             this.props.navigation.navigate("MapScreen");
           }
         });
       }
-      logInEmail = this.state.email
       this.setState({status:!data});
     });
   }
@@ -61,10 +63,12 @@ export default class LogIn extends React.Component {
   	      <Text style = {{flex: 1}}></Text>
    	    </View>
           
+
 	    <TextInput style={styles.input}
 	      placeholder = "Email"
 	      onChangeText ={(event) => this.setState({email:event})}
 	    />
+
 
 	    <TextInput style={styles.input}
 	      placeholder = "Password"
@@ -113,4 +117,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export {logInEmail}
+export {logInEmail};
