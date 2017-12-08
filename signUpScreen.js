@@ -1,5 +1,5 @@
 import React from 'react';
-import {KeyboardAvoidingView, Dimensions, Button, StyleSheet, Text, View, TextInput, Image } from 'react-native';
+import {Dimensions, Button, StyleSheet, Text, View, TextInput, Image, ScrollView } from 'react-native';
 import renderIf from './renderIf.js';
 import useraction from './db_actions/users_actions';
 
@@ -8,10 +8,10 @@ import useraction from './db_actions/users_actions';
 //for sizing
 const {width, height} = Dimensions.get('window');
 
-var expEmail = -1;
+var expEmail = "";
 
 export default class SignUp extends React.Component {
-  
+
   constructor(){
     super();
     this.state ={
@@ -19,7 +19,8 @@ export default class SignUp extends React.Component {
       name: "Name",
       email: "Email",
       phone: "Phone",
-      password: "Password"
+      password: "Password",
+      photos: null
     }
   }
   /*
@@ -37,8 +38,12 @@ export default class SignUp extends React.Component {
         useraction.checkPhone(this.state.phone).then(val=>{
           if(!val){
             console.log("ENTERING SIGN UP");
-            useraction.addUser(this.state.name, this.state.email, this.state.phone, this.state.password).then(suc=>{});
-            this.props.navigation.navigate("SignUpCompleteScreen");
+            //adding user 
+            useraction.addUser(this.state.name, this.state.email, this.state.phone, this.state.password).then(suc=>{
+              this.props.navigation.navigate("SignUpCompleteScreen");
+            }).catch(err=>{
+              throw err;
+            });
           }else{
             phoneCheck = false;
           }
@@ -46,72 +51,74 @@ export default class SignUp extends React.Component {
       }else{
         emailCheck = false;
       }
+      expEmail = this.state.email;
+      console.log("sign up email is" + expEmail)
       this.setState({status:emailCheck || phoneCheck});
     });
   }
 
+
+
+
   render() {
     return (
-      <View style = {styles.container}>
-        <Text style = {{height: Math.round(height*.025)}}></Text>	
-	<Image 
-	   style = {{width: 165, height: 108}} 
-	   source = {require('./resources/polo_logo.png')}
-	/>
-	
-	
-	<View style = {{flex: 1}}>
+      <ScrollView
+        style={styles.container}
+        contentContainerStyle={{flexGrow: 1, alignItems: 'center'}}
+      >
+        <Text style = {{flex: 2}}> </Text>
+        <Text style = {{flex: 2}}> </Text>
+        <Text style = {{height: Math.round(height*.025)}}></Text>
+	    <Image
+	      style = {{width: 165, height: 108}}
+	      source = {require('./resources/polo_logo.png')}
+	    />
+	    <View style = {{flex: 1}}>
           {renderIf(this.state.status)(<Text style = {{height: 20, color: 'red', fontSize: 15}}>Email or Phone # already in use.</Text>)}
-	</View>
-	
-	<KeyboardAvoidingView style = {{flex: 5, width: Math.round(width*.6)}} behavior = "height">	
-	  <TextInput style = {styles.input}
-	     placeholder = "Name"
-	     onChangeText = {event => this.setState({name: event})}
-	  />
 
-	  <TextInput style = {styles.input}
-	     placeholder = "Email"
-	     onChangeText = {event => {
-        this.setState({email: event});
-        expEmail = event;
-      }
-     }
-	  />
+	    </View>
 
-	  <TextInput style = {styles.input}
-	     placeholder = "Phone #"
-	     onChangeText = {event => this.setState({phone: event})}	 
-    />
-
-	  <TextInput style = {styles.input}
-	     placeholder = "Password"
-	     onChangeText = {event => this.setState({password: event})}
-	  />
-	  <Text style = {{flex: 1}}></Text>
-	</KeyboardAvoidingView>
-
-	<View style = {styles.buttons}>
-	  <Button
-  	    onPress={() => this.checkInfo()}
-  	    title="Continue Sign Up"
-  	    color="#000"
-	  />
-	</View>
-
-	<Text style = {{flex: 2}}> </Text>
-
-      </View>
+	      <TextInput style = {styles.input}
+	        placeholder = "Name"
+	        onChangeText = {event => this.setState({name: event})}
+	      />
+	      <TextInput style = {styles.input}
+	        placeholder = "Email"
+	        onChangeText = {event => {
+              this.setState({email: event});
+              expEmail = event;
+              }
+            }
+	      />
+	      <TextInput style = {styles.input}
+	        placeholder = "Phone #"
+	        onChangeText = {event => this.setState({phone: event})}
+          />
+	      <TextInput style = {styles.input}
+	        placeholder = "Password"
+	        onChangeText = {event => this.setState({password: event})}
+	        secureTextEntry = {true}
+	      />
+	      <Text style = {{flex: 1}}></Text>
+	    <View style = {styles.buttons}>
+          <Button
+  	        onPress={() => this.checkInfo()}
+  	        title="Continue Sign Up"
+  	        color="#000"
+	      />
+	    </View>
+  	    <Text style = {{flex: 2}}> </Text>
+  	    <Text style = {{flex: 2}}> </Text>
+  	    <Text style = {{flex: 2}}> </Text>
+  	    <Text style = {{flex: 2}}> </Text>
+      </ScrollView>
     );
   }
 }
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    flexDirection: 'column',
-    alignItems: 'center',
+    backgroundColor: 'white',
   },
   buttons: {
     flexDirection: 'row',
@@ -119,7 +126,8 @@ const styles = StyleSheet.create({
   },
   input: {
     flex: 1,
-    fontSize: 25
+    fontSize: 25,
+    width: 200,
   },
 });
 

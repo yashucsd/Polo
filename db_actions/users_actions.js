@@ -58,11 +58,16 @@ function addUser(name, email, phone, password){
         		'Content-Type': 'application/json',
 			},
 			body: JSON.stringify(user)
-		}).then(response => response.json())
-		.then(message=>{
+		}).then(message=>{
 			if(message == 200){
 				return true;
+			}else{
+				return false;
 			}
+		}).catch(err=>{
+			//something went wrong
+			console.log("ERROR IS" + err.message);
+			throw err;
 		});
 }
 

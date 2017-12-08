@@ -5,8 +5,7 @@ import {expEmail} from './signUpScreen.js';
 import preferences from './db_actions/preferences_actions.js';
 
 //preferences send to db
-emoji = require('node-emoji')
-emojis = [false,false,false,false,false,false,false,false,false] //length 9
+emoji = require('node-emoji') //length 9
 
 const {width, height} = Dimensions.get('window');
 
@@ -31,10 +30,12 @@ export default class SignUpComplete extends React.Component {
   completeSignUp(){
     //store arry of bools emojis in db
     //complete profile 
-    console.log("EMAIL IS " + expEmail);
+    var emojis = [this.state.emoji1, this.state.emoji2,this.state.emoji3,this.state.emoji4,this.state.emoji5,
+    			this.state.emoji6,this.state.emoji7,this.state.emoji8,this.state.emoji9]
     preferences.createPreferences(expEmail, emojis).then(val=>{
     	if(val == 200){
     		console.log("200 hondo");
+    		this.props.navigation.navigate('MapScreen');
     	}
     });
     this.props.navigation.navigate('MapScreen')
@@ -217,4 +218,3 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
   },
 });
-
