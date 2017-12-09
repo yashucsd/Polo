@@ -66,6 +66,7 @@ var MOCKED_EVENT_DATA = [
       "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Get ready... Start!"
   }
 ];
+var joinActivity = false;
 var reportFlag = false;
 
 export default class Map extends React.Component {
@@ -254,9 +255,9 @@ export default class Map extends React.Component {
   render() {
     var event = MOCKED_EVENT_DATA[0];
     let shareOptions = {
-      title: "Lil Pump-Gucci Gang",
+      title: "Activity",
       message: "Look at what I'm doing on Polo!",
-      url: "https://www.youtube.com/watch?v=4LfJnj66HVQ",
+      url: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
       subject: "Share Link"
     };
     return (
@@ -344,6 +345,45 @@ export default class Map extends React.Component {
               <Directions />
               <TouchableOpacity
                 style={styles.roundButton}
+                onPress={() => {
+                  if (!joinActivity) {
+                    Alert.alert(
+                      "Join Activity",
+                      "Activity joined. Have fun!",
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            joinActivity = true;
+                          }
+                        }
+                      ],
+                      { cancelable: false }
+                    );
+                  } else {
+                    Alert.alert(
+                      "Activity Joined",
+                      "You already joined this activity. Would you like to cancel?",
+                      [
+                        {
+                          text: "Yes",
+                          onPress: () => {
+                            joinActivity = false;
+                            Alert.alert(
+                              "Activity Canceled",
+                              "You have canceled your plans to join this activity.",
+                              [{ text: "OK" }],
+                              { cancelable: false }
+                            );
+                          }
+                        },
+                      { text: "No" }
+                      ],
+                    { cancelable: false }
+                    );
+                  }
+                  }
+                }
               >
                   <Text style={styles.joinText}>Join Activity</Text>
               </TouchableOpacity>
@@ -376,15 +416,15 @@ export default class Map extends React.Component {
                 onPress={() => {
                   if (!reportFlag) {
                     Alert.alert(
-                      "Report Event",
-                      "Are you sure you would like to report this event?",
+                      "Report Activity",
+                      "Are you sure you would like to report this activity?",
                       [
                         {
                           text: "Flag this Activity",
                           onPress: () => {
                             reportFlag = true;
                             Alert.alert(
-                              "Event Reported",
+                              "Activity Reported",
                               "Your report has been submitted.",
                               [{ text: "OK" }],
                               { cancelable: false }
@@ -397,7 +437,7 @@ export default class Map extends React.Component {
                     );
                   } else {
                     Alert.alert(
-                      "Event Reported",
+                      "Activity Reported",
                       "Your report has been submitted.",
                       [{ text: "OK" }],
                       { cancelable: false }
