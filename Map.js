@@ -81,7 +81,93 @@ export default class Map extends React.Component {
         longitudeDelta: LONGITUDE_DELTA,
       },
 
-      activities: [],
+      //activities: [],
+      activities: [
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.8812,
+            longitude: -117.2294
+          },
+          category: 1,
+          title: "Play Soccer with me!",
+          description: "Come to warren field! We need a goalie c:",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.884,
+            longitude: -117.2381
+          },
+          category: 2,
+          title: "Studying for cse 110",
+          description: "Reviewing notes so hard",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.8870,
+            longitude: -117.2418
+          },
+          category: 3,
+          title: "Someone swipe me!",
+          description: "I'm funny I swear",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.8896,
+            longitude: -117.2536
+          },
+          category: 4,
+          title: "Ho Chi Min Trail!!",
+          description: "Walking my dog!",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.8896,
+            longitude: -117.2536
+          },
+          category: 5,
+          title: "Ayo Christmas Shopping!",
+          description: "I'll buy you something c:!",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.842674,
+            longitude: -117.257767
+          },
+          category: 6,
+          title: "Chilling at home come by!",
+          description: "Coding life chose us",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.842674,
+            longitude: -117.257767
+          },
+          category: 7,
+          title: "Chilling at home come by!",
+          description: "Coding life chose us",
+          hostEmail:"yash@ucsd.edu",
+        }
+      ], // end of markers
 
     }; // end of this.state
     this.onRegionChange = this.onRegionChange.bind(this);
@@ -118,18 +204,7 @@ export default class Map extends React.Component {
   }
 
   onRefresh(){
-    console.log('were refrehsing')
-    //gets our preference categories store into data
-    preferences.getCategories(email).then(data=>{
-      //get all activites in db
-      activityActions.getActivities().then(list=>{
-        //filter out the activities we want
-        var final = list.filter(val=> data[val.category - 1]);
-        //set it into our state
-        this.setState( {activities:final} );
-      }); 
-    });
-
+    this.componentWillMount()
   }
   // called before screen is loaded
   componentWillMount() {
@@ -138,6 +213,7 @@ export default class Map extends React.Component {
     preferences.getCategories(email).then(data=>{
       //get all activites in db
       activityActions.getActivities().then(list=>{
+        list = list.concat(this.state.activities)
         //filter out the activities we want
         var final = list.filter(val=> data[val.category - 1]);
         //set it into our state
@@ -266,7 +342,7 @@ export default class Map extends React.Component {
             style={styles.buttonLeft}
             onPress={() => this.activityCreation()}
           >
-            <Text style = {{fontWeight: "bold", fontSize: 24}}> + </Text>
+            <Text style = {{fontWeight: "bold", fontSize: 30}}> + </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
