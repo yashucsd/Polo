@@ -189,7 +189,7 @@ export default class Map extends React.Component {
           coordinate={marker.coordinate}
           title={marker.title}
           description={marker.description}
-          onPress={() => this.setState({isActivityModalVisible: !this.state.isActivityModalVisible})}
+          onPress={() => this._showModal(marker)}
         >
           {/* This is a custom view to show an emoji and its BG (Child of MapView.Marker) */}
           <View style={styles.markerBG}>
@@ -203,8 +203,16 @@ export default class Map extends React.Component {
   );
 
 
-  _showModal = () => this.setState({ isActivityModalVisible: true });
+  //_showModal = () => this.setState({ isActivityModalVisible: true });
   _hideModal = () => this.setState({ isActivityModalVisible: false });
+
+  _showModal(marker){
+    MOCKED_EVENT_DATA[0].title = marker.title;   
+    MOCKED_EVENT_DATA[0].emoji = emoji.get(emojiArr[marker.category-1]);
+    MOCKED_EVENT_DATA[0].startTime = moment(marker.startTime).fromNow()   
+    MOCKED_EVENT_DATA[0].description = marker.description   
+    this.setState({isActivityModalVisible: !this.state.isActivityModalVisible})
+  }
 
   render() {
     var event = MOCKED_EVENT_DATA[0];
@@ -243,6 +251,7 @@ export default class Map extends React.Component {
         <View style={styles.modalContainer}>
         <Modal
           isVisible={this.state.isActivityModalVisible}
+          onBackdropPress = {this._hideModal}
           backdropOpacity={0}
           style={styles.bottomModal}
         >
