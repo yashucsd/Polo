@@ -24,9 +24,9 @@ import {expEmail} from './signUpScreen.js'
 import {logInEmail} from './logInScreen.js'
 import Icon from "react-native-vector-icons/Feather";
 import activityActions from './db_actions/activities_actions';
-import Directions from "./Directions.js";
 import Share, { ShareSheet } from "react-native-share";
 import preferences from "./db_actions/preferences_actions.js";
+import getDirections from 'react-native-google-maps-directions';
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
@@ -59,11 +59,13 @@ console.disableYellowBox = true;
 
 var MOCKED_EVENT_DATA = [
   {
-    title: "Soccer",
+    title: "Title",
     emoji: "🐶",
     startTime: "12:00",
     description:
-      "The FitnessGram Pacer Test is a multistage aerobic capacity test that progressively gets more difficult as it continues. The 20 meter pacer test will begin in 30 seconds. Get ready... Start!"
+      "Description",
+    latitude: 0,
+    longitude: 0,
   }
 ];
 var reportFlag = false;
@@ -236,7 +238,9 @@ export default class Map extends React.Component {
     MOCKED_EVENT_DATA[0].title = marker.title;   
     MOCKED_EVENT_DATA[0].emoji = emoji.get(emojiArr[marker.category-1]);
     MOCKED_EVENT_DATA[0].startTime = moment(marker.startTime).fromNow()   
-    MOCKED_EVENT_DATA[0].description = marker.description   
+    MOCKED_EVENT_DATA[0].description = marker.description
+    MOCKED_EVENT_DATA[0].latitude = marker.coordinate.latitude
+    MOCKED_EVENT_DATA[0].longitude = marker.coordinate.longitude
     this.setState({isActivityModalVisible: !this.state.isActivityModalVisible})
   }
   _moveToActivity(marker){
@@ -251,13 +255,32 @@ export default class Map extends React.Component {
     this._showModal(marker)
   }
 
+  //getDirections takes a data object containing source, destination, and params.
+  handleGetDirections = (dest_latitude,dest_longitude) => {
+    const data = {
+      destination: {
+        latitude: dest_latitude,
+        longitude: dest_longitude
+      },
+      params: [
+        {
+          key: "dirflg",
+          value: "w"
+        }
+      ]
+    }
+    getDirections(data)
+  }
+
   render() {
     var event = MOCKED_EVENT_DATA[0];
     let shareOptions = {
       title: "Lil Pump-Gucci Gang",
       message: "Look at what I'm doing on Polo!",
       url: "https://www.youtube.com/watch?v=4LfJnj66HVQ",
-      subject: "Share Link"
+      subject: "Share Link",
+      latitude: 0,
+      longitude: 0,
     };
     return (
       <View style={styles.container}>
@@ -302,7 +325,6 @@ export default class Map extends React.Component {
           backdropOpacity={0}
           style={styles.bottomModal}
         >
-
           <View style={styles.modalContentContainer}>
             <View style={styles.row}>
               <Text style={styles.titleText}> {event.emoji} </Text>
@@ -310,38 +332,14 @@ export default class Map extends React.Component {
                 <Text style={styles.titleText}>{event.title}</Text>
                 <Text style={styles.miniText}>Start time:{event.startTime}</Text>
               </View>
-              <Text> </Text>
-              <Image
-                source={{
-                  uri:
-                    "https://cdn1.thr.com/sites/default/files/imagecache/scale_crop_768_433/2017/08/110129_0773b2_-_h_2017.jpg"
-                }}
-                style={styles.attendeePhotos}
-              />
-              <Image
-                source={{
-                  uri:
-                    "http://cdn.skim.gs/image/upload/c_fill,dpr_1.0,f_auto,fl_lossy,q_auto,w_940/c_scale,w_640/v1463693334/Cydney-Gillon-cast-survivor-kaoh-rong-season-32-cbs_hn1y3n.jpg"
-                }}
-                style={styles.attendeePhotos}
-              />
-              <Image
-                source={{
-                  uri:
-                    "http://wwwimage1.cbsstatic.com/base/files/cast/surv33_cast_hannahshapiro.jpg"
-                }}
-                style={styles.attendeePhotos}
-              />
-              <Image
-                source={{
-                  uri:
-                    "http://wwwimage2.cbsstatic.com/base/files/cast/surv28_cast_sarah.jpg"
-                }}
-                style={styles.attendeePhotos}
-              />
             </View>
             <View style={styles.row}>
-              <Directions />
+              <TouchableOpacity
+                style={styles.directionsButton}
+                onPress={() => this.handleGetDirections(event.latitude, event.longitude)}
+              >
+                <Text style={styles.directionsText}>Get Directions</Text>
+              </TouchableOpacity>
               <TouchableOpacity
                 style={styles.roundButton}
               >
@@ -672,7 +670,18 @@ const styles = StyleSheet.create({
     color: '#058EFA',
     fontSize: 24,
     fontWeight: 'bold',
-  }
+  },
+  directionsButton: {
+    backgroundColor: '#058EFA',
+    borderRadius: 10,
+    height: 35,
+    width: 165,
+    alignItems: 'center',
+  },
+  directionsText: {
+    color: '#FFFFFF',
+    paddingTop: 7.5,
+  },
 });
 
 export {email};
