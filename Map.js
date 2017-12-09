@@ -85,7 +85,7 @@ export default class Map extends React.Component {
       activities: [
         {
           _id: -1,
-          startTime: "2017-12-09 11:30",
+          startTime: "2017-12-10T03:54:55.773Z",
           coordinate: {
             latitude: 32.8812,
             longitude: -117.2294
@@ -97,10 +97,22 @@ export default class Map extends React.Component {
         },
         {
           _id: -1,
-          startTime: "2017-12-09 11:30",
+          startTime: "2017-12-10T01:22:55.773Z",
           coordinate: {
-            latitude: 32.884,
-            longitude: -117.2381
+            latitude: 32.8812,
+            longitude: -117.2294
+          },
+          category: 1,
+          title: "Lets play baseball!",
+          description: "Come for some catch!",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-10T02:32:55.773Z",
+          coordinate: {
+            latitude: 32.8881536,
+            longitude: -117.24245100000002
           },
           category: 2,
           title: "Studying for cse 110",
@@ -109,7 +121,7 @@ export default class Map extends React.Component {
         },
         {
           _id: -1,
-          startTime: "2017-12-09 11:30",
+          startTime: "2017-12-10T01:22:55.773Z",
           coordinate: {
             latitude: 32.8870,
             longitude: -117.2418
@@ -121,50 +133,26 @@ export default class Map extends React.Component {
         },
         {
           _id: -1,
-          startTime: "2017-12-09 11:30",
+          startTime: "2017-12-10T03:12:55.773Z",
           coordinate: {
             latitude: 32.8896,
             longitude: -117.2536
           },
-          category: 4,
-          title: "Ho Chi Min Trail!!",
-          description: "Walking my dog!",
+          category: 1,
+          title: "Come surf with me bros!",
+          description: "Leggooo",
           hostEmail:"yash@ucsd.edu",
         },
         {
           _id: -1,
-          startTime: "2017-12-09 11:30",
+          startTime: "2017-12-10T02:14:55.773Z",
           coordinate: {
-            latitude: 32.8896,
+            latitude: 32.8881536,
             longitude: -117.2536
           },
-          category: 5,
-          title: "Ayo Christmas Shopping!",
-          description: "I'll buy you something c:!",
-          hostEmail:"yash@ucsd.edu",
-        },
-        {
-          _id: -1,
-          startTime: "2017-12-09 11:30",
-          coordinate: {
-            latitude: 32.842674,
-            longitude: -117.257767
-          },
-          category: 6,
-          title: "Chilling at home come by!",
-          description: "Coding life chose us",
-          hostEmail:"yash@ucsd.edu",
-        },
-        {
-          _id: -1,
-          startTime: "2017-12-09 11:30",
-          coordinate: {
-            latitude: 32.842674,
-            longitude: -117.257767
-          },
-          category: 7,
-          title: "Chilling at home come by!",
-          description: "Coding life chose us",
+          category: 8,
+          title: "Turn up before finals!",
+          description: "Bring your own chase yo",
           hostEmail:"yash@ucsd.edu",
         }
       ], // end of markers
