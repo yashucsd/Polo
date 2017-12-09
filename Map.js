@@ -94,42 +94,64 @@ export default class Map extends React.Component {
 
       //markers: []
 
-      markers: [
+      defaultActivities: [
         {
-          latlng: {
+          _id: -1,
+          startTime: "6:03 PM",
+          coordinate: {
             latitude: 32.8804,
             longitude: -117.2375
           },
+          category: 2,
           title: "Geisel Library",
           description: "Come study!",
-          image: "books"
+          emoji: "books",
+          rating: "no ratings yet",
+          hostEmail:"yash@ucsd.edu",
+          guests: [],
         },
         {
-          latlng: {
+          _id: -1,
+          startTime: "4:03 PM",
+          coordinate: {
             latitude: 32.884,
             longitude: -117.2381
           },
+          category: 5,
           title: "RIMAC",
           description: "Playing basketball",
-          image: "basketball"
+          emoji: "basketball",
+          rating: "no ratings yet",
+          hostEmail:"yash@ucsd.edu",
+          guests: [],
         },
         {
-          latlng: {
+          _id: -1,
+          startTime: "2:12 PM",
+          coordinate: {
             latitude: 32.8801,
             longitude: -117.234
           },
           title: "Warren Dorms",
           description: "Playing video games",
-          image: "video_game"
+          emoji: "video_game",
+          rating: "no ratings yet",
+          hostEmail:"yash@ucsd.edu",
+          guests: [],
         },
         {
-          latlng: {
+          _id: -1,
+          startTime: "2:12 PM",
+          coordinate: {
             latitude: 32.8803,
             longitude: -117.241
           },
           title: "Marshall College",
           description: "Walking my dog!",
-          image: "dog"
+          emoji: "dog",
+          rating: "no ratings yet",
+          hostEmail:"yash@ucsd.edu",
+          guests: [],
         }
       ] // end of markers
 
