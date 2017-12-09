@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import {
+  ScrollView,
   FlatList,
   Image,
   TouchableOpacity,
@@ -9,7 +10,7 @@ import {
   Text,
   View,
   Dimensions,
-  Alert
+  Alert,
 } from "react-native";
 import MapView from "react-native-maps";
 import Modal from "react-native-modal";
@@ -25,6 +26,7 @@ import Icon from "react-native-vector-icons/Feather";
 import activityActions from './db_actions/activities_actions';
 import Directions from "./Directions.js";
 import Share, { ShareSheet } from "react-native-share";
+import preferences from "./db_actions/preferences_actions.js";
 
 var deviceHeight = Dimensions.get("window").height;
 var deviceWidth = Dimensions.get("window").width;
@@ -79,7 +81,7 @@ export default class Map extends React.Component {
         longitudeDelta: LONGITUDE_DELTA,
       },
 
-      activities: []
+      activities: [],
 
     }; // end of this.state
     this.onRegionChange = this.onRegionChange.bind(this);
@@ -115,12 +117,38 @@ export default class Map extends React.Component {
     );
   }
 
+  onRefresh(){
+    console.log('were refrehsing')
+    //gets our preference categories store into data
+    preferences.getCategories(email).then(data=>{
+      //get all activites in db
+      activityActions.getActivities().then(list=>{
+        //filter out the activities we want
+        var final = list.filter(val=> data[val.category - 1]);
+        //set it into our state
+        this.setState( {activities:final} );
+      }); 
+    });
+
+  }
   // called before screen is loaded
   componentWillMount() {
-    activityActions.getActivities().then(data => {
+    email = expEmail + logInEmail;
+    //gets our preference categories store into data
+    preferences.getCategories(email).then(data=>{
+      //get all activites in db
+      activityActions.getActivities().then(list=>{
+        //filter out the activities we want
+        var final = list.filter(val=> data[val.category - 1]);
+        //set it into our state
+        this.setState( {activities:final} );
+      }); 
+    });
+
+   /* activityActions.getActivities().then(data => {
       this.setState({activities: data});
       console.log(this.state.activities);
-    })
+    })*/
   }
 
   componentWillUnmount() {
@@ -202,8 +230,6 @@ export default class Map extends React.Component {
     </MapView>
   );
 
-
-  //_showModal = () => this.setState({ isActivityModalVisible: true });
   _hideModal = () => this.setState({ isActivityModalVisible: false });
 
   _showModal(marker){
@@ -212,6 +238,17 @@ export default class Map extends React.Component {
     MOCKED_EVENT_DATA[0].startTime = moment(marker.startTime).fromNow()   
     MOCKED_EVENT_DATA[0].description = marker.description   
     this.setState({isActivityModalVisible: !this.state.isActivityModalVisible})
+  }
+  _moveToActivity(marker){
+    this.setState({
+      region: {
+        latitude: marker.coordinate.latitude,
+        longitude: marker.coordinate.longitude,
+        latitudeDelta: LATITUDE_DELTA,
+        longitudeDelta: LONGITUDE_DELTA,
+      }
+    })
+    this._showModal(marker)
   }
 
   render() {
@@ -230,6 +267,16 @@ export default class Map extends React.Component {
             onPress={() => this.activityCreation()}
           >
             <Text style = {{fontWeight: "bold", fontSize: 24}}> + </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            style = {styles.buttonMiddle}
+            onPress={() => this.onRefresh()}
+          >
+            <Image
+              style = {styles.markerBG2}
+              source = {require("./resources/Refresh.png")}
+            />
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -301,6 +348,7 @@ export default class Map extends React.Component {
                   <Text style={styles.joinText}>Join Activity</Text>
               </TouchableOpacity>
             </View>
+            
             <View style={styles.row}>
               <Text style={styles.descriptionText}>{event.description}</Text>
             </View>
@@ -363,20 +411,25 @@ export default class Map extends React.Component {
         </Modal>
       </View>
 
-        <View style={styles.listContainer}>
-          <FlatList
-            data={this.state.activities}
-            renderItem={({ item }) => (
-              <View style={styles.activityListElement}>
-                <Text style={styles.activityEmoji}> {emoji.get(emojiArr[item.category - 1])} </Text>
-                <View style={styles.activityInfo}>
-                  <Text style={styles.activityTitle}> {item.title} </Text>
-                  <Text> {moment(item.startTime).fromNow()} </Text>
+      
+        <ScrollView style={styles.listContainer} >
+          <View>
+            <FlatList
+              data={this.state.activities}
+              renderItem={({ item }) => (
+               <TouchableOpacity onPress = {() => this._moveToActivity(item)}>
+               <View style={styles.activityListElement}>
+                  <Text style={styles.activityEmoji}> {emoji.get(emojiArr[item.category - 1])} </Text>
+                  <View style={styles.activityInfo}>
+                    <Text style={styles.activityTitle}> {item.title} </Text>
+                    <Text> {moment(item.startTime).fromNow()} </Text>
+                  </View>
                 </View>
-              </View>
+              </TouchableOpacity>
             )}
           />
-        </View>
+          </View>
+        </ScrollView>
 
         {this._renderMap()}
         
@@ -419,6 +472,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 0,
     width: deviceWidth,
+    height: deviceHeight*.3,
     backgroundColor: "rgba(255, 255, 255, 0.9)",
     ...ifIphoneX({
       paddingBottom: 30
@@ -465,6 +519,16 @@ const styles = StyleSheet.create({
     padding: 5,
     borderRadius: 30,
   },
+  markerBG2: {
+    backgroundColor: "rgba(256, 256, 256, 0)",
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "white",
+    height: circleSize,
+    width: circleSize,
+    padding: 5,
+    borderRadius: 30,
+  },
 
   markerEmoji: {
     fontSize: 30,
@@ -475,6 +539,21 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
+    margin: 10,
+    borderWidth: 1,
+    alignItems: "center",
+    justifyContent: "center",
+
+    width: circleSize,
+    height: circleSize,
+    borderRadius: circleSize,
+    borderColor: "white",
+    backgroundColor: "rgba(255, 255, 255, 0.9)",
+  },
+    buttonMiddle: {
+    position: "absolute",
+    top: 0,
+    left: deviceWidth*.5-circleSize/2,
     margin: 10,
     borderWidth: 1,
     alignItems: "center",

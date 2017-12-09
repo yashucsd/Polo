@@ -33,12 +33,8 @@ export default class SignUpComplete extends React.Component {
     var emojis = [this.state.emoji1, this.state.emoji2,this.state.emoji3,this.state.emoji4,this.state.emoji5,
     			this.state.emoji6,this.state.emoji7,this.state.emoji8,this.state.emoji9]
     preferences.createPreferences(expEmail, emojis).then(val=>{
-    	if(val == 200){
-    		console.log("200 hondo");
-    		this.props.navigation.navigate('MapScreen');
-    	}
+    	this.props.navigation.navigate('MapScreen');
     });
-    this.props.navigation.navigate('MapScreen')
   }
   flipEmoji(num){
     switch(num){
