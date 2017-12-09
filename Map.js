@@ -68,6 +68,7 @@ var MOCKED_EVENT_DATA = [
     longitude: 0,
   }
 ];
+var joinActivity = false;
 var reportFlag = false;
 
 export default class Map extends React.Component {
@@ -83,7 +84,93 @@ export default class Map extends React.Component {
         longitudeDelta: LONGITUDE_DELTA,
       },
 
-      activities: [],
+      //activities: [],
+      activities: [
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.8812,
+            longitude: -117.2294
+          },
+          category: 1,
+          title: "Play Soccer with me!",
+          description: "Come to warren field! We need a goalie c:",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.884,
+            longitude: -117.2381
+          },
+          category: 2,
+          title: "Studying for cse 110",
+          description: "Reviewing notes so hard",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.8870,
+            longitude: -117.2418
+          },
+          category: 3,
+          title: "Someone swipe me!",
+          description: "I'm funny I swear",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.8896,
+            longitude: -117.2536
+          },
+          category: 4,
+          title: "Ho Chi Min Trail!!",
+          description: "Walking my dog!",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.8896,
+            longitude: -117.2536
+          },
+          category: 5,
+          title: "Ayo Christmas Shopping!",
+          description: "I'll buy you something c:!",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.842674,
+            longitude: -117.257767
+          },
+          category: 6,
+          title: "Chilling at home come by!",
+          description: "Coding life chose us",
+          hostEmail:"yash@ucsd.edu",
+        },
+        {
+          _id: -1,
+          startTime: "2017-12-09 11:30",
+          coordinate: {
+            latitude: 32.842674,
+            longitude: -117.257767
+          },
+          category: 7,
+          title: "Chilling at home come by!",
+          description: "Coding life chose us",
+          hostEmail:"yash@ucsd.edu",
+        }
+      ], // end of markers
 
     }; // end of this.state
     this.onRegionChange = this.onRegionChange.bind(this);
@@ -120,18 +207,7 @@ export default class Map extends React.Component {
   }
 
   onRefresh(){
-    console.log('were refrehsing')
-    //gets our preference categories store into data
-    preferences.getCategories(email).then(data=>{
-      //get all activites in db
-      activityActions.getActivities().then(list=>{
-        //filter out the activities we want
-        var final = list.filter(val=> data[val.category - 1]);
-        //set it into our state
-        this.setState( {activities:final} );
-      }); 
-    });
-
+    this.componentWillMount()
   }
   // called before screen is loaded
   componentWillMount() {
@@ -140,6 +216,7 @@ export default class Map extends React.Component {
     preferences.getCategories(email).then(data=>{
       //get all activites in db
       activityActions.getActivities().then(list=>{
+        list = list.concat(this.state.activities)
         //filter out the activities we want
         var final = list.filter(val=> data[val.category - 1]);
         //set it into our state
@@ -275,7 +352,7 @@ export default class Map extends React.Component {
   render() {
     var event = MOCKED_EVENT_DATA[0];
     let shareOptions = {
-      title: "Lil Pump-Gucci Gang",
+      title: "Activity",
       message: "Look at what I'm doing on Polo!",
       url: "https://www.youtube.com/watch?v=4LfJnj66HVQ",
       subject: "Share Link",
@@ -289,7 +366,7 @@ export default class Map extends React.Component {
             style={styles.buttonLeft}
             onPress={() => this.activityCreation()}
           >
-            <Text style = {{fontWeight: "bold", fontSize: 24}}> + </Text>
+            <Text style = {{fontWeight: "bold", fontSize: 30}}> + </Text>
           </TouchableOpacity>
 
           <TouchableOpacity
@@ -342,6 +419,45 @@ export default class Map extends React.Component {
               </TouchableOpacity>
               <TouchableOpacity
                 style={styles.roundButton}
+                onPress={() => {
+                  if (!joinActivity) {
+                    Alert.alert(
+                      "Join Activity",
+                      "Activity joined. Have fun!",
+                      [
+                        {
+                          text: "OK",
+                          onPress: () => {
+                            joinActivity = true;
+                          }
+                        }
+                      ],
+                      { cancelable: false }
+                    );
+                  } else {
+                    Alert.alert(
+                      "Activity Joined",
+                      "You already joined this activity. Would you like to cancel?",
+                      [
+                        {
+                          text: "Yes",
+                          onPress: () => {
+                            joinActivity = false;
+                            Alert.alert(
+                              "Activity Canceled",
+                              "You have canceled your plans to join this activity.",
+                              [{ text: "OK" }],
+                              { cancelable: false }
+                            );
+                          }
+                        },
+                      { text: "No" }
+                      ],
+                    { cancelable: false }
+                    );
+                  }
+                  }
+                }
               >
                   <Text style={styles.joinText}>Join Activity</Text>
               </TouchableOpacity>
@@ -374,15 +490,15 @@ export default class Map extends React.Component {
                 onPress={() => {
                   if (!reportFlag) {
                     Alert.alert(
-                      "Report Event",
-                      "Are you sure you would like to report this event?",
+                      "Report Activity",
+                      "Are you sure you would like to report this activity?",
                       [
                         {
                           text: "Flag this Activity",
                           onPress: () => {
                             reportFlag = true;
                             Alert.alert(
-                              "Event Reported",
+                              "Activity Reported",
                               "Your report has been submitted.",
                               [{ text: "OK" }],
                               { cancelable: false }
@@ -395,7 +511,7 @@ export default class Map extends React.Component {
                     );
                   } else {
                     Alert.alert(
-                      "Event Reported",
+                      "Activity Reported",
                       "Your report has been submitted.",
                       [{ text: "OK" }],
                       { cancelable: false }

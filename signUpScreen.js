@@ -112,6 +112,7 @@ export default class SignUp extends React.Component {
   	    <Text style = {{flex: 2}}> </Text>
   	    <Text style = {{flex: 2}}> </Text>
       </ScrollView>
+
     );
   }
 }
