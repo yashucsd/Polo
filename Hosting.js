@@ -21,7 +21,7 @@ var startTime= 0;
 var longitude= -1;
 var latitude= -1;
 var categoryID= -1;
-var hostEmail = -1;
+var hostEmail = "";
 var rating = "no ratings yet"
 var guest = []
 
@@ -44,13 +44,10 @@ export default class Hosting extends React.Component {
     }
 
 
-
+    componentWillMount(){
+        hostEmail = logInEmail + expEmail
+    }
     createActivity = () =>{
-        if (logInEmail != -1) {
-            hostEmail = logInEmail;
-        } else {
-            hostEmail = expEmail;
-        }
 
         var activity = {
 
@@ -229,13 +226,13 @@ export default class Hosting extends React.Component {
                                            returnKeyType = 'done'
                                            onChangeText ={(text) => {title = text}}
                                 />
-                                <TextInput style= {{flex: 1, backgroundColor: "#f4f8f4", textAlign: "center"}}
+                                {/*<TextInput style= {{flex: 1, backgroundColor: "#f4f8f4", textAlign: "center"}}
                                            placeholder = "emoji"
                                            returnKeyType = 'done'
                                            onChangeText = {(text) => {
                                                emoj = emoji.unemojify(text);
                                            }}
-                                />
+                                />*/}
                             </View>
 
                             <View style={styles.secondRow}>
