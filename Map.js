@@ -326,6 +326,7 @@ export default class Map extends React.Component {
           style={styles.bottomModal}
         >
           <View style={styles.modalContentContainer}>
+            <ScrollView>
             <View style={styles.row}>
               <Text style={styles.titleText}> {event.emoji} </Text>
               <View style={styles.column}>
@@ -405,6 +406,7 @@ export default class Map extends React.Component {
                 }
               />
             </View>
+          </ScrollView>
           </View>
         </Modal>
       </View>
@@ -610,7 +612,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     width: Dimensions.get("window").width,
-    padding: 10,
+    paddingTop: 5,
+    paddingLeft: 10,
+    paddingRight: 10,
   },
   column: {
     flex: 1,
@@ -640,7 +644,7 @@ const styles = StyleSheet.create({
   modalContentContainer: {
     alignSelf: "center",
     alignItems: "center",
-    height: 200,
+    height: 180,
     width: Dimensions.get("window").width,
     backgroundColor: "white",
     margin: 0
