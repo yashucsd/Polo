@@ -387,7 +387,7 @@ export default class Map extends React.Component {
           >
             <Image
               style={styles.buttonImage}
-              source={require("./pictures/realprofile.png")}
+              source={require("./pictures/gear.png")}
             />
           </TouchableOpacity>
         </View>
